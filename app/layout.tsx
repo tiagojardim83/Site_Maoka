@@ -41,6 +41,11 @@ const monument = localFont({
       weight: "900",
       style: "normal",
     },
+    {
+      path: "./fonts/PPMonumentExtended-BlackItalic.otf",
+      weight: "900",
+      style: "italic",
+    },
   ],
   variable: "--font-monument",
   display: "swap",

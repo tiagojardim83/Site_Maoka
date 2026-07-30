@@ -31,6 +31,7 @@ h1,
 h2,
 h3 {
   font-family: var(--serif);
+  font-weight: 900;
 }
 
 body,
@@ -323,6 +324,7 @@ body:has(a:hover, button:hover) .cursor {
 .client-marquee span,
 .footer-top p {
   font-family: var(--serif);
+  font-weight: 900;
 }
 
 .menu-overlay nav a:hover { padding-left: 22px; }
@@ -421,7 +423,7 @@ body:has(a:hover, button:hover) .cursor {
   margin: 0;
   max-width: 1300px;
   font-size: clamp(54px, 8.2vw, 132px);
-  font-weight: 500;
+  font-weight: 900;
   letter-spacing: -.065em;
   line-height: .82;
 }
@@ -444,7 +446,7 @@ body:has(a:hover, button:hover) .cursor {
 .process h2 em,
 .closing h2 em {
   font-family: var(--serif);
-  font-weight: 400;
+  font-weight: 900;
   font-style: italic;
   letter-spacing: -.045em;
 }
@@ -505,7 +507,7 @@ body:has(a:hover, button:hover) .cursor {
 }
 
 .hero-caption div { display: flex; flex-direction: column; gap: 5px; }
-.hero-caption strong { font-size: 13px; font-weight: 500; }
+.hero-caption strong { font-size: 13px; font-weight: 900; }
 .hero-caption small { font-size: 9px; text-transform: uppercase; letter-spacing: .15em; color: rgba(255,255,255,.7); }
 
 .hero-dots {
@@ -587,7 +589,7 @@ body:has(a:hover, button:hover) .cursor {
 .closing h2 {
   margin: 0;
   font-size: clamp(52px, 7.7vw, 124px);
-  font-weight: 500;
+  font-weight: 900;
   letter-spacing: -.07em;
   line-height: .9;
 }
@@ -815,7 +817,7 @@ body:has(a:hover, button:hover) .cursor {
 }
 
 .project-meta > span:nth-child(2) { display: flex; flex-direction: column; gap: 6px; }
-.project-meta strong { font-size: clamp(19px, 2vw, 30px); font-weight: 500; letter-spacing: -.04em; }
+.project-meta strong { font-size: clamp(19px, 2vw, 30px); font-weight: 900; letter-spacing: -.04em; }
 .project-meta small { text-transform: uppercase; font-size: 8px; letter-spacing: .16em; color: rgba(16,16,15,.56); }
 .project-meta i { font-family: var(--serif); font-size: 20px; font-style: normal; }
 
@@ -878,7 +880,7 @@ body:has(a:hover, button:hover) .cursor {
 
 .service-list article:last-child { border-bottom: 1px solid rgba(255,255,255,.22); }
 .service-list article > span { padding-top: 6px; font-size: 9px; letter-spacing: .12em; color: var(--red); }
-.service-list h3 { margin: 0 0 12px; font-size: 25px; font-weight: 500; letter-spacing: -.03em; }
+.service-list h3 { margin: 0 0 12px; font-size: 25px; font-weight: 900; letter-spacing: -.03em; }
 .service-list p { margin: 0; max-width: 440px; color: rgba(255,255,255,.62); font-size: 13px; line-height: 1.6; }
 
 .process {
@@ -915,7 +917,7 @@ body:has(a:hover, button:hover) .cursor {
 .process-steps article + article { border-left: 1px solid rgba(16,16,15,.4); }
 .process-steps article:hover { color: white; background: var(--ink); }
 .process-steps article > span { font-size: 9px; letter-spacing: .15em; }
-.process-steps h3 { margin: auto 0 16px; font-size: 26px; font-weight: 500; letter-spacing: -.04em; }
+.process-steps h3 { margin: auto 0 16px; font-size: 26px; font-weight: 900; letter-spacing: -.04em; }
 .process-steps p { margin: 0 0 30px; max-width: 230px; font-size: 13px; line-height: 1.55; }
 .process-steps i { margin-top: auto; font-size: 8px; font-style: normal; text-transform: uppercase; letter-spacing: .16em; opacity: .65; }
 
@@ -945,7 +947,7 @@ body:has(a:hover, button:hover) .cursor {
 
 .client-marquee span {
   font-size: clamp(28px, 4vw, 60px);
-  font-weight: 800;
+  font-weight: 900;
   letter-spacing: -.055em;
   color: transparent;
   -webkit-text-stroke: 1px rgba(255,255,255,.65);
@@ -1116,7 +1118,7 @@ body:has(a:hover, button:hover) .cursor {
 .modal-copy { padding: clamp(80px, 7vw, 120px) clamp(32px, 4vw, 64px) 48px; display: flex; flex-direction: column; }
 .modal-tags { display: flex; flex-wrap: wrap; gap: 8px; }
 .modal-tags span { padding: 7px 9px; border: 1px solid var(--line); border-radius: 999px; text-transform: uppercase; font-size: 7px; letter-spacing: .14em; }
-.modal-copy h2 { margin: auto 0 24px; font-size: clamp(44px, 5.2vw, 78px); font-weight: 500; line-height: .9; letter-spacing: -.065em; }
+.modal-copy h2 { margin: auto 0 24px; font-size: clamp(44px, 5.2vw, 78px); font-weight: 900; line-height: .9; letter-spacing: -.065em; }
 .modal-copy p { margin: 0 0 40px; font-size: 14px; line-height: 1.65; }
 .modal-copy a { padding: 17px 0; display: flex; justify-content: space-between; border-top: 1px solid var(--ink); border-bottom: 1px solid var(--ink); text-transform: uppercase; font-size: 8px; font-weight: 700; letter-spacing: .15em; }
 .modal-copy a span { font-size: 17px; }
