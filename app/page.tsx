@@ -11,19 +11,22 @@ type Project = {
   description: string;
 };
 
+const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
+const projectImage = (filename: string) => `${basePath}/projects/${filename}`;
+
 const heroSlides = [
   {
-    image: "/projects/hero-nossa-praia.webp",
+    image: projectImage("hero-nossa-praia.webp"),
     title: "Nossa Praia",
     type: "Entretenimento",
   },
   {
-    image: "/projects/hero-unigames.webp",
+    image: projectImage("hero-unigames.webp"),
     title: "Unigames",
     type: "Cenografia",
   },
   {
-    image: "/projects/hero-google.webp",
+    image: projectImage("hero-google.webp"),
     title: "Google Marketing Live",
     type: "Experiência de marca",
   },
@@ -33,7 +36,7 @@ const projects: Project[] = [
   {
     name: "Nossa Praia",
     category: "Entretenimento",
-    image: "/projects/hero-nossa-praia.webp",
+    image: projectImage("hero-nossa-praia.webp"),
     year: "2026",
     place: "Brasil",
     description:
@@ -42,7 +45,7 @@ const projects: Project[] = [
   {
     name: "Google Marketing Live",
     category: "Corporativo",
-    image: "/projects/hero-google.webp",
+    image: projectImage("hero-google.webp"),
     year: "2026",
     place: "São Paulo",
     description:
@@ -51,7 +54,7 @@ const projects: Project[] = [
   {
     name: "Unigames",
     category: "Entretenimento",
-    image: "/projects/hero-unigames.webp",
+    image: projectImage("hero-unigames.webp"),
     year: "2026",
     place: "Alfenas",
     description:
@@ -60,7 +63,7 @@ const projects: Project[] = [
   {
     name: "Toyota Yaris Cross",
     category: "Corporativo",
-    image: "/projects/toyota-yaris.webp",
+    image: projectImage("toyota-yaris.webp"),
     year: "2026",
     place: "São Paulo",
     description:
@@ -69,7 +72,7 @@ const projects: Project[] = [
   {
     name: "Shein",
     category: "Ativações",
-    image: "/projects/shein.webp",
+    image: projectImage("shein.webp"),
     year: "2026",
     place: "Brasil",
     description:
@@ -78,7 +81,7 @@ const projects: Project[] = [
   {
     name: "Purina Pro Plan",
     category: "Corporativo",
-    image: "/projects/purina-pro-plan.webp",
+    image: projectImage("purina-pro-plan.webp"),
     year: "2026",
     place: "São Paulo",
     description:
@@ -87,7 +90,7 @@ const projects: Project[] = [
   {
     name: "Iced Coffee Club",
     category: "Ativações",
-    image: "/projects/iced-coffee-club.webp",
+    image: projectImage("iced-coffee-club.webp"),
     year: "2026",
     place: "Edifício Itália, SP",
     description:
@@ -388,7 +391,7 @@ export default function Home() {
 
         <section className="craft">
           <div className="craft-image reveal">
-            <img src="/projects/purina-pro-plan.webp" alt="Ambiente imersivo criado pela Maoka para Purina Pro Plan" loading="lazy" />
+            <img src={projectImage("purina-pro-plan.webp")} alt="Ambiente imersivo criado pela Maoka para Purina Pro Plan" loading="lazy" />
             <span className="image-note">Purina Pro Plan · Experiência corporativa</span>
           </div>
           <div className="craft-content section-pad">
@@ -443,7 +446,7 @@ export default function Home() {
 
         <section className="closing" id="contato">
           <div className="closing-image" aria-hidden="true">
-            <img src="/projects/imperio.webp" alt="" loading="lazy" />
+            <img src={projectImage("imperio.webp")} alt="" loading="lazy" />
           </div>
           <div className="closing-shade" />
           <div className="closing-content reveal">

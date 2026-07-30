@@ -1,8 +1,15 @@
 import type { Metadata, Viewport } from "next";
-import { headers } from "next/headers";
 import "./globals.css";
 
-const baseMetadata: Metadata = {
+const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
+const siteUrl =
+  process.env.NEXT_PUBLIC_SITE_URL ??
+  "https://maoka-cenografia.lobs83.chatgpt.site";
+const baseUrl = new URL(siteUrl.endsWith("/") ? siteUrl : `${siteUrl}/`);
+const socialImage = new URL("og.png", baseUrl).toString();
+
+export const metadata: Metadata = {
+  metadataBase: baseUrl,
   title: {
     default: "Maoka — Cenografia & Experiência",
     template: "%s | Maoka",
@@ -17,53 +24,35 @@ const baseMetadata: Metadata = {
     "Maoka",
   ],
   icons: {
-    icon: "/favicon.png",
-    shortcut: "/favicon.png",
-    apple: "/favicon.png",
+    icon: `${basePath}/favicon.png`,
+    shortcut: `${basePath}/favicon.png`,
+    apple: `${basePath}/favicon.png`,
+  },
+  alternates: { canonical: baseUrl },
+  openGraph: {
+    type: "website",
+    locale: "pt_BR",
+    url: baseUrl,
+    siteName: "Maoka Cenografia",
+    title: "Maoka — Cenografia & Experiência",
+    description:
+      "Ideias viram espaço. Espaços viram experiência. Conheça os projetos da Maoka.",
+    images: [
+      {
+        url: socialImage,
+        width: 1731,
+        height: 909,
+        alt: "Maoka — ideias viram espaço, espaços viram experiência",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Maoka — Cenografia & Experiência",
+    description: "Ideias viram espaço. Espaços viram experiência.",
+    images: [socialImage],
   },
 };
-
-export async function generateMetadata(): Promise<Metadata> {
-  const requestHeaders = await headers();
-  const host =
-    requestHeaders.get("x-forwarded-host") ??
-    requestHeaders.get("host") ??
-    "localhost:3000";
-  const protocol =
-    requestHeaders.get("x-forwarded-proto") ??
-    (host.startsWith("localhost") ? "http" : "https");
-  const baseUrl = new URL(`${protocol}://${host}`);
-  const socialImage = new URL("/og.png", baseUrl).toString();
-
-  return {
-    ...baseMetadata,
-    metadataBase: baseUrl,
-    alternates: { canonical: baseUrl },
-    openGraph: {
-      type: "website",
-      locale: "pt_BR",
-      url: baseUrl,
-      siteName: "Maoka Cenografia",
-      title: "Maoka — Cenografia & Experiência",
-      description:
-        "Ideias viram espaço. Espaços viram experiência. Conheça os projetos da Maoka.",
-      images: [
-        {
-          url: socialImage,
-          width: 1731,
-          height: 909,
-          alt: "Maoka — ideias viram espaço, espaços viram experiência",
-        },
-      ],
-    },
-    twitter: {
-      card: "summary_large_image",
-      title: "Maoka — Cenografia & Experiência",
-      description: "Ideias viram espaço. Espaços viram experiência.",
-      images: [socialImage],
-    },
-  };
-}
 
 export const viewport: Viewport = {
   themeColor: "#ff311f",
