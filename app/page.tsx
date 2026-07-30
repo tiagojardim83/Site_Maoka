@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useEffect, useMemo, useRef, useState } from "react";
 
 type Project = {
@@ -102,10 +103,12 @@ const filters = ["Todos", "Entretenimento", "Corporativo", "Ativações"];
 function Brand({ compact = false }: { compact?: boolean }) {
   return (
     <span className={`brand ${compact ? "brand--compact" : ""}`}>
-      <img
+      <Image
         className="brand-logo"
         src={projectImage("LOGOTYPEx.svg")}
         alt="MAOKA — Cenografia & Experiência"
+        width={312}
+        height={94}
       />
     </span>
   );
@@ -188,6 +191,52 @@ export default function Home() {
     );
     elements.forEach((element) => observer.observe(element));
     return () => observer.disconnect();
+  }, [filter]);
+
+  useEffect(() => {
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+    if (reducedMotion.matches) return;
+
+    const elements = Array.from(
+      document.querySelectorAll<HTMLElement>("[data-parallax]"),
+    );
+    let frame = 0;
+
+    const render = () => {
+      const viewportHeight = window.innerHeight;
+
+      elements.forEach((element) => {
+        const rect = element.getBoundingClientRect();
+        if (rect.bottom < -viewportHeight || rect.top > viewportHeight * 2) return;
+
+        const distanceFromCenter =
+          viewportHeight / 2 - (rect.top + rect.height / 2);
+        const range = (viewportHeight + rect.height) / 2;
+        const progress = Math.max(-1, Math.min(1, distanceFromCenter / range));
+        const travel = Number(element.dataset.parallax ?? 72);
+
+        element.style.setProperty(
+          "--parallax-y",
+          `${(progress * travel).toFixed(2)}px`,
+        );
+      });
+
+      frame = 0;
+    };
+
+    const queueRender = () => {
+      if (!frame) frame = window.requestAnimationFrame(render);
+    };
+
+    render();
+    window.addEventListener("scroll", queueRender, { passive: true });
+    window.addEventListener("resize", queueRender);
+
+    return () => {
+      window.removeEventListener("scroll", queueRender);
+      window.removeEventListener("resize", queueRender);
+      if (frame) window.cancelAnimationFrame(frame);
+    };
   }, [filter]);
 
   useEffect(() => {
@@ -280,18 +329,21 @@ export default function Home() {
             >
               {heroLetters.map(([letter, filename], index) => (
                 <span className="hero-orb" key={`${letter}-${index}`}>
-                  <img src={projectImage(filename)} alt="" aria-hidden="true" />
+                  <Image src={projectImage(filename)} alt="" aria-hidden="true" width={360} height={360} />
                 </span>
               ))}
             </div>
           </div>
 
-          <figure className="hero-image">
-            <img
+          <figure className="hero-image reveal media-reveal">
+            <Image
+              className="parallax-media"
+              data-parallax="110"
               src={projectImage("hero-nossa-praia.webp")}
               alt="Experiência cenográfica Nossa Praia criada pela Maoka"
-              loading="eager"
-              fetchPriority="high"
+              width={1920}
+              height={1280}
+              priority
             />
             <figcaption>Nossa Praia · Entretenimento</figcaption>
           </figure>
@@ -317,6 +369,24 @@ export default function Home() {
               </p>
               <a className="text-link" href="#processo">Conheça nosso processo <span>↘</span></a>
             </div>
+          </div>
+          <div className="manifesto-feature">
+            <p className="manifesto-aside reveal">
+              <span>Forma com intenção</span>
+              Cada projeto é pensado como uma paisagem viva: uma composição de matéria, luz, percurso e encontro.
+            </p>
+            <figure className="manifesto-feature-media reveal media-reveal">
+              <Image
+                className="parallax-media"
+                data-parallax="82"
+                src={projectImage("toka.webp")}
+                alt="Experiência cenográfica Toka criada pela Maoka"
+                width={1080}
+                height={1440}
+                loading="lazy"
+              />
+              <figcaption>Toka · Arquitetura comercial</figcaption>
+            </figure>
           </div>
           <div className="manifesto-numbers reveal" aria-label="Áreas de atuação da Maoka">
             <div><strong>360°</strong><span>Criação de ponta a ponta</span></div>
@@ -357,14 +427,22 @@ export default function Home() {
           <div className="project-grid">
             {visibleProjects.map((project, index) => (
               <button
-                className="project-card reveal"
+                className={`project-card project-card--${(index % 7) + 1} reveal`}
                 type="button"
                 key={project.name}
                 onClick={() => setActiveProject(project)}
                 aria-label={`Abrir projeto ${project.name}`}
               >
-                <span className="project-image">
-                  <img src={project.image} alt={project.name} loading="lazy" />
+                <span className="project-image media-mask">
+                  <Image
+                    className="parallax-media"
+                    data-parallax={index % 2 === 0 ? "62" : "48"}
+                    src={project.image}
+                    alt={project.name}
+                    width={1600}
+                    height={1200}
+                    loading="lazy"
+                  />
                   <span className="project-open" aria-hidden="true">Ver projeto ↗</span>
                 </span>
                 <span className="project-meta">
@@ -381,8 +459,8 @@ export default function Home() {
         </section>
 
         <section className="craft" id="servicos">
-          <div className="craft-image reveal">
-            <img src={projectImage("purina-pro-plan.webp")} alt="Ambiente imersivo criado pela Maoka para Purina Pro Plan" loading="lazy" />
+          <div className="craft-image reveal media-reveal">
+            <Image className="parallax-media" data-parallax="86" src={projectImage("purina-pro-plan.webp")} alt="Ambiente imersivo criado pela Maoka para Purina Pro Plan" width={1600} height={1200} loading="lazy" />
             <span className="image-note">Purina Pro Plan · Experiência corporativa</span>
           </div>
           <div className="craft-content section-pad">
@@ -437,7 +515,7 @@ export default function Home() {
 
         <section className="closing" id="contato">
           <div className="closing-image" aria-hidden="true">
-            <img src={projectImage("imperio.webp")} alt="" loading="lazy" />
+            <Image className="parallax-media" data-parallax="120" src={projectImage("imperio.webp")} alt="" width={1920} height={1280} loading="lazy" />
           </div>
           <div className="closing-shade" />
           <div className="closing-content reveal">
@@ -470,7 +548,7 @@ export default function Home() {
           <button className="modal-backdrop" aria-label="Fechar projeto" onClick={() => setActiveProject(null)} />
           <div className="modal-panel">
             <button className="modal-close" type="button" onClick={() => setActiveProject(null)} aria-label="Fechar projeto"><span /> <span /></button>
-            <div className="modal-media"><img src={activeProject.image} alt={activeProject.name} /></div>
+            <div className="modal-media"><Image src={activeProject.image} alt={activeProject.name} width={1600} height={1200} /></div>
             <div className="modal-copy">
               <div className="modal-tags"><span>{activeProject.category}</span><span>{activeProject.year}</span><span>{activeProject.place}</span></div>
               <h2>{activeProject.name}</h2>
