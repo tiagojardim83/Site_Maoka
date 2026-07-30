@@ -14,22 +14,12 @@ type Project = {
 const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
 const projectImage = (filename: string) => `${basePath}/projects/${filename}`;
 
-const heroSlides = [
-  {
-    image: projectImage("hero-nossa-praia.webp"),
-    title: "Nossa Praia",
-    type: "Entretenimento",
-  },
-  {
-    image: projectImage("hero-unigames.webp"),
-    title: "Unigames",
-    type: "Cenografia",
-  },
-  {
-    image: projectImage("hero-google.webp"),
-    title: "Google Marketing Live",
-    type: "Experiência de marca",
-  },
+const heroLetters = [
+  ["M", "Asset 5_M.svg"],
+  ["A", "Asset 4_A.svg"],
+  ["O", "Asset 2_O.svg"],
+  ["K", "Asset 1_K.svg"],
+  ["A", "Asset 3_A.svg"],
 ];
 
 const projects: Project[] = [
@@ -123,10 +113,11 @@ export default function Home() {
   const [loading, setLoading] = useState(true);
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const [heroIndex, setHeroIndex] = useState(0);
+  const [orbsVisible, setOrbsVisible] = useState(false);
   const [filter, setFilter] = useState("Todos");
   const [activeProject, setActiveProject] = useState<Project | null>(null);
   const cursorRef = useRef<HTMLDivElement>(null);
+  const heroOrbsRef = useRef<HTMLDivElement>(null);
 
   const visibleProjects = useMemo(
     () =>
@@ -142,12 +133,21 @@ export default function Home() {
   }, []);
 
   useEffect(() => {
-    const timer = window.setInterval(
-      () => setHeroIndex((current) => (current + 1) % heroSlides.length),
-      5200,
+    if (loading || !heroOrbsRef.current) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setOrbsVisible(true);
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.25 },
     );
-    return () => window.clearInterval(timer);
-  }, []);
+
+    observer.observe(heroOrbsRef.current);
+    return () => observer.disconnect();
+  }, [loading]);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 32);
@@ -216,21 +216,20 @@ export default function Home() {
         <a className="header-brand" href="#top" aria-label="Maoka - início" onClick={() => setMenuOpen(false)}>
           <Brand compact />
         </a>
-        <div className="header-side">
-          <a className="header-contact" href="mailto:maokacenografia@gmail.com">
-            Iniciar um projeto
-          </a>
-          <button
-            className={`menu-toggle ${menuOpen ? "is-open" : ""}`}
-            type="button"
-            aria-label={menuOpen ? "Fechar menu" : "Abrir menu"}
-            aria-expanded={menuOpen}
-            onClick={() => setMenuOpen((open) => !open)}
-          >
-            <span />
-            <span />
-          </button>
-        </div>
+        <button
+          className={`menu-toggle ${menuOpen ? "is-open" : ""}`}
+          type="button"
+          aria-label={menuOpen ? "Fechar menu" : "Abrir menu"}
+          aria-expanded={menuOpen}
+          onClick={() => setMenuOpen((open) => !open)}
+        >
+          <small>{menuOpen ? "Fechar" : "Menu"}</small>
+          <span />
+          <span />
+        </button>
+        <a className="header-contact" href="mailto:maokacenografia@gmail.com">
+          Vamos conversar
+        </a>
       </header>
 
       <div className={`menu-overlay ${menuOpen ? "is-open" : ""}`} aria-hidden={!menuOpen}>
@@ -254,54 +253,36 @@ export default function Home() {
 
       <main id="top">
         <section className="hero" aria-labelledby="hero-title">
-          <div className="hero-media" aria-hidden="true">
-            {heroSlides.map((slide, index) => (
-              <div className={`hero-frame ${index === heroIndex ? "is-active" : ""}`} key={slide.image}>
-                <img src={slide.image} alt="" loading={index === 0 ? "eager" : "lazy"} />
-              </div>
-            ))}
-            <div className="hero-shade" />
-          </div>
-
-          <div className="hero-topline">
-            <span>Cenografia</span>
-            <span>Arquitetura</span>
-            <span>Experiência</span>
-          </div>
-
-          <div className="hero-content">
-            <p className="hero-kicker">Projetos singulares para interações coletivas</p>
-            <h1 id="hero-title">
-              <span>Damos forma</span>
-              <span>ao que sua marca</span>
-              <span><em>quer fazer sentir.</em></span>
-            </h1>
-          </div>
-
-          <div className="hero-bottom">
-            <a className="scroll-cue" href="#manifesto">
-              <span>Descobrir</span>
-              <i aria-hidden="true">↓</i>
-            </a>
-            <div className="hero-caption" aria-live="polite">
-              <span>{String(heroIndex + 1).padStart(2, "0")} / {String(heroSlides.length).padStart(2, "0")}</span>
-              <div>
-                <strong>{heroSlides[heroIndex].title}</strong>
-                <small>{heroSlides[heroIndex].type}</small>
-              </div>
+          <div className="hero-intro">
+            <div className="hero-statement">
+              <span aria-hidden="true" />
+              <h1 id="hero-title">Damos forma ao que sua marca quer fazer sentir.</h1>
+              <p>Cenografia · Arquitetura · Experiência</p>
             </div>
-            <div className="hero-dots" aria-label="Selecionar imagem de destaque">
-              {heroSlides.map((slide, index) => (
-                <button
-                  key={slide.title}
-                  className={index === heroIndex ? "is-active" : ""}
-                  type="button"
-                  aria-label={`Mostrar ${slide.title}`}
-                  onClick={() => setHeroIndex(index)}
-                ><span /></button>
+
+            <div
+              className={`hero-orbs ${orbsVisible ? "is-visible" : ""}`}
+              ref={heroOrbsRef}
+              role="img"
+              aria-label="MAOKA"
+            >
+              {heroLetters.map(([letter, filename], index) => (
+                <span className="hero-orb" key={`${letter}-${index}`}>
+                  <img src={projectImage(filename)} alt="" aria-hidden="true" />
+                </span>
               ))}
             </div>
           </div>
+
+          <figure className="hero-image">
+            <img
+              src={projectImage("hero-nossa-praia.webp")}
+              alt="Experiência cenográfica Nossa Praia criada pela Maoka"
+              loading="eager"
+              fetchPriority="high"
+            />
+            <figcaption>Nossa Praia · Entretenimento</figcaption>
+          </figure>
         </section>
 
         <section className="manifesto section-pad" id="manifesto">
