@@ -182,9 +182,9 @@ body:has(a:hover, button:hover) .cursor {
 }
 
 .site-header--menu {
-  color: white;
+  color: var(--ink);
   background: transparent;
-  border-color: rgba(255, 255, 255, .22);
+  border-color: transparent;
   backdrop-filter: none;
 }
 
@@ -201,16 +201,18 @@ body:has(a:hover, button:hover) .cursor {
 }
 
 .site-header--menu .brand-logo {
-  filter: brightness(0) invert(1);
+  filter: invert(24%) sepia(99%) saturate(4370%) hue-rotate(355deg) brightness(103%) contrast(95%);
 }
 
 .header-brand {
   position: relative;
   z-index: 2;
+  grid-column: 1;
 }
 
 .header-contact {
   position: relative;
+  grid-column: 3;
   justify-self: end;
   padding: 10px 0;
   text-transform: uppercase;
@@ -237,18 +239,50 @@ body:has(a:hover, button:hover) .cursor {
   transform-origin: left;
 }
 
-.menu-toggle {
-  position: relative;
-  z-index: 2;
+.menu-shell {
+  position: absolute;
+  z-index: 4;
+  top: 29px;
+  left: 50%;
   width: clamp(118px, 19vw, 260px);
   height: 28px;
-  padding: 0 42px 0 13px;
-  border: 0;
   border-radius: 5px;
   color: var(--ink);
   background: var(--red);
+  box-shadow: 0 0 0 rgba(16, 16, 15, 0);
+  overflow: hidden;
+  transform: translateX(-50%);
+  transform-origin: top center;
+  transition:
+    top 350ms ease,
+    width 700ms cubic-bezier(.76, 0, .24, 1),
+    height 700ms cubic-bezier(.76, 0, .24, 1),
+    border-radius 450ms ease,
+    box-shadow 450ms ease;
+}
+
+.site-header--scrolled .menu-shell { top: 21px; }
+
+.menu-shell.is-open {
+  top: 24px;
+  width: min(82vw, 620px);
+  height: min(82svh, 720px);
+  border-radius: 4px;
+  box-shadow: 0 20px 55px rgba(16, 16, 15, .18);
+}
+
+.menu-toggle {
+  position: absolute;
+  z-index: 2;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 28px;
+  padding: 0 42px 0 13px;
+  border: 0;
+  color: inherit;
+  background: transparent;
   text-align: left;
-  transition: color 300ms ease, background 300ms ease;
 }
 
 .menu-toggle small {
@@ -273,65 +307,51 @@ body:has(a:hover, button:hover) .cursor {
 .menu-toggle.is-open span:first-of-type { top: 14px; transform: rotate(45deg); }
 .menu-toggle.is-open span:last-child { top: 14px; transform: rotate(-45deg); }
 
-.site-header--menu .menu-toggle {
-  color: var(--red);
-  background: white;
-}
-
-.menu-overlay {
-  position: fixed;
-  z-index: 110;
+.menu-panel {
+  position: absolute;
   inset: 0;
-  padding: 120px 4vw 32px;
+  width: 100%;
+  height: 100%;
+  padding: 64px clamp(20px, 4vw, 38px) 25px;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  color: white;
-  background: var(--red);
-  transform: translateY(-105%);
-  transition: transform 800ms cubic-bezier(.76, 0, .24, 1);
-  overflow: hidden;
+  opacity: 0;
+  visibility: hidden;
+  transition:
+    opacity 180ms ease 280ms,
+    visibility 0s linear 460ms;
 }
 
-.menu-overlay::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(120deg, transparent 25%, rgba(0, 0, 0, .12));
-  pointer-events: none;
+.menu-shell.is-open .menu-panel {
+  opacity: 1;
+  visibility: visible;
+  transition-delay: 120ms, 0s;
 }
 
-.menu-overlay.is-open { transform: translateY(0); }
-
-.menu-ambient {
-  position: absolute;
-  right: -2vw;
-  bottom: -7vw;
-  font-size: 28vw;
-  font-weight: 900;
-  letter-spacing: -.09em;
-  line-height: .8;
-  color: rgba(255,255,255,.09);
-  pointer-events: none;
-}
-
-.menu-overlay nav {
-  position: relative;
-  z-index: 2;
-  width: min(1080px, 100%);
-  margin: auto 0;
-}
-
-.menu-overlay nav a {
+.menu-panel nav {
+  flex: 1;
+  min-height: 0;
+  width: 100%;
+  margin-bottom: 18px;
   display: grid;
-  grid-template-columns: 54px 1fr auto;
+  grid-template-rows: repeat(6, minmax(48px, 1fr));
+}
+
+.menu-panel nav a {
+  display: grid;
+  grid-template-columns: 30px 1fr auto;
   align-items: center;
-  padding: 8px 0;
-  border-bottom: 1px solid rgba(255,255,255,.35);
+  min-height: 0;
+  padding: 13px 0 12px;
+  border-bottom: 1px solid rgba(16, 16, 15, .25);
   transition: padding-left 250ms ease;
 }
 
-.menu-overlay nav span,
+.menu-panel nav a:first-child {
+  border-top: 1px solid rgba(16, 16, 15, .25);
+}
+
+.menu-panel nav span,
 .project-meta strong,
 .client-marquee span,
 .footer-top p {
@@ -339,24 +359,52 @@ body:has(a:hover, button:hover) .cursor {
   font-weight: 900;
 }
 
-.menu-overlay nav a:hover { padding-left: 22px; }
-.menu-overlay nav small { font-size: 10px; letter-spacing: .15em; }
-.menu-overlay nav span { font-size: clamp(45px, 7vw, 98px); letter-spacing: -.06em; line-height: 1.02; }
-.menu-overlay nav i { font-family: var(--serif); font-size: 30px; font-style: normal; }
+.menu-panel nav a:hover { padding-left: 8px; }
+.menu-panel nav small { font-size: 7px; letter-spacing: .15em; }
+.menu-panel nav span { font-size: clamp(17px, 2vw, 23px); letter-spacing: -.035em; line-height: 1; }
+.menu-panel nav i { font-family: var(--serif); font-size: 15px; font-style: normal; }
 
 .menu-footer {
-  position: relative;
-  z-index: 2;
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 7px;
   text-transform: uppercase;
-  font-size: 10px;
-  letter-spacing: .16em;
+  font-size: 8px;
+  font-weight: 700;
+  line-height: 1.45;
+  letter-spacing: .11em;
+}
+
+.menu-footer a:last-child {
+  margin-top: 5px;
+}
+
+.menu-backdrop {
+  position: fixed;
+  z-index: 115;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 350ms ease, visibility 0s linear 350ms;
+}
+
+.menu-backdrop.is-open {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transition-delay: 0s;
 }
 
 .hero {
   position: relative;
-  min-height: 720px;
+  min-height: 100svh;
   height: 100svh;
   color: var(--ink);
   background: var(--paper);
@@ -365,7 +413,7 @@ body:has(a:hover, button:hover) .cursor {
 
 .hero-intro {
   height: 56%;
-  min-height: 400px;
+  min-height: 0;
   padding: 112px 3vw clamp(30px, 4.2vh, 58px);
   display: flex;
   flex-direction: column;
@@ -453,7 +501,7 @@ body:has(a:hover, button:hover) .cursor {
 .hero-image {
   position: relative;
   height: 44%;
-  min-height: 320px;
+  min-height: 0;
   margin: 0;
   overflow: hidden;
 }
@@ -1073,11 +1121,9 @@ body:has(a:hover, button:hover) .cursor {
   body, button, a { cursor: auto; }
   .site-header { padding: 0 22px; }
   .header-contact { display: none; }
-  .hero { min-height: 680px; }
+  .hero { min-height: 100svh; }
   .hero-intro { padding-left: 22px; padding-right: 22px; }
   .hero-statement { width: min(250px, 48vw); }
-  .menu-overlay { padding: 108px 22px 28px; }
-  .menu-overlay nav a { grid-template-columns: 40px 1fr auto; }
   .manifesto-grid { grid-template-columns: 1fr; align-items: start; }
   .manifesto-copy { max-width: 560px; }
   .projects-heading { flex-direction: column; }
@@ -1101,20 +1147,25 @@ body:has(a:hover, button:hover) .cursor {
   .site-header { height: 74px; }
   .site-header--scrolled { height: 64px; }
   .brand--compact .brand-logo { width: 98px; }
-  .menu-toggle { width: 104px; height: 26px; padding-left: 10px; }
+  .menu-shell { top: 24px; width: 104px; height: 26px; }
+  .site-header--scrolled .menu-shell { top: 19px; }
+  .menu-shell.is-open { top: 20px; width: 82vw; height: min(82svh, 680px); }
+  .menu-toggle { height: 26px; padding-left: 10px; }
   .menu-toggle span { right: 9px; width: 24px; }
   .menu-toggle span:first-of-type { top: 9px; }
   .menu-toggle span:last-child { top: 16px; }
   .menu-toggle.is-open span:first-of-type,
   .menu-toggle.is-open span:last-child { top: 13px; }
-  .hero { height: auto; min-height: 0; }
-  .hero-intro { height: 58svh; min-height: 410px; padding-top: 94px; padding-bottom: 30px; }
+  .menu-panel { padding: 56px 20px 20px; }
+  .menu-panel nav a { min-height: 50px; padding-top: 11px; padding-bottom: 10px; }
+  .menu-panel nav span { font-size: 16px; }
+  .menu-footer { font-size: 7px; }
+  .hero { height: 100svh; min-height: 100svh; }
+  .hero-intro { height: 58%; min-height: 0; padding-top: 94px; padding-bottom: 30px; }
   .hero-statement { width: min(220px, 62vw); }
   .hero-orbs { gap: 9px; }
-  .hero-image { height: 42svh; min-height: 300px; }
+  .hero-image { height: 42%; min-height: 0; }
   .hero-image figcaption { right: 22px; bottom: 16px; }
-  .menu-overlay nav span { font-size: 14vw; }
-  .menu-footer span { display: none; }
   .display-copy, .projects-heading h2, .craft h2, .process h2, .closing h2 { font-size: clamp(44px, 14vw, 69px); }
   .manifesto-grid { margin-top: 70px; gap: 46px; }
   .manifesto-numbers { grid-template-columns: 1fr; }

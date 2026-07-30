@@ -89,10 +89,12 @@ const projects: Project[] = [
 ];
 
 const menuItems = [
-  ["01", "Manifesto", "#manifesto"],
-  ["02", "Projetos", "#projetos"],
-  ["03", "Processo", "#processo"],
-  ["04", "Contato", "#contato"],
+  ["01", "Início", "#top"],
+  ["02", "Manifesto", "#manifesto"],
+  ["03", "Projetos", "#projetos"],
+  ["04", "Serviços", "#servicos"],
+  ["05", "Processo", "#processo"],
+  ["06", "Contato", "#contato"],
 ];
 
 const filters = ["Todos", "Entretenimento", "Corporativo", "Ativações"];
@@ -216,40 +218,50 @@ export default function Home() {
         <a className="header-brand" href="#top" aria-label="Maoka - início" onClick={() => setMenuOpen(false)}>
           <Brand compact />
         </a>
-        <button
-          className={`menu-toggle ${menuOpen ? "is-open" : ""}`}
-          type="button"
-          aria-label={menuOpen ? "Fechar menu" : "Abrir menu"}
-          aria-expanded={menuOpen}
-          onClick={() => setMenuOpen((open) => !open)}
-        >
-          <small>{menuOpen ? "Fechar" : "Menu"}</small>
-          <span />
-          <span />
-        </button>
+        <div className={`menu-shell ${menuOpen ? "is-open" : ""}`}>
+          <button
+            className={`menu-toggle ${menuOpen ? "is-open" : ""}`}
+            type="button"
+            aria-label={menuOpen ? "Fechar menu" : "Abrir menu"}
+            aria-controls="menu-panel"
+            aria-expanded={menuOpen}
+            onClick={() => setMenuOpen((open) => !open)}
+          >
+            <small>Menu</small>
+            <span />
+            <span />
+          </button>
+
+          <div className="menu-panel" id="menu-panel" aria-hidden={!menuOpen}>
+            <nav aria-label="Navegação principal">
+              {menuItems.map(([number, label, href]) => (
+                <a key={href} href={href} onClick={() => setMenuOpen(false)} tabIndex={menuOpen ? 0 : -1}>
+                  <small>{number}</small>
+                  <span>{label}</span>
+                  <i aria-hidden="true">↗</i>
+                </a>
+              ))}
+            </nav>
+            <div className="menu-footer">
+              <a href="tel:+5531992066650" tabIndex={menuOpen ? 0 : -1}>+55 31 99206-6650 ↗</a>
+              <a href="mailto:maokacenografia@gmail.com" tabIndex={menuOpen ? 0 : -1}>maokacenografia@gmail.com ↗</a>
+              <a href="https://www.instagram.com/maokacenografia/" target="_blank" rel="noreferrer" tabIndex={menuOpen ? 0 : -1}>Instagram ↗</a>
+            </div>
+          </div>
+        </div>
         <a className="header-contact" href="mailto:maokacenografia@gmail.com">
           Vamos conversar
         </a>
       </header>
 
-      <div className={`menu-overlay ${menuOpen ? "is-open" : ""}`} aria-hidden={!menuOpen}>
-        <div className="menu-ambient" aria-hidden="true">MAOKA</div>
-        <nav aria-label="Navegação principal">
-          {menuItems.map(([number, label, href]) => (
-            <a key={href} href={href} onClick={() => setMenuOpen(false)} tabIndex={menuOpen ? 0 : -1}>
-              <small>{number}</small>
-              <span>{label}</span>
-              <i aria-hidden="true">↗</i>
-            </a>
-          ))}
-        </nav>
-        <div className="menu-footer">
-          <a href="https://www.instagram.com/maokacenografia/" target="_blank" rel="noreferrer" tabIndex={menuOpen ? 0 : -1}>
-            Instagram ↗
-          </a>
-          <span>Belo Horizonte · Brasil</span>
-        </div>
-      </div>
+      <button
+        className={`menu-backdrop ${menuOpen ? "is-open" : ""}`}
+        type="button"
+        aria-label="Fechar menu"
+        aria-hidden={!menuOpen}
+        tabIndex={menuOpen ? 0 : -1}
+        onClick={() => setMenuOpen(false)}
+      />
 
       <main id="top">
         <section className="hero" aria-labelledby="hero-title">
@@ -368,7 +380,7 @@ export default function Home() {
           </div>
         </section>
 
-        <section className="craft">
+        <section className="craft" id="servicos">
           <div className="craft-image reveal">
             <img src={projectImage("purina-pro-plan.webp")} alt="Ambiente imersivo criado pela Maoka para Purina Pro Plan" loading="lazy" />
             <span className="image-note">Purina Pro Plan · Experiência corporativa</span>
