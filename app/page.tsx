@@ -556,7 +556,7 @@ export default function Home() {
           <div className="manifesto-grid">
             <h2 className="display-copy reveal">
               Não montamos<br />
-              <em>cenários.</em><br className="mobile-only" aria-hidden="true" /> Desenhamos<br />
+              <em>cenários.</em><br /> Desenhamos<br />
               relações.
             </h2>
             <div className="manifesto-copy reveal">
@@ -668,7 +668,7 @@ export default function Home() {
               <span>03</span>
               <p>O que fazemos</p>
             </div>
-            <h2 className="reveal">Onde estratégia,<br />design e <br className="mobile-only" aria-hidden="true" /><em>experiência</em><br />se encontram.</h2>
+            <h2 className="reveal">Onde estratégia,<br />design e <br /><em>experiência</em><br />se encontram.</h2>
             <div className="service-list">
               <article className="reveal">
                 <span>01</span>
@@ -692,7 +692,7 @@ export default function Home() {
               <span>04</span>
               <p>Nosso ritual</p>
             </div>
-            <h2 className="reveal">Da escuta<br />ao <br className="mobile-only" aria-hidden="true" /><em>extraordinário.</em></h2>
+            <h2 className="reveal">Da escuta<br />ao <br /><em>extraordinário.</em></h2>
             <p className="reveal">Um processo contínuo, próximo e transparente — porque as melhores experiências começam antes de o espaço existir.</p>
           </div>
           <div className="process-steps">
@@ -720,7 +720,7 @@ export default function Home() {
           <div className="closing-shade" />
           <div className="closing-content reveal">
             <p>Tem uma ideia em movimento?</p>
-            <h2>Vamos criar algo<br />que ninguém <br className="mobile-only" aria-hidden="true" /><em>esquece?</em></h2>
+            <h2>Vamos criar algo<br />que ninguém <br /><em>esquece?</em></h2>
             <a className="cta-orbit" href="https://wa.me/5531992066650" target="_blank" rel="noreferrer">
               <span>Começar um projeto</span>
               <i aria-hidden="true">↗</i>
