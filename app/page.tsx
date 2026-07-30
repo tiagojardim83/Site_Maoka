@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import { useEffect, useMemo, useRef, useState } from "react";
 
 type Project = {
@@ -103,12 +102,10 @@ const filters = ["Todos", "Entretenimento", "Corporativo", "Ativações"];
 function Brand({ compact = false }: { compact?: boolean }) {
   return (
     <span className={`brand ${compact ? "brand--compact" : ""}`}>
-      <Image
+      <img
         className="brand-logo"
         src={projectImage("LOGOTYPEx.svg")}
         alt="MAOKA — Cenografia & Experiência"
-        width={312}
-        height={94}
       />
     </span>
   );
@@ -155,6 +152,183 @@ export default function Home() {
   }, [loading]);
 
   useEffect(() => {
+    if (!orbsVisible || !heroOrbsRef.current) return;
+
+    const stage = heroOrbsRef.current;
+    const elements = Array.from(
+      stage.querySelectorAll<HTMLElement>(".hero-orb"),
+    );
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+
+    if (reducedMotion.matches || !elements.length) return;
+
+    const starts = [
+      [0.03, 0.68],
+      [0.2, 0.12],
+      [0.43, 0.52],
+      [0.68, 0.17],
+      [0.83, 0.7],
+    ];
+    const velocities = [
+      [148, -112],
+      [-126, 154],
+      [172, 108],
+      [-158, -126],
+      [118, 166],
+    ];
+    const spins = [18, -23, 14, -17, 21];
+
+    type OrbBody = {
+      element: HTMLElement;
+      size: number;
+      x: number;
+      y: number;
+      vx: number;
+      vy: number;
+      angle: number;
+      spin: number;
+    };
+
+    let width = stage.clientWidth;
+    let height = stage.clientHeight;
+    const speedScale = Math.max(0.62, Math.min(1, width / 1100));
+    let bodies: OrbBody[] = elements.map((element, index) => {
+      const size = Math.min(element.offsetWidth, element.offsetHeight);
+      const availableX = Math.max(0, width - size);
+      const availableY = Math.max(0, height - size);
+
+      return {
+        element,
+        size,
+        x: starts[index][0] * availableX,
+        y: starts[index][1] * availableY,
+        vx: velocities[index][0] * speedScale,
+        vy: velocities[index][1] * speedScale,
+        angle: index * 18,
+        spin: spins[index],
+      };
+    });
+
+    const keepInsideStage = (body: OrbBody) => {
+      const maxX = Math.max(0, width - body.size);
+      const maxY = Math.max(0, height - body.size);
+
+      if (body.x <= 0) {
+        body.x = 0;
+        body.vx = Math.abs(body.vx);
+      } else if (body.x >= maxX) {
+        body.x = maxX;
+        body.vx = -Math.abs(body.vx);
+      }
+
+      if (body.y <= 0) {
+        body.y = 0;
+        body.vy = Math.abs(body.vy);
+      } else if (body.y >= maxY) {
+        body.y = maxY;
+        body.vy = -Math.abs(body.vy);
+      }
+    };
+
+    const resolveCollisions = () => {
+      for (let firstIndex = 0; firstIndex < bodies.length; firstIndex += 1) {
+        for (
+          let secondIndex = firstIndex + 1;
+          secondIndex < bodies.length;
+          secondIndex += 1
+        ) {
+          const first = bodies[firstIndex];
+          const second = bodies[secondIndex];
+          const firstRadius = first.size / 2;
+          const secondRadius = second.size / 2;
+          const deltaX = second.x + secondRadius - (first.x + firstRadius);
+          const deltaY = second.y + secondRadius - (first.y + firstRadius);
+          const minimumDistance = firstRadius + secondRadius;
+          const distanceSquared = deltaX * deltaX + deltaY * deltaY;
+
+          if (distanceSquared >= minimumDistance * minimumDistance) continue;
+
+          const distance = Math.sqrt(distanceSquared) || 0.001;
+          const normalX = deltaX / distance;
+          const normalY = deltaY / distance;
+          const overlap = minimumDistance - distance;
+
+          first.x -= normalX * overlap * 0.5;
+          first.y -= normalY * overlap * 0.5;
+          second.x += normalX * overlap * 0.5;
+          second.y += normalY * overlap * 0.5;
+
+          const relativeNormalVelocity =
+            (second.vx - first.vx) * normalX +
+            (second.vy - first.vy) * normalY;
+
+          if (relativeNormalVelocity < 0) {
+            first.vx += relativeNormalVelocity * normalX;
+            first.vy += relativeNormalVelocity * normalY;
+            second.vx -= relativeNormalVelocity * normalX;
+            second.vy -= relativeNormalVelocity * normalY;
+          }
+        }
+      }
+    };
+
+    let animationFrame = 0;
+    let previousTime = performance.now();
+
+    const animate = (currentTime: number) => {
+      const deltaTime = Math.min((currentTime - previousTime) / 1000, 0.032);
+      previousTime = currentTime;
+
+      bodies.forEach((body) => {
+        body.x += body.vx * deltaTime;
+        body.y += body.vy * deltaTime;
+        body.angle += body.spin * deltaTime;
+        keepInsideStage(body);
+      });
+
+      resolveCollisions();
+
+      bodies.forEach((body) => {
+        keepInsideStage(body);
+        body.element.style.transform = `translate3d(${body.x.toFixed(2)}px, ${body.y.toFixed(2)}px, 0) rotate(${body.angle.toFixed(2)}deg)`;
+      });
+
+      animationFrame = window.requestAnimationFrame(animate);
+    };
+
+    const resizeObserver = new ResizeObserver(() => {
+      const previousWidth = width;
+      const previousHeight = height;
+      width = stage.clientWidth;
+      height = stage.clientHeight;
+
+      bodies = bodies.map((body) => {
+        const size = Math.min(body.element.offsetWidth, body.element.offsetHeight);
+        const oldMaxX = Math.max(1, previousWidth - body.size);
+        const oldMaxY = Math.max(1, previousHeight - body.size);
+        const newMaxX = Math.max(0, width - size);
+        const newMaxY = Math.max(0, height - size);
+
+        return {
+          ...body,
+          size,
+          x: (body.x / oldMaxX) * newMaxX,
+          y: (body.y / oldMaxY) * newMaxY,
+        };
+      });
+    });
+
+    resizeObserver.observe(stage);
+    animationFrame = window.requestAnimationFrame(animate);
+
+    return () => {
+      resizeObserver.disconnect();
+      window.cancelAnimationFrame(animationFrame);
+      elements.forEach((element) => element.removeAttribute("style"));
+    };
+  }, [orbsVisible]);
+
+  useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 32);
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
@@ -177,7 +351,9 @@ export default function Home() {
   }, [menuOpen, activeProject]);
 
   useEffect(() => {
-    const elements = document.querySelectorAll<HTMLElement>(".reveal");
+    const elements = document.querySelectorAll<HTMLElement>(
+      ".reveal, .photo-reactive",
+    );
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
@@ -195,11 +371,20 @@ export default function Home() {
 
   useEffect(() => {
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
-    if (reducedMotion.matches) return;
-
     const elements = Array.from(
       document.querySelectorAll<HTMLElement>("[data-parallax]"),
     );
+    const scrollRevealElements = Array.from(
+      document.querySelectorAll<HTMLElement>("[data-scroll-reveal]"),
+    );
+
+    if (reducedMotion.matches) {
+      scrollRevealElements.forEach((element) => {
+        element.style.setProperty("--scroll-reveal", "0%");
+      });
+      return;
+    }
+
     let frame = 0;
 
     const render = () => {
@@ -218,6 +403,19 @@ export default function Home() {
         element.style.setProperty(
           "--parallax-y",
           `${(progress * travel).toFixed(2)}px`,
+        );
+      });
+
+      scrollRevealElements.forEach((element) => {
+        const rect = element.getBoundingClientRect();
+        const rawProgress =
+          (viewportHeight - rect.top) / Math.max(viewportHeight * 0.88, 1);
+        const progress = Math.max(0, Math.min(1, rawProgress));
+        const easedProgress = 1 - Math.pow(1 - progress, 3);
+
+        element.style.setProperty(
+          "--scroll-reveal",
+          `${((1 - easedProgress) * 100).toFixed(2)}%`,
         );
       });
 
@@ -316,8 +514,7 @@ export default function Home() {
         <section className="hero" aria-labelledby="hero-title">
           <div className="hero-intro">
             <div className="hero-statement">
-              <span aria-hidden="true" />
-              <h1 id="hero-title">Damos forma ao que sua marca quer fazer sentir.</h1>
+              <h1 id="hero-title">Damos forma ao que sua<br className="mobile-only" aria-hidden="true" /> marca quer fazer sentir.</h1>
               <p>Cenografia · Arquitetura · Experiência</p>
             </div>
 
@@ -325,29 +522,31 @@ export default function Home() {
               className={`hero-orbs ${orbsVisible ? "is-visible" : ""}`}
               ref={heroOrbsRef}
               role="img"
-              aria-label="MAOKA"
+              aria-label="Símbolos da Maoka em movimento"
             >
               {heroLetters.map(([letter, filename], index) => (
                 <span className="hero-orb" key={`${letter}-${index}`}>
-                  <Image src={projectImage(filename)} alt="" aria-hidden="true" width={360} height={360} />
+                  <img src={projectImage(filename)} alt="" aria-hidden="true" />
                 </span>
               ))}
             </div>
           </div>
-
-          <figure className="hero-image reveal media-reveal">
-            <Image
-              className="parallax-media"
-              data-parallax="110"
-              src={projectImage("hero-nossa-praia.webp")}
-              alt="Experiência cenográfica Nossa Praia criada pela Maoka"
-              width={1920}
-              height={1280}
-              priority
-            />
-            <figcaption>Nossa Praia · Entretenimento</figcaption>
-          </figure>
         </section>
+
+        <figure
+          className="hero-image hero-scroll-reveal photo-reactive"
+          data-scroll-reveal
+        >
+          <img
+            className="parallax-media"
+            data-parallax="110"
+            src={projectImage("carnaval-dos-sonhos.webp")}
+            alt="Experiência cenográfica Carnaval dos Sonhos criada pela Maoka"
+            loading="eager"
+            fetchPriority="high"
+          />
+          <figcaption>Carnaval dos Sonhos · Entretenimento</figcaption>
+        </figure>
 
         <section className="manifesto section-pad" id="manifesto">
           <div className="section-label reveal">
@@ -357,7 +556,7 @@ export default function Home() {
           <div className="manifesto-grid">
             <h2 className="display-copy reveal">
               Não montamos<br />
-              <em>cenários.</em> Desenhamos<br />
+              <em>cenários.</em><br className="mobile-only" aria-hidden="true" /> Desenhamos<br />
               relações.
             </h2>
             <div className="manifesto-copy reveal">
@@ -375,14 +574,17 @@ export default function Home() {
               <span>Forma com intenção</span>
               Cada projeto é pensado como uma paisagem viva: uma composição de matéria, luz, percurso e encontro.
             </p>
-            <figure className="manifesto-feature-media reveal media-reveal">
-              <Image
+            <div className="manifesto-sign reveal" aria-hidden="true">
+              <div className="manifesto-sign-motion" data-parallax="92">
+                <img src={projectImage("Sign_3D.svg")} alt="" loading="lazy" />
+              </div>
+            </div>
+            <figure className="manifesto-feature-media photo-reactive reveal media-reveal">
+              <img
                 className="parallax-media"
                 data-parallax="82"
                 src={projectImage("toka.webp")}
                 alt="Experiência cenográfica Toka criada pela Maoka"
-                width={1080}
-                height={1440}
                 loading="lazy"
               />
               <figcaption>Toka · Arquitetura comercial</figcaption>
@@ -427,20 +629,18 @@ export default function Home() {
           <div className="project-grid">
             {visibleProjects.map((project, index) => (
               <button
-                className={`project-card project-card--${(index % 7) + 1} reveal`}
+                className={`project-card project-card--${(index % 7) + 1} photo-reactive reveal`}
                 type="button"
                 key={project.name}
                 onClick={() => setActiveProject(project)}
                 aria-label={`Abrir projeto ${project.name}`}
               >
                 <span className="project-image media-mask">
-                  <Image
+                  <img
                     className="parallax-media"
                     data-parallax={index % 2 === 0 ? "62" : "48"}
                     src={project.image}
                     alt={project.name}
-                    width={1600}
-                    height={1200}
                     loading="lazy"
                   />
                   <span className="project-open" aria-hidden="true">Ver projeto ↗</span>
@@ -459,8 +659,8 @@ export default function Home() {
         </section>
 
         <section className="craft" id="servicos">
-          <div className="craft-image reveal media-reveal">
-            <Image className="parallax-media" data-parallax="86" src={projectImage("purina-pro-plan.webp")} alt="Ambiente imersivo criado pela Maoka para Purina Pro Plan" width={1600} height={1200} loading="lazy" />
+          <div className="craft-image photo-reactive reveal media-reveal">
+            <img className="parallax-media" data-parallax="86" src={projectImage("purina-pro-plan.webp")} alt="Ambiente imersivo criado pela Maoka para Purina Pro Plan" loading="lazy" />
             <span className="image-note">Purina Pro Plan · Experiência corporativa</span>
           </div>
           <div className="craft-content section-pad">
@@ -468,7 +668,7 @@ export default function Home() {
               <span>03</span>
               <p>O que fazemos</p>
             </div>
-            <h2 className="reveal">Onde estratégia,<br />design e <em>experiência</em><br />se encontram.</h2>
+            <h2 className="reveal">Onde estratégia,<br />design e <br className="mobile-only" aria-hidden="true" /><em>experiência</em><br />se encontram.</h2>
             <div className="service-list">
               <article className="reveal">
                 <span>01</span>
@@ -492,7 +692,7 @@ export default function Home() {
               <span>04</span>
               <p>Nosso ritual</p>
             </div>
-            <h2 className="reveal">Da escuta<br />ao <em>extraordinário.</em></h2>
+            <h2 className="reveal">Da escuta<br />ao <br className="mobile-only" aria-hidden="true" /><em>extraordinário.</em></h2>
             <p className="reveal">Um processo contínuo, próximo e transparente — porque as melhores experiências começam antes de o espaço existir.</p>
           </div>
           <div className="process-steps">
@@ -514,13 +714,13 @@ export default function Home() {
         </section>
 
         <section className="closing" id="contato">
-          <div className="closing-image" aria-hidden="true">
-            <Image className="parallax-media" data-parallax="120" src={projectImage("imperio.webp")} alt="" width={1920} height={1280} loading="lazy" />
+          <div className="closing-image photo-reactive" aria-hidden="true">
+            <img className="parallax-media" data-parallax="120" src={projectImage("imperio.webp")} alt="" loading="lazy" />
           </div>
           <div className="closing-shade" />
           <div className="closing-content reveal">
             <p>Tem uma ideia em movimento?</p>
-            <h2>Vamos criar algo<br />que ninguém <em>esquece?</em></h2>
+            <h2>Vamos criar algo<br />que ninguém <br className="mobile-only" aria-hidden="true" /><em>esquece?</em></h2>
             <a className="cta-orbit" href="https://wa.me/5531992066650" target="_blank" rel="noreferrer">
               <span>Começar um projeto</span>
               <i aria-hidden="true">↗</i>
@@ -548,7 +748,7 @@ export default function Home() {
           <button className="modal-backdrop" aria-label="Fechar projeto" onClick={() => setActiveProject(null)} />
           <div className="modal-panel">
             <button className="modal-close" type="button" onClick={() => setActiveProject(null)} aria-label="Fechar projeto"><span /> <span /></button>
-            <div className="modal-media"><Image src={activeProject.image} alt={activeProject.name} width={1600} height={1200} /></div>
+            <div className="modal-media photo-reactive is-visible"><img src={activeProject.image} alt={activeProject.name} /></div>
             <div className="modal-copy">
               <div className="modal-tags"><span>{activeProject.category}</span><span>{activeProject.year}</span><span>{activeProject.place}</span></div>
               <h2>{activeProject.name}</h2>
