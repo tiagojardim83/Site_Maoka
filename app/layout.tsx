@@ -74,9 +74,9 @@ export const metadata: Metadata = {
     "Maoka",
   ],
   icons: {
-    icon: `${basePath}/favicon.svg`,
-    shortcut: `${basePath}/favicon.svg`,
-    apple: `${basePath}/favicon.svg`,
+    icon: `${basePath}/Favicon.svg`,
+    shortcut: `${basePath}/Favicon.svg`,
+    apple: `${basePath}/Favicon.svg`,
   },
   alternates: { canonical: baseUrl.toString() },
   openGraph: {
@@ -105,7 +105,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#ff311f",
+  themeColor: "#e51100",
   colorScheme: "light",
 };
 
