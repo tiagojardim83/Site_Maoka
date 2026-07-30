@@ -30,6 +30,9 @@ test("server-renders the Maoka portfolio", async () => {
   const html = await response.text();
   assert.match(html, /Maoka — Cenografia &amp; Experiência/i);
   assert.match(html, /Damos forma/);
+  assert.match(html, /Sign Outline\.svg/);
+  assert.match(html, /Ideia em/i);
+  assert.match(html, /movimento/i);
   assert.match(html, /Projetos em destaque/);
   assert.match(html, /maokacenografia@gmail\.com/);
   assert.doesNotMatch(html, /codex-preview|Building your site|react-loading-skeleton/i);

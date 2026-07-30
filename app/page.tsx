@@ -112,13 +112,14 @@ function Brand({ compact = false }: { compact?: boolean }) {
 }
 
 export default function Home() {
-  const [loading, setLoading] = useState(true);
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [entryActive, setEntryActive] = useState(true);
   const [orbsVisible, setOrbsVisible] = useState(false);
   const [filter, setFilter] = useState("Todos");
   const [activeProject, setActiveProject] = useState<Project | null>(null);
   const cursorRef = useRef<HTMLDivElement>(null);
+  const entryRef = useRef<HTMLElement>(null);
   const heroOrbsRef = useRef<HTMLDivElement>(null);
 
   const visibleProjects = useMemo(
@@ -130,12 +131,7 @@ export default function Home() {
   );
 
   useEffect(() => {
-    const timer = window.setTimeout(() => setLoading(false), 1150);
-    return () => window.clearTimeout(timer);
-  }, []);
-
-  useEffect(() => {
-    if (loading || !heroOrbsRef.current) return;
+    if (!heroOrbsRef.current) return;
 
     const observer = new IntersectionObserver(
       ([entry]) => {
@@ -149,7 +145,7 @@ export default function Home() {
 
     observer.observe(heroOrbsRef.current);
     return () => observer.disconnect();
-  }, [loading]);
+  }, []);
 
   useEffect(() => {
     if (!orbsVisible || !heroOrbsRef.current) return;
@@ -329,10 +325,31 @@ export default function Home() {
   }, [orbsVisible]);
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 32);
+    const onScroll = () => {
+      setScrolled(window.scrollY > 32);
+
+      const scrollRange = Math.max(window.innerHeight, 1);
+      const progress = Math.max(0, Math.min(1, window.scrollY / scrollRange));
+      const easedProgress = 1 - Math.pow(1 - progress, 3);
+      const fadeProgress = Math.max(0, (progress - 0.55) / 0.45);
+
+      entryRef.current?.style.setProperty(
+        "--entry-scale",
+        (1 + easedProgress * 9).toFixed(3),
+      );
+      entryRef.current?.style.setProperty(
+        "--entry-opacity",
+        (1 - fadeProgress).toFixed(3),
+      );
+      setEntryActive(progress < 0.98);
+    };
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
+    window.addEventListener("resize", onScroll);
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+    };
   }, []);
 
   useEffect(() => {
@@ -449,19 +466,9 @@ export default function Home() {
 
   return (
     <>
-      <div className={`preloader ${loading ? "" : "preloader--done"}`} aria-hidden="true">
-        <div className="preloader-inner">
-          <Brand />
-          <div className="preloader-track">
-            <span />
-          </div>
-          <small>Ideias em movimento</small>
-        </div>
-      </div>
-
       <div className="cursor" ref={cursorRef} aria-hidden="true" />
 
-      <header className={`site-header ${scrolled ? "site-header--scrolled" : ""} ${menuOpen ? "site-header--menu" : ""}`}>
+      <header className={`site-header ${scrolled ? "site-header--scrolled" : ""} ${entryActive ? "site-header--entry" : ""} ${menuOpen ? "site-header--menu" : ""}`}>
         <a className="header-brand" href="#top" aria-label="Maoka - início" onClick={() => setMenuOpen(false)}>
           <Brand compact />
         </a>
@@ -511,6 +518,22 @@ export default function Home() {
       />
 
       <main id="top">
+        <section className="site-entry" ref={entryRef} aria-label="Abertura Maoka">
+          <div className="site-entry-inner">
+            <p className="site-entry-title" aria-hidden="true">
+              Ideia em<br />movimento
+            </p>
+            <div className="site-entry-zoom">
+              <img
+                className="site-entry-sign"
+                src={projectImage("Sign Outline.svg")}
+                alt="Símbolo da Maoka"
+                fetchPriority="high"
+              />
+            </div>
+          </div>
+        </section>
+
         <section className="hero" aria-labelledby="hero-title">
           <div className="hero-intro">
             <div className="hero-statement">
@@ -566,7 +589,10 @@ export default function Home() {
               <p>
                 Do conceito à execução, equilibramos estratégia, design e técnica para transformar ambientes físicos em sensações vivas.
               </p>
-              <a className="text-link" href="#processo">Conheça nosso processo <span>↘</span></a>
+              <a className="text-link" href="#processo">
+                <strong>Conheça nosso processo</strong>
+                <span aria-hidden="true" />
+              </a>
             </div>
           </div>
           <div className="manifesto-feature">
