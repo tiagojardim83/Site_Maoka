@@ -74,9 +74,9 @@ export const metadata: Metadata = {
     "Maoka",
   ],
   icons: {
-    icon: `${basePath}/Favicon.svg`,
-    shortcut: `${basePath}/Favicon.svg`,
-    apple: `${basePath}/Favicon.svg`,
+    icon: `${basePath}/favicon.svg`,
+    shortcut: `${basePath}/favicon.svg`,
+    apple: `${basePath}/favicon.svg`,
   },
   alternates: { canonical: baseUrl.toString() },
   openGraph: {
