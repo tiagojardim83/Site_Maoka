@@ -110,13 +110,11 @@ const filters = ["Todos", "Entretenimento", "Corporativo", "Ativações"];
 function Brand({ compact = false }: { compact?: boolean }) {
   return (
     <span className={`brand ${compact ? "brand--compact" : ""}`}>
-      <span className="brand-mark" aria-hidden="true">
-        <span />
-      </span>
-      <span className="brand-copy">
-        <strong>MAOKA</strong>
-        {!compact && <small>Cenografia &amp; Experiência</small>}
-      </span>
+      <img
+        className="brand-logo"
+        src={projectImage("LOGOTYPEx.svg")}
+        alt="MAOKA — Cenografia & Experiência"
+      />
     </span>
   );
 }

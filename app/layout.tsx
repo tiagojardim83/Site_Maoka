@@ -1,5 +1,50 @@
 import type { Metadata, Viewport } from "next";
+import localFont from "next/font/local";
 import "./globals.css";
+
+const botanica = localFont({
+  src: [
+    {
+      path: "./fonts/Botanica_Regular.otf",
+      weight: "400",
+      style: "normal",
+    },
+    {
+      path: "./fonts/Botanica_Italic.otf",
+      weight: "400",
+      style: "italic",
+    },
+    {
+      path: "./fonts/Botanica_Semi Bold.otf",
+      weight: "600",
+      style: "normal",
+    },
+  ],
+  variable: "--font-botanica",
+  display: "swap",
+});
+
+const monument = localFont({
+  src: [
+    {
+      path: "./fonts/PPMonumentExtended-Regular.otf",
+      weight: "400",
+      style: "normal",
+    },
+    {
+      path: "./fonts/PPMonumentExtended-RegularItalic.otf",
+      weight: "400",
+      style: "italic",
+    },
+    {
+      path: "./fonts/PPMonumentExtended-Black.otf",
+      weight: "900",
+      style: "normal",
+    },
+  ],
+  variable: "--font-monument",
+  display: "swap",
+});
 
 const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
 const siteUrl =
@@ -24,11 +69,11 @@ export const metadata: Metadata = {
     "Maoka",
   ],
   icons: {
-    icon: `${basePath}/favicon.png`,
-    shortcut: `${basePath}/favicon.png`,
-    apple: `${basePath}/favicon.png`,
+    icon: `${basePath}/favicon.svg`,
+    shortcut: `${basePath}/favicon.svg`,
+    apple: `${basePath}/favicon.svg`,
   },
-  alternates: { canonical: baseUrl },
+  alternates: { canonical: baseUrl.toString() },
   openGraph: {
     type: "website",
     locale: "pt_BR",
@@ -65,7 +110,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="pt-BR">
+    <html lang="pt-BR" className={`${botanica.variable} ${monument.variable}`}>
       <body>{children}</body>
     </html>
   );
