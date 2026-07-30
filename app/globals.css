@@ -455,6 +455,11 @@ body:has(a:hover, button:hover) .cursor {
 }
 
 .hero-orbs {
+  --orb-bounce-x: clamp(9px, 2vw, 36px);
+  --orb-bounce-x-small: clamp(5px, 1.2vw, 22px);
+  --orb-bounce-y: clamp(10px, 2vh, 24px);
+  --orb-bounce-y-low: clamp(5px, 1vh, 12px);
+  --orb-bounce-y-high: clamp(22px, 4.2vh, 52px);
   width: 100%;
   display: grid;
   grid-template-columns: repeat(5, minmax(0, 1fr));
@@ -465,6 +470,7 @@ body:has(a:hover, button:hover) .cursor {
 .hero-orb {
   display: block;
   min-width: 0;
+  will-change: transform;
 }
 
 .hero-orb img {
@@ -485,6 +491,61 @@ body:has(a:hover, button:hover) .cursor {
 .hero-orbs.is-visible .hero-orb img {
   opacity: 1;
   transform: rotate(0deg) scale(1);
+}
+
+.hero-orbs.is-visible .hero-orb:nth-child(1) {
+  animation: orbBounceRight 5.8s linear 1.3s infinite;
+}
+
+.hero-orbs.is-visible .hero-orb:nth-child(2) {
+  animation: orbBounceZigzag 7.1s linear 1.45s infinite;
+}
+
+.hero-orbs.is-visible .hero-orb:nth-child(3) {
+  animation: orbBounceCenter 6.3s linear 1.6s infinite;
+}
+
+.hero-orbs.is-visible .hero-orb:nth-child(4) {
+  animation: orbBounceZigzagAlt 7.6s linear 1.5s infinite;
+}
+
+.hero-orbs.is-visible .hero-orb:nth-child(5) {
+  animation: orbBounceLeft 6s linear 1.35s infinite;
+}
+
+@keyframes orbBounceRight {
+  0%, 100% { transform: translate3d(0, 0, 0); }
+  23% { transform: translate3d(var(--orb-bounce-x), calc(0px - var(--orb-bounce-y)), 0); }
+  49% { transform: translate3d(0, calc(0px - var(--orb-bounce-y-high)), 0); }
+  74% { transform: translate3d(var(--orb-bounce-x-small), calc(0px - var(--orb-bounce-y-low)), 0); }
+}
+
+@keyframes orbBounceLeft {
+  0%, 100% { transform: translate3d(0, 0, 0); }
+  24% { transform: translate3d(calc(0px - var(--orb-bounce-x)), calc(0px - var(--orb-bounce-y)), 0); }
+  51% { transform: translate3d(0, calc(0px - var(--orb-bounce-y-high)), 0); }
+  76% { transform: translate3d(calc(0px - var(--orb-bounce-x-small)), calc(0px - var(--orb-bounce-y-low)), 0); }
+}
+
+@keyframes orbBounceZigzag {
+  0%, 100% { transform: translate3d(0, 0, 0); }
+  25% { transform: translate3d(var(--orb-bounce-x), calc(0px - var(--orb-bounce-y-high)), 0); }
+  52% { transform: translate3d(calc(0px - var(--orb-bounce-x)), calc(0px - var(--orb-bounce-y)), 0); }
+  77% { transform: translate3d(var(--orb-bounce-x-small), calc(0px - var(--orb-bounce-y-low)), 0); }
+}
+
+@keyframes orbBounceZigzagAlt {
+  0%, 100% { transform: translate3d(0, 0, 0); }
+  27% { transform: translate3d(calc(0px - var(--orb-bounce-x)), calc(0px - var(--orb-bounce-y)), 0); }
+  54% { transform: translate3d(var(--orb-bounce-x), calc(0px - var(--orb-bounce-y-high)), 0); }
+  79% { transform: translate3d(calc(0px - var(--orb-bounce-x-small)), calc(0px - var(--orb-bounce-y-low)), 0); }
+}
+
+@keyframes orbBounceCenter {
+  0%, 100% { transform: translate3d(0, 0, 0); }
+  24% { transform: translate3d(var(--orb-bounce-x-small), calc(0px - var(--orb-bounce-y-high)), 0); }
+  50% { transform: translate3d(calc(0px - var(--orb-bounce-x-small)), calc(0px - var(--orb-bounce-y)), 0); }
+  76% { transform: translate3d(var(--orb-bounce-x-small), calc(0px - var(--orb-bounce-y-high)), 0); }
 }
 
 .display-copy em,
@@ -1163,7 +1224,14 @@ body:has(a:hover, button:hover) .cursor {
   .hero { height: auto; min-height: 0; }
   .hero-intro { height: 100svh; min-height: 100svh; padding-top: 94px; padding-bottom: 22px; }
   .hero-statement { width: min(220px, 62vw); }
-  .hero-orbs { gap: 9px; }
+  .hero-orbs {
+    --orb-bounce-x: 8px;
+    --orb-bounce-x-small: 5px;
+    --orb-bounce-y: 13px;
+    --orb-bounce-y-low: 7px;
+    --orb-bounce-y-high: 28px;
+    gap: 9px;
+  }
   .hero-image { height: 64svh; min-height: 420px; }
   .hero-image figcaption { right: 22px; bottom: 16px; }
   .display-copy, .projects-heading h2, .craft h2, .process h2, .closing h2 { font-size: clamp(44px, 14vw, 69px); }
