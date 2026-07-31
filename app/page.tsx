@@ -25,7 +25,7 @@ const heroLetters = [
 ];
 
 const mosaicVideos = Array.from(
-  { length: 6 },
+  { length: 5 },
   (_, index) => ({
     mobile: `Mosaico_Maoka_0${index + 1}.mp4`,
     desktop: `Mosaico_Maoka_0${index + 1}_desktop.mp4`,
@@ -1016,12 +1016,12 @@ export default function Home() {
             <p className="manifesto-lead reveal">{copy.manifestoParagraphs[0]}</p>
             <div className="manifesto-copy reveal">
               <p>{copy.manifestoParagraphs[1]}</p>
-              <a className="text-link" href="#processo">
-                <strong>{copy.processLink}</strong>
-                <span aria-hidden="true" />
-              </a>
             </div>
           </div>
+          <a className="text-link manifesto-process-link reveal" href="#processo-04">
+            <strong>{copy.processLink}</strong>
+            <span aria-hidden="true" />
+          </a>
           <div className="manifesto-feature">
             <div className="manifesto-sign reveal" aria-hidden="true">
               <div className="manifesto-sign-motion" data-parallax="92">
@@ -1130,7 +1130,9 @@ export default function Home() {
                   preload={index < 2 ? "auto" : "metadata"}
                   aria-hidden="true"
                 />
-                <span aria-hidden="true">{String(index + 1).padStart(2, "0")} / 06</span>
+                <span aria-hidden="true">
+                  {String(index + 1).padStart(2, "0")} / {String(mosaicVideos.length).padStart(2, "0")}
+                </span>
               </div>
             ))}
           </div>
@@ -1156,11 +1158,11 @@ export default function Home() {
 
         <section className="process section-pad" id="processo">
           <div className="process-intro">
-            <div className="section-label reveal">
+            <div className="section-label reveal" id="processo-04">
               <span>04</span>
               <p>{copy.ritualLabel}</p>
             </div>
-            <h2 className="reveal">{copy.ritualTitle[0]}<br />{copy.ritualTitle[1]} <br /><em>{copy.ritualTitle[2]}</em></h2>
+            <h2 className="reveal">{copy.ritualTitle[0]} {copy.ritualTitle[1]}<br /><em>{copy.ritualTitle[2]}</em></h2>
             <p className="reveal">{copy.ritualCopy}</p>
           </div>
           <div className="process-steps">
