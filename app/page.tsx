@@ -29,13 +29,10 @@ const heroLetters = [
   ["A", "Asset 3_A.svg"],
 ];
 
-const mosaicVideos = Array.from(
-  { length: 5 },
-  (_, index) => ({
-    mobile: `Mosaico_Maoka_0${index + 1}.mp4`,
-    desktop: `Mosaico_Maoka_0${index + 1}_desktop.mp4`,
-  }),
-);
+const mosaicVideo = {
+  mobile: "Mosaico_Maoka_05.mp4",
+  desktop: "Mosaico_Maoka_05_desktop.mp4",
+};
 
 const projects: Project[] = [
   {
@@ -303,8 +300,6 @@ export default function Home() {
   const projectsSectionRef = useRef<HTMLElement>(null);
   const projectsViewportRef = useRef<HTMLDivElement>(null);
   const projectsTrackRef = useRef<HTMLDivElement>(null);
-  const mosaicSectionRef = useRef<HTMLElement>(null);
-  const mosaicLayersRef = useRef<Array<HTMLDivElement | null>>([]);
   const copy = translations[locale];
 
   useEffect(() => {
@@ -734,16 +729,27 @@ export default function Home() {
 
     if (!section || !viewport || !track) return;
 
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
     let horizontalTravel = 0;
     let frame = 0;
 
     const render = () => {
+      if (reducedMotion.matches) {
+        frame = 0;
+        return;
+      }
+
       const sectionRect = section.getBoundingClientRect();
       const progress = horizontalTravel
         ? Math.max(0, Math.min(1, -sectionRect.top / horizontalTravel))
         : 0;
 
-      track.style.transform = `translate3d(${(-progress * horizontalTravel).toFixed(2)}px, 0, 0)`;
+      // Driven via scrollLeft rather than a CSS transform: some WebKit
+      // builds fold a translateX applied to this same element into its own
+      // scrollWidth, creating a feedback loop where the measured width (and
+      // thus the required travel) keeps growing as the transform grows.
+      // scrollLeft doesn't affect scrollWidth, so it can't self-corrupt.
+      viewport.scrollLeft = progress * horizontalTravel;
       frame = 0;
     };
 
@@ -759,7 +765,6 @@ export default function Home() {
 
     const resizeObserver = new ResizeObserver(measure);
     resizeObserver.observe(viewport);
-    resizeObserver.observe(track);
     measure();
 
     window.addEventListener("scroll", queueRender, { passive: true });
@@ -771,118 +776,9 @@ export default function Home() {
       window.removeEventListener("resize", measure);
       if (frame) window.cancelAnimationFrame(frame);
       section.style.removeProperty("--horizontal-travel");
-      track.style.removeProperty("transform");
+      viewport.scrollLeft = 0;
     };
   }, []);
-
-  useEffect(() => {
-    const section = mosaicSectionRef.current;
-    const layers = mosaicLayersRef.current.filter(
-      (layer): layer is HTMLDivElement => Boolean(layer),
-    );
-
-    if (!section || !layers.length) return;
-
-    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
-    const videos = layers
-      .map((layer) => layer.querySelector("video"))
-      .filter((video): video is HTMLVideoElement => Boolean(video));
-    let frame = 0;
-    let sectionVisible = false;
-    let playbackStep = -1;
-
-    const render = () => {
-      const progressInSteps = Math.max(
-        0,
-        Math.min(
-          mosaicVideos.length - 1,
-          -section.getBoundingClientRect().top / Math.max(window.innerHeight, 1),
-        ),
-      );
-
-      layers.forEach((layer, index) => {
-        const reveal = index === 0
-          ? 1
-          : Math.max(0, Math.min(1, progressInSteps - (index - 1)));
-
-        layer.style.setProperty(
-          "--mosaic-reveal",
-          `${((1 - reveal) * 100).toFixed(2)}%`,
-        );
-        layer.style.setProperty(
-          "--mosaic-scale",
-          (1.08 - reveal * 0.08).toFixed(3),
-        );
-      });
-
-      const nextPlaybackStep = Math.min(
-        mosaicVideos.length - 1,
-        Math.floor(progressInSteps),
-      );
-
-      if (
-        sectionVisible &&
-        !reducedMotion.matches &&
-        nextPlaybackStep !== playbackStep
-      ) {
-        playbackStep = nextPlaybackStep;
-        videos.forEach((video, index) => {
-          if (index === playbackStep || index === playbackStep + 1) {
-            void video.play().catch(() => undefined);
-          } else {
-            video.pause();
-          }
-        });
-      }
-      frame = 0;
-    };
-
-    const queueRender = () => {
-      if (!frame && !reducedMotion.matches) {
-        frame = window.requestAnimationFrame(render);
-      }
-    };
-
-    const measure = () => {
-      section.style.height = reducedMotion.matches
-        ? "auto"
-        : `${window.innerHeight * mosaicVideos.length}px`;
-      queueRender();
-    };
-
-    const playbackObserver = new IntersectionObserver(
-      ([entry]) => {
-        sectionVisible = entry.isIntersecting;
-        playbackStep = -1;
-
-        if (sectionVisible && !reducedMotion.matches) {
-          queueRender();
-        } else {
-          videos.forEach((video) => video.pause());
-        }
-      },
-      { threshold: 0.02 },
-    );
-
-    playbackObserver.observe(section);
-    measure();
-    render();
-    window.addEventListener("scroll", queueRender, { passive: true });
-    window.addEventListener("resize", measure);
-
-    return () => {
-      playbackObserver.disconnect();
-      window.removeEventListener("scroll", queueRender);
-      window.removeEventListener("resize", measure);
-      if (frame) window.cancelAnimationFrame(frame);
-      videos.forEach((video) => video.pause());
-      section.style.removeProperty("height");
-      layers.forEach((layer) => {
-        layer.style.removeProperty("--mosaic-reveal");
-        layer.style.removeProperty("--mosaic-scale");
-      });
-    };
-  }, [desktopMosaic]);
 
   useEffect(() => {
     const onMove = (event: MouseEvent) => {
@@ -1133,36 +1029,17 @@ export default function Home() {
           </div>
         </section>
 
-        <section
-          className="video-mosaic"
-          ref={mosaicSectionRef}
-          aria-label={copy.mosaicLabel}
-        >
-          <div className="video-mosaic-sticky">
-            {mosaicVideos.map(({ mobile, desktop }, index) => (
-              <div
-                className="video-mosaic-layer"
-                key={mobile}
-                ref={(element) => {
-                  mosaicLayersRef.current[index] = element;
-                }}
-                style={{ zIndex: index + 1 }}
-              >
-                <video
-                  src={projectImage(desktopMosaic ? desktop : mobile)}
-                  data-desktop-src={projectImage(desktop)}
-                  muted
-                  loop
-                  playsInline
-                  preload={index < 2 ? "auto" : "metadata"}
-                  aria-hidden="true"
-                />
-                <span aria-hidden="true">
-                  {String(index + 1).padStart(2, "0")} / {String(mosaicVideos.length).padStart(2, "0")}
-                </span>
-              </div>
-            ))}
-          </div>
+        <section className="video-mosaic" aria-label={copy.mosaicLabel}>
+          <video
+            className="video-mosaic-media"
+            src={projectImage(desktopMosaic ? mosaicVideo.desktop : mosaicVideo.mobile)}
+            autoPlay
+            muted
+            loop
+            playsInline
+            preload="auto"
+            aria-hidden="true"
+          />
         </section>
 
         <section className="craft" id="servicos">
