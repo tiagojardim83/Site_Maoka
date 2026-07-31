@@ -26,6 +26,8 @@
 html {
   scroll-behavior: smooth;
   background: var(--ink);
+  overflow-x: hidden;
+  overscroll-behavior-x: none;
 }
 
 body {
@@ -35,6 +37,7 @@ body {
   font-family: var(--sans);
   line-height: 1.45;
   overflow-x: hidden;
+  overscroll-behavior-x: none;
 }
 
 h1,
@@ -1748,9 +1751,9 @@ body:has(a:hover, button:hover) .cursor {
   .process h2 em,
   .closing h2 em { padding-right: .06em; }
   .manifesto-grid { margin-top: var(--space-block); gap: 42px; }
-  .manifesto-feature { margin-top: var(--space-section); }
-  .manifesto-numbers { grid-template-columns: 1fr; }
-  .manifesto-number { min-height: 220px; padding: 38px 18px; }
+  .manifesto-feature { margin-top: 40px; }
+  .manifesto-numbers { grid-template-columns: 1fr; margin-top: 40px; }
+  .manifesto-number { min-height: 160px; padding: 26px 18px; }
   .manifesto-number + .manifesto-number { border-left: 0; border-top: 1px solid var(--line); }
   .itaipava-carousel {
     height: calc(100svh + var(--horizontal-travel, 0px));
