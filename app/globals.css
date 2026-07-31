@@ -697,15 +697,6 @@ body:has(a:hover, button:hover) .cursor {
   transform: translateY(0);
 }
 
-.media-reveal img {
-  clip-path: inset(0 0 100% 0);
-  transition: clip-path 1250ms cubic-bezier(.16, 1, .3, 1);
-}
-
-.media-reveal.is-visible img {
-  clip-path: inset(0 0 0 0);
-}
-
 .parallax-media {
   --parallax-y: 0px;
   transform: translate3d(0, var(--parallax-y), 0) scale(1.12);
@@ -786,9 +777,10 @@ body:has(a:hover, button:hover) .cursor {
 .manifesto-sign {
   position: absolute;
   z-index: 4;
-  top: 7%;
-  left: 34%;
-  width: clamp(270px, 39vw, 620px);
+  top: 50%;
+  left: 50%;
+  width: min(70%, 320px);
+  transform: translate(-50%, -50%);
   pointer-events: none;
 }
 
@@ -829,20 +821,57 @@ body:has(a:hover, button:hover) .cursor {
   }
 }
 
-.manifesto-feature-media {
+.itaipava-carousel {
   position: relative;
-  grid-column: 7 / span 5;
-  height: min(68vw, 930px);
+  grid-column: 7 / span 6;
+  height: calc(min(24vw, 320px) + var(--horizontal-travel, 0px));
+}
+
+.itaipava-carousel-sticky {
+  position: sticky;
+  top: 120px;
+  height: min(24vw, 320px);
+}
+
+.itaipava-viewport {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  border-radius: var(--media-radius);
+}
+
+.itaipava-track {
+  height: 100%;
+  display: flex;
+  gap: 14px;
+}
+
+.itaipava-card {
+  position: relative;
+  flex: 0 0 min(48%, 320px);
+  height: 100%;
   margin: 0;
   overflow: hidden;
   border-radius: var(--media-radius);
 }
 
-.manifesto-feature-media img {
+.itaipava-card img {
   width: 100%;
-  height: calc(100% + 164px);
-  margin-top: -82px;
+  height: 100%;
   object-fit: cover;
+  --pan-x: 0px;
+  transform: translate3d(var(--pan-x), var(--parallax-y), 0) scale(1.12);
+  transition: transform 900ms cubic-bezier(.16, 1, .3, 1), filter 500ms ease;
+}
+
+.itaipava-card.is-visible img {
+  animation: project-pan 7s ease-in-out infinite;
+}
+
+.itaipava-card:hover img {
+  transform: translate3d(var(--pan-x), var(--parallax-y), 0) scale(1.17);
+  filter: grayscale(0) var(--studio-grade);
 }
 
 .text-link {
@@ -899,27 +928,31 @@ body:has(a:hover, button:hover) .cursor {
 #processo-04 { scroll-margin-top: clamp(86px, 10vh, 120px); }
 
 .manifesto-numbers {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  margin-top: var(--space-section);
+  grid-column: 1 / span 6;
+  position: sticky;
+  top: 120px;
+  height: min(24vw, 320px);
+  display: flex;
+  flex-direction: column;
   border-top: 1px solid var(--line);
   border-bottom: 1px solid var(--line);
 }
 
 .manifesto-number {
-  min-height: clamp(230px, 21vw, 330px);
-  padding: clamp(36px, 4vw, 62px) 24px;
+  position: relative;
+  flex: 1;
+  padding: clamp(10px, 2vw, 20px) clamp(16px, 3vw, 32px);
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
-  gap: clamp(18px, 2vw, 28px);
-  text-align: center;
+  gap: clamp(6px, 1vw, 12px);
+  text-align: left;
   outline: 0;
 }
 
 .manifesto-number + .manifesto-number {
-  border-left: 1px solid var(--line);
+  border-top: 1px solid var(--line);
 }
 
 .manifesto-number:focus-visible {
@@ -928,7 +961,7 @@ body:has(a:hover, button:hover) .cursor {
 
 .manifesto-numbers strong {
   font-family: var(--serif);
-  font-size: clamp(64px, 7.5vw, 124px);
+  font-size: clamp(34px, 4.4vw, 68px);
   font-weight: 900;
   font-style: normal;
   line-height: .8;
@@ -941,9 +974,9 @@ body:has(a:hover, button:hover) .cursor {
 .manifesto-number:focus-visible strong { color: var(--blue); }
 
 .manifesto-numbers span {
-  max-width: 190px;
+  max-width: 240px;
   text-transform: uppercase;
-  text-align: center;
+  text-align: left;
   font-size: 8px;
   line-height: 1.55;
   letter-spacing: .17em;
@@ -1552,7 +1585,6 @@ body:has(a:hover, button:hover) .cursor {
   .hero-transition { --hero-media-height: 54vw; }
 
   .hero-image,
-  .manifesto-feature-media,
   .project-card .project-image,
   .closing,
   .modal-media {
@@ -1603,8 +1635,9 @@ body:has(a:hover, button:hover) .cursor {
     padding-top: 0;
   }
   .manifesto-feature { margin-top: var(--space-section); }
-  .manifesto-sign { top: 16%; left: 25%; width: min(58vw, 540px); }
-  .manifesto-feature-media { grid-column: 6 / span 7; height: 78vw; }
+  .manifesto-numbers { grid-column: 1 / span 5; height: min(40vw, 460px); }
+  .itaipava-carousel { grid-column: 6 / span 7; height: calc(min(40vw, 460px) + var(--horizontal-travel, 0px)); }
+  .itaipava-carousel-sticky { height: min(40vw, 460px); }
   .projects-heading {
     grid-template-columns: 1fr;
     gap: clamp(24px, 4vh, 36px);
@@ -1723,29 +1756,19 @@ body:has(a:hover, button:hover) .cursor {
   .process h2 em,
   .closing h2 em { padding-right: .06em; }
   .manifesto-grid { margin-top: var(--space-block); gap: 42px; }
-  .manifesto-feature { margin-top: var(--space-section); display: flex; flex-direction: column; gap: 52px; }
-  .manifesto-sign {
-    position: relative;
-    top: auto;
-    left: auto;
-    width: 94%;
-    margin: -24px auto -112px;
-    align-self: center;
+  .manifesto-feature { margin-top: var(--space-section); row-gap: 28px; }
+  .manifesto-numbers {
+    grid-column: 1 / -1;
+    position: static;
+    height: auto;
   }
-  .manifesto-feature-media {
-    width: 82%;
-    height: 118vw;
-    margin: 0 auto;
-    opacity: 1;
-    transform: none;
+  .manifesto-number { min-height: 130px; padding: 22px 18px; }
+  .itaipava-carousel {
+    grid-column: 1 / -1;
+    height: calc(clamp(280px, 82vw, 420px) + var(--horizontal-travel, 0px));
   }
-  .manifesto-feature-media img {
-    clip-path: none;
-  }
-  .manifesto-numbers { margin-top: var(--space-section); }
-  .manifesto-numbers { grid-template-columns: 1fr; }
-  .manifesto-number { min-height: 220px; padding: 38px 18px; }
-  .manifesto-number + .manifesto-number { border-left: 0; border-top: 1px solid var(--line); }
+  .itaipava-carousel-sticky { top: 90px; height: clamp(280px, 82vw, 420px); }
+  .itaipava-card { flex-basis: min(72%, 320px); }
   .projects-sticky { padding: 36px 0 10px; }
   .projects-heading { padding: 0 18px; gap: 12px; }
   .project-viewport { margin-top: 10px; }
@@ -1798,7 +1821,6 @@ body:has(a:hover, button:hover) .cursor {
     transition-duration: 1ms !important;
   }
   .reveal { opacity: 1; transform: none; }
-  .media-reveal img,
   .project-image { clip-path: none; }
   .parallax-media { transform: none; }
   .hero-scroll-reveal { clip-path: none; }

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type RefObject } from "react";
 
 type Project = {
   name: string;
@@ -33,6 +33,11 @@ const mosaicVideo = {
   mobile: "Mosaico_Maoka_05.mp4",
   desktop: "Mosaico_Maoka_05_desktop.mp4",
 };
+
+const itaipavaImages = Array.from(
+  { length: 6 },
+  (_, index) => `maoka_itaipava_0${index + 1}.webp`,
+);
 
 const projects: Project[] = [
   {
@@ -142,7 +147,7 @@ const translations = {
       "Do conceito à execução, equilibramos estratégia, design e técnica para transformar ambientes físicos em sensações vivas.",
     ],
     processLink: "Conheça nosso processo",
-    tokaAlt: "Experiência cenográfica Toka criada pela Maoka",
+    itaipavaAlt: "Experiência cenográfica Itaipava criada pela Maoka",
     areasLabel: "Áreas de atuação da Maoka",
     degrees: "graus",
     numbers: ["Criação de ponta a ponta", "Frentes de atuação", "Experiência integrada"],
@@ -215,7 +220,7 @@ const translations = {
       "From concept to delivery, we balance strategy, design and technique to transform physical environments into living sensations.",
     ],
     processLink: "Discover our process",
-    tokaAlt: "Toka scenographic experience created by Maoka",
+    itaipavaAlt: "Itaipava scenographic experience created by Maoka",
     areasLabel: "Maoka areas of expertise",
     degrees: "degrees",
     numbers: ["End-to-end creation", "Areas of expertise", "Integrated experience"],
@@ -285,6 +290,86 @@ function WhatsAppIcon() {
   );
 }
 
+function useScrollJackCarousel<T extends HTMLElement>(
+  sectionRef: RefObject<T | null>,
+  viewportRef: RefObject<HTMLDivElement | null>,
+  trackRef: RefObject<HTMLDivElement | null>,
+) {
+  useEffect(() => {
+    const section = sectionRef.current;
+    const viewport = viewportRef.current;
+    const track = trackRef.current;
+
+    if (!section || !viewport || !track) return;
+
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+    let horizontalTravel = 0;
+    let frame = 0;
+
+    const render = () => {
+      if (reducedMotion.matches) {
+        frame = 0;
+        return;
+      }
+
+      const sectionRect = section.getBoundingClientRect();
+      const progress = horizontalTravel
+        ? Math.max(0, Math.min(1, -sectionRect.top / horizontalTravel))
+        : 0;
+
+      // Driven via scrollLeft rather than a CSS transform: some WebKit
+      // builds fold a translateX applied to this same element into its own
+      // scrollWidth, creating a feedback loop where the measured width (and
+      // thus the required travel) keeps growing as the transform grows.
+      // scrollLeft doesn't affect scrollWidth, so it can't self-corrupt.
+      viewport.scrollLeft = progress * horizontalTravel;
+      frame = 0;
+    };
+
+    const queueRender = () => {
+      if (!frame) frame = window.requestAnimationFrame(render);
+    };
+
+    const measure = () => {
+      // Avoid track.scrollWidth / viewport.scrollWidth entirely: some
+      // WebKit builds report an inflated scrollWidth for a scrolled
+      // container (or its scrolled ancestor) once a non-zero scrollLeft is
+      // applied, and mobile Safari fires "resize" whenever the address bar
+      // shows/hides mid-gesture, which can poison a single scrollWidth-based
+      // reading with a stale, scrolled travel value. Compute the natural
+      // track width analytically from each card's own rect (unaffected by
+      // any ancestor's scroll position) instead.
+      const cards = Array.from(track.children) as HTMLElement[];
+      const trackStyle = window.getComputedStyle(track);
+      const gap = parseFloat(trackStyle.columnGap || "0") || 0;
+      const paddingLeft = parseFloat(trackStyle.paddingLeft) || 0;
+      const paddingRight = parseFloat(trackStyle.paddingRight) || 0;
+      const cardsWidth = cards.reduce(
+        (sum, card) => sum + card.getBoundingClientRect().width,
+        0,
+      );
+      const trackWidth =
+        cardsWidth + gap * Math.max(0, cards.length - 1) + paddingLeft + paddingRight;
+      horizontalTravel = Math.max(0, trackWidth - viewport.clientWidth);
+      section.style.setProperty("--horizontal-travel", `${horizontalTravel}px`);
+      queueRender();
+    };
+
+    measure();
+
+    window.addEventListener("scroll", queueRender, { passive: true });
+    window.addEventListener("resize", measure);
+
+    return () => {
+      window.removeEventListener("scroll", queueRender);
+      window.removeEventListener("resize", measure);
+      if (frame) window.cancelAnimationFrame(frame);
+      section.style.removeProperty("--horizontal-travel");
+      viewport.scrollLeft = 0;
+    };
+  }, [sectionRef, viewportRef, trackRef]);
+}
+
 export default function Home() {
   const [locale, setLocale] = useState<Locale>("pt");
   const [menuOpen, setMenuOpen] = useState(false);
@@ -300,7 +385,13 @@ export default function Home() {
   const projectsSectionRef = useRef<HTMLElement>(null);
   const projectsViewportRef = useRef<HTMLDivElement>(null);
   const projectsTrackRef = useRef<HTMLDivElement>(null);
+  const itaipavaSectionRef = useRef<HTMLDivElement>(null);
+  const itaipavaViewportRef = useRef<HTMLDivElement>(null);
+  const itaipavaTrackRef = useRef<HTMLDivElement>(null);
   const copy = translations[locale];
+
+  useScrollJackCarousel(projectsSectionRef, projectsViewportRef, projectsTrackRef);
+  useScrollJackCarousel(itaipavaSectionRef, itaipavaViewportRef, itaipavaTrackRef);
 
   useEffect(() => {
     document.documentElement.lang = locale === "pt" ? "pt-BR" : "en";
@@ -723,80 +814,6 @@ export default function Home() {
   }, []);
 
   useEffect(() => {
-    const section = projectsSectionRef.current;
-    const viewport = projectsViewportRef.current;
-    const track = projectsTrackRef.current;
-
-    if (!section || !viewport || !track) return;
-
-    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
-    let horizontalTravel = 0;
-    let frame = 0;
-
-    const render = () => {
-      if (reducedMotion.matches) {
-        frame = 0;
-        return;
-      }
-
-      const sectionRect = section.getBoundingClientRect();
-      const progress = horizontalTravel
-        ? Math.max(0, Math.min(1, -sectionRect.top / horizontalTravel))
-        : 0;
-
-      // Driven via scrollLeft rather than a CSS transform: some WebKit
-      // builds fold a translateX applied to this same element into its own
-      // scrollWidth, creating a feedback loop where the measured width (and
-      // thus the required travel) keeps growing as the transform grows.
-      // scrollLeft doesn't affect scrollWidth, so it can't self-corrupt.
-      viewport.scrollLeft = progress * horizontalTravel;
-      frame = 0;
-    };
-
-    const queueRender = () => {
-      if (!frame) frame = window.requestAnimationFrame(render);
-    };
-
-    const measure = () => {
-      // Avoid track.scrollWidth / viewport.scrollWidth entirely: some
-      // WebKit builds report an inflated scrollWidth for a scrolled
-      // container (or its scrolled ancestor) once a non-zero scrollLeft is
-      // applied, and mobile Safari fires "resize" whenever the address bar
-      // shows/hides mid-gesture, which can poison a single scrollWidth-based
-      // reading with a stale, scrolled travel value. Compute the natural
-      // track width analytically from each card's own rect (unaffected by
-      // any ancestor's scroll position) instead.
-      const cards = Array.from(track.children) as HTMLElement[];
-      const trackStyle = window.getComputedStyle(track);
-      const gap = parseFloat(trackStyle.columnGap || "0") || 0;
-      const paddingLeft = parseFloat(trackStyle.paddingLeft) || 0;
-      const paddingRight = parseFloat(trackStyle.paddingRight) || 0;
-      const cardsWidth = cards.reduce(
-        (sum, card) => sum + card.getBoundingClientRect().width,
-        0,
-      );
-      const trackWidth =
-        cardsWidth + gap * Math.max(0, cards.length - 1) + paddingLeft + paddingRight;
-      horizontalTravel = Math.max(0, trackWidth - viewport.clientWidth);
-      section.style.setProperty("--horizontal-travel", `${horizontalTravel}px`);
-      queueRender();
-    };
-
-    measure();
-
-    window.addEventListener("scroll", queueRender, { passive: true });
-    window.addEventListener("resize", measure);
-
-    return () => {
-      window.removeEventListener("scroll", queueRender);
-      window.removeEventListener("resize", measure);
-      if (frame) window.cancelAnimationFrame(frame);
-      section.style.removeProperty("--horizontal-travel");
-      viewport.scrollLeft = 0;
-    };
-  }, []);
-
-  useEffect(() => {
     const onMove = (event: MouseEvent) => {
       if (cursorRef.current) {
         cursorRef.current.style.transform = `translate3d(${event.clientX}px, ${event.clientY}px, 0)`;
@@ -962,33 +979,42 @@ export default function Home() {
             <span aria-hidden="true" />
           </a>
           <div className="manifesto-feature">
-            <div className="manifesto-sign reveal" aria-hidden="true">
-              <div className="manifesto-sign-motion" data-parallax="92">
-                <img src={projectImage("Sign_3D.svg")} alt="" loading="lazy" />
+            <div className="manifesto-numbers reveal" aria-label={copy.areasLabel} ref={manifestoNumbersRef}>
+              <div className="manifesto-number" tabIndex={0} aria-label={`360 ${copy.degrees} — ${copy.numbers[0]}`}>
+                <strong data-count="360" data-suffix="°" aria-hidden="true">360°</strong>
+                <span>{copy.numbers[0]}</span>
+              </div>
+              <div className="manifesto-number" tabIndex={0} aria-label={`03 — ${copy.numbers[1]}`}>
+                <div className="manifesto-sign reveal" aria-hidden="true">
+                  <div className="manifesto-sign-motion" data-parallax="92">
+                    <img src={projectImage("Sign_3D.svg")} alt="" loading="lazy" />
+                  </div>
+                </div>
+                <strong data-count="3" data-pad="2" aria-hidden="true">03</strong>
+                <span>{copy.numbers[1]}</span>
+              </div>
+              <div className="manifesto-number" tabIndex={0} aria-label={`01 — ${copy.numbers[2]}`}>
+                <strong data-count="1" data-pad="2" aria-hidden="true">01</strong>
+                <span>{copy.numbers[2]}</span>
               </div>
             </div>
-            <figure className="manifesto-feature-media photo-reactive reveal media-reveal">
-              <img
-                className="parallax-media"
-                data-parallax="82"
-                src={projectImage("toka.webp")}
-                alt={copy.tokaAlt}
-                loading="lazy"
-              />
-            </figure>
-          </div>
-          <div className="manifesto-numbers reveal" aria-label={copy.areasLabel} ref={manifestoNumbersRef}>
-            <div className="manifesto-number" tabIndex={0} aria-label={`360 ${copy.degrees} — ${copy.numbers[0]}`}>
-              <strong data-count="360" data-suffix="°" aria-hidden="true">360°</strong>
-              <span>{copy.numbers[0]}</span>
-            </div>
-            <div className="manifesto-number" tabIndex={0} aria-label={`03 — ${copy.numbers[1]}`}>
-              <strong data-count="3" data-pad="2" aria-hidden="true">03</strong>
-              <span>{copy.numbers[1]}</span>
-            </div>
-            <div className="manifesto-number" tabIndex={0} aria-label={`01 — ${copy.numbers[2]}`}>
-              <strong data-count="1" data-pad="2" aria-hidden="true">01</strong>
-              <span>{copy.numbers[2]}</span>
+            <div className="itaipava-carousel" ref={itaipavaSectionRef}>
+              <div className="itaipava-carousel-sticky">
+                <div className="itaipava-viewport" ref={itaipavaViewportRef}>
+                  <div className="itaipava-track" ref={itaipavaTrackRef}>
+                    {itaipavaImages.map((filename) => (
+                      <figure className="itaipava-card photo-reactive reveal" key={filename}>
+                        <img
+                          className="parallax-media"
+                          src={projectImage(filename)}
+                          alt={copy.itaipavaAlt}
+                          loading="lazy"
+                        />
+                      </figure>
+                    ))}
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </section>
