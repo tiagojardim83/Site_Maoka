@@ -783,6 +783,18 @@ body:has(a:hover, button:hover) .cursor {
   pointer-events: none;
 }
 
+/* .reveal also sets `transform` for its slide-in animation, which would
+   otherwise clobber the centering transform above (same specificity,
+   .reveal wins on source order). Combine both in one higher-specificity
+   rule so centering survives in every reveal state. */
+.manifesto-sign.reveal {
+  transform: translate(-50%, -50%) translateY(72px);
+}
+
+.manifesto-sign.reveal.is-visible {
+  transform: translate(-50%, -50%) translateY(0);
+}
+
 .manifesto-sign-motion {
   --parallax-y: 0px;
   width: 100%;
@@ -1663,8 +1675,8 @@ body:has(a:hover, button:hover) .cursor {
 
 @media (max-width: 620px) {
   :root {
-    --space-section: 80px;
-    --space-block: 48px;
+    --space-section: 48px;
+    --space-block: 32px;
     --space-stagger: 0px;
   }
   .section-pad { padding: var(--space-section) 18px; }
@@ -1751,8 +1763,7 @@ body:has(a:hover, button:hover) .cursor {
   .process h2 em,
   .closing h2 em { padding-right: .06em; }
   .manifesto-grid { margin-top: var(--space-block); gap: 42px; }
-  .manifesto-feature { margin-top: 40px; }
-  .manifesto-numbers { grid-template-columns: 1fr; margin-top: 40px; }
+  .manifesto-numbers { grid-template-columns: 1fr; }
   .manifesto-number { min-height: 160px; padding: 26px 18px; }
   .manifesto-number + .manifesto-number { border-left: 0; border-top: 1px solid var(--line); }
   .itaipava-carousel {
