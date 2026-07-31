@@ -1,12 +1,13 @@
 import type { NextConfig } from "next";
 
 const isGitHubPages = process.env.GITHUB_PAGES === "true";
+const isStaticExport = isGitHubPages || process.env.STATIC_EXPORT === "true";
 
 const nextConfig: NextConfig = {
-  ...(isGitHubPages
+  ...(isStaticExport
     ? {
         output: "export",
-        basePath: "/Site_Maoka",
+        ...(isGitHubPages ? { basePath: "/Site_Maoka" } : {}),
         trailingSlash: true,
         images: { unoptimized: true },
         typescript: { tsconfigPath: "tsconfig.github.json" },

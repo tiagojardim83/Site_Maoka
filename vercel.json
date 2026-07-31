@@ -1,0 +1,5 @@
+{
+  "buildCommand": "STATIC_EXPORT=true npx next build",
+  "outputDirectory": "out",
+  "installCommand": "npm install"
+}
