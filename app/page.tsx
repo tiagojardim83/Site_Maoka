@@ -1017,13 +1017,16 @@ export default function Home() {
             className="hero-image hero-scroll-reveal photo-reactive"
             data-scroll-reveal
           >
-            <img
+            <video
               className="parallax-media"
               data-parallax="110"
-              src={projectImage("carnaval-dos-sonhos.webp")}
-              alt={copy.carnivalAlt}
-              loading="eager"
-              fetchPriority="high"
+              src={projectImage("CDS_MAPA3D.mp4")}
+              aria-label={copy.carnivalAlt}
+              autoPlay
+              muted
+              loop
+              playsInline
+              preload="auto"
             />
           </figure>
         </div>
