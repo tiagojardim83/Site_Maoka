@@ -734,7 +734,6 @@ export default function Home() {
 
     if (!section || !viewport || !track) return;
 
-    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
     let horizontalTravel = 0;
     let frame = 0;
 
@@ -754,9 +753,7 @@ export default function Home() {
 
     const measure = () => {
       horizontalTravel = Math.max(0, track.scrollWidth - viewport.clientWidth);
-      section.style.height = reducedMotion.matches
-        ? "auto"
-        : `${window.innerHeight + horizontalTravel}px`;
+      section.style.setProperty("--horizontal-travel", `${horizontalTravel}px`);
       queueRender();
     };
 
@@ -773,7 +770,7 @@ export default function Home() {
       window.removeEventListener("scroll", queueRender);
       window.removeEventListener("resize", measure);
       if (frame) window.cancelAnimationFrame(frame);
-      section.style.removeProperty("height");
+      section.style.removeProperty("--horizontal-travel");
       track.style.removeProperty("transform");
     };
   }, []);

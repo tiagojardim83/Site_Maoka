@@ -982,7 +982,7 @@ body:has(a:hover, button:hover) .cursor {
 
 .projects {
   position: relative;
-  height: 400svh;
+  height: calc(100svh + var(--horizontal-travel, 300svh));
   background: var(--white);
 }
 
@@ -1781,14 +1781,6 @@ body:has(a:hover, button:hover) .cursor {
     height: clamp(320px, 50svh, 430px);
     aspect-ratio: auto;
   }
-  .projects { height: auto !important; }
-  .projects-sticky {
-    position: relative;
-    height: auto;
-    min-height: 0;
-  }
-  .project-viewport { overflow-x: auto; }
-  .project-track { transform: none !important; }
   .project-open { display: none; }
   .project-meta { grid-template-columns: 30px 1fr auto; }
   .project-meta strong {
