@@ -35,12 +35,19 @@ test("server-renders the Maoka portfolio", async () => {
   assert.match(html, /movimento/i);
   assert.match(html, /class="language-toggle"/i);
   assert.match(html, /Traduzir site para inglês/i);
+  assert.match(html, /class="manifesto-lead reveal"/i);
   assert.match(html, /Projetos em destaque/);
+  assert.match(html, /data-count="360"/i);
+  assert.match(html, /data-count="3" data-pad="2"/i);
   assert.match(html, /class="project-viewport"/i);
   assert.match(html, /class="project-track"/i);
   assert.match(
     html,
     /Mosaico_Maoka_01\.mp4[\s\S]*Mosaico_Maoka_06\.mp4/i,
+  );
+  assert.match(
+    html,
+    /Mosaico_Maoka_01_desktop\.mp4[\s\S]*Mosaico_Maoka_06_desktop\.mp4/i,
   );
   assert.match(html, /maokacenografia@gmail\.com/);
   assert.match(html, /behance\.net\/maokacenografia/i);

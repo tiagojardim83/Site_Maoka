@@ -26,7 +26,10 @@ const heroLetters = [
 
 const mosaicVideos = Array.from(
   { length: 6 },
-  (_, index) => `Mosaico_Maoka_0${index + 1}.mp4`,
+  (_, index) => ({
+    mobile: `Mosaico_Maoka_0${index + 1}.mp4`,
+    desktop: `Mosaico_Maoka_0${index + 1}_desktop.mp4`,
+  }),
 );
 
 const projects: Project[] = [
@@ -139,6 +142,7 @@ const translations = {
     processLink: "Conheça nosso processo",
     tokaAlt: "Experiência cenográfica Toka criada pela Maoka",
     areasLabel: "Áreas de atuação da Maoka",
+    degrees: "graus",
     numbers: ["Criação de ponta a ponta", "Frentes de atuação", "Experiência integrada"],
     marquee: ["ENTRETENIMENTO", "CORPORATIVO", "ARQUITETURA COMERCIAL"],
     projectsLabel: "Projetos em destaque",
@@ -211,6 +215,7 @@ const translations = {
     processLink: "Discover our process",
     tokaAlt: "Toka scenographic experience created by Maoka",
     areasLabel: "Maoka areas of expertise",
+    degrees: "degrees",
     numbers: ["End-to-end creation", "Areas of expertise", "Integrated experience"],
     marquee: ["ENTERTAINMENT", "CORPORATE", "COMMERCIAL ARCHITECTURE"],
     projectsLabel: "Featured projects",
@@ -276,10 +281,12 @@ export default function Home() {
   const [scrolled, setScrolled] = useState(false);
   const [entryActive, setEntryActive] = useState(true);
   const [orbsVisible, setOrbsVisible] = useState(false);
+  const [desktopMosaic, setDesktopMosaic] = useState(false);
   const [activeProject, setActiveProject] = useState<Project | null>(null);
   const cursorRef = useRef<HTMLDivElement>(null);
   const entryRef = useRef<HTMLElement>(null);
   const heroOrbsRef = useRef<HTMLDivElement>(null);
+  const manifestoNumbersRef = useRef<HTMLDivElement>(null);
   const projectsSectionRef = useRef<HTMLElement>(null);
   const projectsViewportRef = useRef<HTMLDivElement>(null);
   const projectsTrackRef = useRef<HTMLDivElement>(null);
@@ -288,29 +295,100 @@ export default function Home() {
   const copy = translations[locale];
 
   useEffect(() => {
-    const savedLocale = window.localStorage.getItem("maoka-locale");
-    const browserLocale = window.navigator.language.toLowerCase();
-    const initialLocale: Locale = savedLocale === "pt" || savedLocale === "en"
-      ? savedLocale
-      : browserLocale.startsWith("en")
-        ? "en"
-        : "pt";
-
-    setLocale(initialLocale);
-  }, []);
-
-  useEffect(() => {
     document.documentElement.lang = locale === "pt" ? "pt-BR" : "en";
     document.title = copy.metaTitle;
     document
       .querySelector<HTMLMetaElement>('meta[name="description"]')
       ?.setAttribute("content", copy.metaDescription);
-    window.localStorage.setItem("maoka-locale", locale);
   }, [copy.metaDescription, copy.metaTitle, locale]);
 
   const toggleLocale = () => {
     setLocale((currentLocale) => currentLocale === "pt" ? "en" : "pt");
   };
+
+  useEffect(() => {
+    const desktopQuery = window.matchMedia("(min-width: 901px)");
+    const syncMosaicFormat = () => setDesktopMosaic(desktopQuery.matches);
+
+    syncMosaicFormat();
+    desktopQuery.addEventListener("change", syncMosaicFormat);
+    return () => desktopQuery.removeEventListener("change", syncMosaicFormat);
+  }, []);
+
+  useEffect(() => {
+    const container = manifestoNumbersRef.current;
+    if (!container) return;
+
+    const cards = Array.from(
+      container.querySelectorAll<HTMLElement>(".manifesto-number"),
+    );
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const animationFrames = new Map<HTMLElement, number>();
+
+    const animateCounter = (card: HTMLElement) => {
+      const number = card.querySelector<HTMLElement>("[data-count]");
+      if (!number) return;
+
+      const target = Number(number.dataset.count ?? 0);
+      const suffix = number.dataset.suffix ?? "";
+      const padding = Number(number.dataset.pad ?? 0);
+      const finalValue = `${String(target).padStart(padding, "0")}${suffix}`;
+      const activeFrame = animationFrames.get(card);
+
+      if (activeFrame) window.cancelAnimationFrame(activeFrame);
+      if (reducedMotion.matches) {
+        number.textContent = finalValue;
+        return;
+      }
+
+      const startedAt = performance.now();
+      const duration = target > 10 ? 1400 : 900;
+
+      const tick = (currentTime: number) => {
+        const progress = Math.min(1, (currentTime - startedAt) / duration);
+        const easedProgress = 1 - Math.pow(1 - progress, 3);
+        const value = Math.round(target * easedProgress);
+
+        number.textContent = `${String(value).padStart(padding, "0")}${suffix}`;
+
+        if (progress < 1) {
+          animationFrames.set(card, window.requestAnimationFrame(tick));
+        } else {
+          number.textContent = finalValue;
+          animationFrames.delete(card);
+        }
+      };
+
+      number.textContent = `${String(0).padStart(padding, "0")}${suffix}`;
+      animationFrames.set(card, window.requestAnimationFrame(tick));
+    };
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) animateCounter(entry.target as HTMLElement);
+        });
+      },
+      { threshold: 0.38 },
+    );
+
+    const replay = (event: Event) => animateCounter(event.currentTarget as HTMLElement);
+
+    cards.forEach((card) => {
+      observer.observe(card);
+      card.addEventListener("pointerenter", replay);
+      card.addEventListener("focus", replay);
+    });
+
+    return () => {
+      observer.disconnect();
+      cards.forEach((card) => {
+        card.removeEventListener("pointerenter", replay);
+        card.removeEventListener("focus", replay);
+      });
+      animationFrames.forEach((frame) => window.cancelAnimationFrame(frame));
+    };
+  }, []);
 
   useEffect(() => {
     if (!heroOrbsRef.current) return;
@@ -794,7 +872,7 @@ export default function Home() {
         layer.style.removeProperty("--mosaic-scale");
       });
     };
-  }, []);
+  }, [desktopMosaic]);
 
   useEffect(() => {
     const onMove = (event: MouseEvent) => {
@@ -853,9 +931,7 @@ export default function Home() {
           aria-label={copy.languageLabel}
           onClick={toggleLocale}
         >
-          <span className={locale === "pt" ? "is-active" : ""}>PT</span>
-          <i aria-hidden="true">/</i>
-          <span className={locale === "en" ? "is-active" : ""}>EN</span>
+          {locale.toUpperCase()}
         </button>
         <a className="header-contact" href="mailto:maokacenografia@gmail.com">
           {copy.headerContact}
@@ -937,8 +1013,8 @@ export default function Home() {
               <em>{copy.manifestoTitle[1]}</em><br /> {copy.manifestoTitle[2]}<br />
               {copy.manifestoTitle[3]}
             </h2>
+            <p className="manifesto-lead reveal">{copy.manifestoParagraphs[0]}</p>
             <div className="manifesto-copy reveal">
-              <p>{copy.manifestoParagraphs[0]}</p>
               <p>{copy.manifestoParagraphs[1]}</p>
               <a className="text-link" href="#processo">
                 <strong>{copy.processLink}</strong>
@@ -962,10 +1038,19 @@ export default function Home() {
               />
             </figure>
           </div>
-          <div className="manifesto-numbers reveal" aria-label={copy.areasLabel}>
-            <div><strong>360°</strong><span>{copy.numbers[0]}</span></div>
-            <div><strong>03</strong><span>{copy.numbers[1]}</span></div>
-            <div><strong>01</strong><span>{copy.numbers[2]}</span></div>
+          <div className="manifesto-numbers reveal" aria-label={copy.areasLabel} ref={manifestoNumbersRef}>
+            <div className="manifesto-number" tabIndex={0} aria-label={`360 ${copy.degrees} — ${copy.numbers[0]}`}>
+              <strong data-count="360" data-suffix="°" aria-hidden="true">360°</strong>
+              <span>{copy.numbers[0]}</span>
+            </div>
+            <div className="manifesto-number" tabIndex={0} aria-label={`03 — ${copy.numbers[1]}`}>
+              <strong data-count="3" data-pad="2" aria-hidden="true">03</strong>
+              <span>{copy.numbers[1]}</span>
+            </div>
+            <div className="manifesto-number" tabIndex={0} aria-label={`01 — ${copy.numbers[2]}`}>
+              <strong data-count="1" data-pad="2" aria-hidden="true">01</strong>
+              <span>{copy.numbers[2]}</span>
+            </div>
           </div>
         </section>
 
@@ -1027,17 +1112,18 @@ export default function Home() {
           aria-label={copy.mosaicLabel}
         >
           <div className="video-mosaic-sticky">
-            {mosaicVideos.map((filename, index) => (
+            {mosaicVideos.map(({ mobile, desktop }, index) => (
               <div
                 className="video-mosaic-layer"
-                key={filename}
+                key={mobile}
                 ref={(element) => {
                   mosaicLayersRef.current[index] = element;
                 }}
                 style={{ zIndex: index + 1 }}
               >
                 <video
-                  src={projectImage(filename)}
+                  src={projectImage(desktopMosaic ? desktop : mobile)}
+                  data-desktop-src={projectImage(desktop)}
                   muted
                   loop
                   playsInline
