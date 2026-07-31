@@ -392,8 +392,22 @@ body:has(a:hover, button:hover) .cursor {
   letter-spacing: .11em;
 }
 
-.menu-footer a:nth-child(3) {
+.menu-footer a:nth-child(4) {
   margin-top: 5px;
+}
+
+.whatsapp-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.whatsapp-icon {
+  width: 17px;
+  height: 17px;
+  flex: 0 0 17px;
+  display: block;
+  fill: currentColor;
 }
 
 .menu-backdrop {
@@ -1429,9 +1443,9 @@ body:has(a:hover, button:hover) .cursor {
 }
 
 .footer-statement span {
-  padding-right: clamp(28px, 3vw, 52px);
+  padding: .14em clamp(28px, 3vw, 52px) .08em 0;
   font-size: clamp(58px, 8.5vw, 144px);
-  line-height: 1;
+  line-height: 1.06;
   letter-spacing: -.07em;
   text-transform: uppercase;
 }

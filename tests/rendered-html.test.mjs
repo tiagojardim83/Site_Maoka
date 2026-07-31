@@ -54,6 +54,11 @@ test("server-renders the Maoka portfolio", async () => {
   );
   assert.doesNotMatch(html, /Mosaico_Maoka_06(?:_desktop)?\.mp4/i);
   assert.match(html, /maokacenografia@gmail\.com/);
+  assert.match(html, /wa\.me\/5512982141215/i);
+  assert.match(html, /wa\.me\/553192066650/i);
+  assert.match(html, /\+55 12 98214-1215/i);
+  assert.match(html, /\+55 31 9206-6650/i);
+  assert.doesNotMatch(html, /5531992066650|\+55 31 99206-6650/i);
   assert.match(html, /behance\.net\/maokacenografia/i);
   assert.match(html, /linkedin\.com\/company\/maokacenografia/i);
   assert.doesNotMatch(html, /aria-label="Filtrar projetos"/i);
