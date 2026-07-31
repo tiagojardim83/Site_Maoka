@@ -1835,6 +1835,9 @@ body:has(a:hover, button:hover) .cursor {
     min-height: 100svh;
   }
   .project-viewport { overflow-x: auto; }
+  .itaipava-carousel { height: clamp(280px, 46vw, 560px) !important; }
+  .itaipava-carousel-sticky { position: relative; top: auto; height: 100%; }
+  .itaipava-viewport { overflow-x: auto; }
   .cursor { display: none; }
   body, button, a { cursor: auto; }
 }
