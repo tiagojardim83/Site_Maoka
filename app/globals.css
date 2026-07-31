@@ -1675,8 +1675,8 @@ body:has(a:hover, button:hover) .cursor {
 
 @media (max-width: 620px) {
   :root {
-    --space-section: 48px;
-    --space-block: 32px;
+    --space-section: 80px;
+    --space-block: 48px;
     --space-stagger: 0px;
   }
   .section-pad { padding: var(--space-section) 18px; }
@@ -1763,7 +1763,8 @@ body:has(a:hover, button:hover) .cursor {
   .process h2 em,
   .closing h2 em { padding-right: .06em; }
   .manifesto-grid { margin-top: var(--space-block); gap: 42px; }
-  .manifesto-numbers { grid-template-columns: 1fr; }
+  .manifesto-feature { margin-top: 48px; }
+  .manifesto-numbers { grid-template-columns: 1fr; margin-top: 48px; }
   .manifesto-number { min-height: 160px; padding: 26px 18px; }
   .manifesto-number + .manifesto-number { border-left: 0; border-top: 1px solid var(--line); }
   .itaipava-carousel {
