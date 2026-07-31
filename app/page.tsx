@@ -758,20 +758,36 @@ export default function Home() {
     };
 
     const measure = () => {
-      horizontalTravel = Math.max(0, track.scrollWidth - viewport.clientWidth);
+      // Avoid track.scrollWidth / viewport.scrollWidth entirely: some
+      // WebKit builds report an inflated scrollWidth for a scrolled
+      // container (or its scrolled ancestor) once a non-zero scrollLeft is
+      // applied, and mobile Safari fires "resize" whenever the address bar
+      // shows/hides mid-gesture, which can poison a single scrollWidth-based
+      // reading with a stale, scrolled travel value. Compute the natural
+      // track width analytically from each card's own rect (unaffected by
+      // any ancestor's scroll position) instead.
+      const cards = Array.from(track.children) as HTMLElement[];
+      const trackStyle = window.getComputedStyle(track);
+      const gap = parseFloat(trackStyle.columnGap || "0") || 0;
+      const paddingLeft = parseFloat(trackStyle.paddingLeft) || 0;
+      const paddingRight = parseFloat(trackStyle.paddingRight) || 0;
+      const cardsWidth = cards.reduce(
+        (sum, card) => sum + card.getBoundingClientRect().width,
+        0,
+      );
+      const trackWidth =
+        cardsWidth + gap * Math.max(0, cards.length - 1) + paddingLeft + paddingRight;
+      horizontalTravel = Math.max(0, trackWidth - viewport.clientWidth);
       section.style.setProperty("--horizontal-travel", `${horizontalTravel}px`);
       queueRender();
     };
 
-    const resizeObserver = new ResizeObserver(measure);
-    resizeObserver.observe(viewport);
     measure();
 
     window.addEventListener("scroll", queueRender, { passive: true });
     window.addEventListener("resize", measure);
 
     return () => {
-      resizeObserver.disconnect();
       window.removeEventListener("scroll", queueRender);
       window.removeEventListener("resize", measure);
       if (frame) window.cancelAnimationFrame(frame);
