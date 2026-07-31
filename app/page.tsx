@@ -1,15 +1,17 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 type Project = {
   name: string;
-  category: "Entretenimento" | "Corporativo" | "Ativações";
+  category: "entertainment" | "corporate" | "activations";
   image: string;
   year: string;
-  place: string;
-  description: string;
+  place: Record<Locale, string>;
+  description: Record<Locale, string>;
 };
+
+type Locale = "pt" | "en";
 
 const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
 const projectImage = (filename: string) => `${basePath}/projects/${filename}`;
@@ -22,113 +24,293 @@ const heroLetters = [
   ["A", "Asset 3_A.svg"],
 ];
 
+const mosaicVideos = Array.from(
+  { length: 6 },
+  (_, index) => `Mosaico_Maoka_0${index + 1}.mp4`,
+);
+
 const projects: Project[] = [
   {
     name: "Nossa Praia",
-    category: "Entretenimento",
+    category: "entertainment",
     image: projectImage("hero-nossa-praia.webp"),
     year: "2026",
-    place: "Brasil",
-    description:
-      "Materiais naturais, luz quente e cores de pôr do sol transformam a paisagem em um espaço de permanência, leveza e conexão.",
+    place: { pt: "Brasil", en: "Brazil" },
+    description: {
+      pt: "Materiais naturais, luz quente e cores de pôr do sol transformam a paisagem em um espaço de permanência, leveza e conexão.",
+      en: "Natural materials, warm light and sunset colors transform the landscape into a place for lingering, lightness and connection.",
+    },
   },
   {
     name: "Google Marketing Live",
-    category: "Corporativo",
+    category: "corporate",
     image: projectImage("hero-google.webp"),
     year: "2026",
-    place: "São Paulo",
-    description:
-      "Uma jornada imersiva e acessível, com soluções tipológicas próprias para conteúdo, interação e aproximação entre público e marca.",
+    place: { pt: "São Paulo", en: "São Paulo" },
+    description: {
+      pt: "Uma jornada imersiva e acessível, com soluções tipológicas próprias para conteúdo, interação e aproximação entre público e marca.",
+      en: "An immersive, accessible journey with tailored spatial solutions for content, interaction and meaningful connections between people and brand.",
+    },
   },
   {
     name: "Unigames",
-    category: "Entretenimento",
+    category: "entertainment",
     image: projectImage("hero-unigames.webp"),
     year: "2026",
-    place: "Alfenas",
-    description:
-      "Um palco monumental que traduz energia, disputa e celebração em uma identidade visual impossível de ignorar.",
+    place: { pt: "Alfenas", en: "Alfenas" },
+    description: {
+      pt: "Um palco monumental que traduz energia, disputa e celebração em uma identidade visual impossível de ignorar.",
+      en: "A monumental stage that translates energy, competition and celebration into an impossible-to-ignore visual identity.",
+    },
   },
   {
     name: "Toyota Yaris Cross",
-    category: "Corporativo",
+    category: "corporate",
     image: projectImage("toyota-yaris.webp"),
     year: "2026",
-    place: "São Paulo",
-    description:
-      "Três grandes painéis de LED e uma plataforma giratória transformam a revelação do veículo em um momento de movimento e impacto.",
+    place: { pt: "São Paulo", en: "São Paulo" },
+    description: {
+      pt: "Três grandes painéis de LED e uma plataforma giratória transformam a revelação do veículo em um momento de movimento e impacto.",
+      en: "Three large LED screens and a rotating platform turn the vehicle reveal into a moment of movement and impact.",
+    },
   },
   {
     name: "Shein",
-    category: "Ativações",
+    category: "activations",
     image: projectImage("shein.webp"),
     year: "2026",
-    place: "Brasil",
-    description:
-      "Circulação intuitiva, visibilidade total e uma linguagem visual vibrante unem funcionalidade, produto e experiência de marca.",
+    place: { pt: "Brasil", en: "Brazil" },
+    description: {
+      pt: "Circulação intuitiva, visibilidade total e uma linguagem visual vibrante unem funcionalidade, produto e experiência de marca.",
+      en: "Intuitive circulation, full visibility and a vibrant visual language bring together function, product and brand experience.",
+    },
   },
   {
     name: "Purina Pro Plan",
-    category: "Corporativo",
+    category: "corporate",
     image: projectImage("purina-pro-plan.webp"),
     year: "2026",
-    place: "São Paulo",
-    description:
-      "Um encontro sofisticado que conecta inovação, pesquisa e relacionamento em uma jornada fluida entre conteúdo e convivência.",
+    place: { pt: "São Paulo", en: "São Paulo" },
+    description: {
+      pt: "Um encontro sofisticado que conecta inovação, pesquisa e relacionamento em uma jornada fluida entre conteúdo e convivência.",
+      en: "A sophisticated setting connecting innovation, research and relationships through a fluid journey between content and gathering.",
+    },
   },
   {
     name: "Iced Coffee Club",
-    category: "Ativações",
+    category: "activations",
     image: projectImage("iced-coffee-club.webp"),
     year: "2026",
-    place: "Edifício Itália, SP",
-    description:
-      "Café gelado, música e lifestyle se encontram em uma experiência urbana com ativações sensoriais e espaços de conexão social.",
+    place: { pt: "Edifício Itália, SP", en: "Edifício Itália, São Paulo" },
+    description: {
+      pt: "Café gelado, música e lifestyle se encontram em uma experiência urbana com ativações sensoriais e espaços de conexão social.",
+      en: "Iced coffee, music and lifestyle meet in an urban experience shaped by sensory activations and spaces for social connection.",
+    },
   },
 ];
 
-const menuItems = [
-  ["01", "Início", "#top"],
-  ["02", "Manifesto", "#manifesto"],
-  ["03", "Projetos", "#projetos"],
-  ["04", "Serviços", "#servicos"],
-  ["05", "Processo", "#processo"],
-  ["06", "Contato", "#contato"],
-];
+const menuLinks = ["#top", "#manifesto", "#projetos", "#servicos", "#processo", "#contato"];
 
-const filters = ["Todos", "Entretenimento", "Corporativo", "Ativações"];
+const translations = {
+  pt: {
+    metaTitle: "Maoka — Cenografia & Experiência",
+    metaDescription: "Cenografia, arquitetura e experiências de marca criadas pela Maoka.",
+    brandAlt: "MAOKA — Cenografia & Experiência",
+    languageLabel: "Traduzir site para inglês",
+    startLabel: "Maoka - início",
+    openMenu: "Abrir menu",
+    closeMenu: "Fechar menu",
+    mainNavigation: "Navegação principal",
+    menu: ["Início", "Manifesto", "Projetos", "Serviços", "Processo", "Contato"],
+    headerContact: "Vamos conversar",
+    entryLabel: "Abertura Maoka",
+    entryTitle: ["Ideia em", "movimento"],
+    symbolAlt: "Símbolo da Maoka",
+    heroTitle: ["Damos forma ao que sua", " marca quer fazer sentir."],
+    heroSubtitle: "Cenografia · Arquitetura · Experiência",
+    heroSymbols: "Símbolos da Maoka em movimento",
+    carnivalAlt: "Experiência cenográfica Carnaval dos Sonhos criada pela Maoka",
+    manifestoLabel: "O que nos move",
+    manifestoTitle: ["Não montamos", "cenários.", "Desenhamos", "relações."],
+    manifestoParagraphs: [
+      "A Maoka nasce do desejo de renovar conexões sociais por meio de projetos arquitetônicos inventivos. Criamos espaços onde marcas encontram forma, abrigo e presença.",
+      "Do conceito à execução, equilibramos estratégia, design e técnica para transformar ambientes físicos em sensações vivas.",
+    ],
+    processLink: "Conheça nosso processo",
+    tokaAlt: "Experiência cenográfica Toka criada pela Maoka",
+    areasLabel: "Áreas de atuação da Maoka",
+    numbers: ["Criação de ponta a ponta", "Frentes de atuação", "Experiência integrada"],
+    marquee: ["ENTRETENIMENTO", "CORPORATIVO", "ARQUITETURA COMERCIAL"],
+    projectsLabel: "Projetos em destaque",
+    projectsTitle: ["Espaços para", "lembrar.", " E viver."],
+    openProject: "Abrir projeto",
+    viewProject: "Ver projeto",
+    categories: {
+      entertainment: "Entretenimento",
+      corporate: "Corporativo",
+      activations: "Ativações",
+    },
+    mosaicLabel: "Mosaico em movimento formando a palavra Maoka",
+    craftLabel: "O que fazemos",
+    craftTitle: ["Onde estratégia,", "design e", "experiência", "se encontram."],
+    services: [
+      ["Conceito & Estratégia", "Escuta, pesquisa e uma ideia central capaz de sustentar toda a experiência."],
+      ["Arquitetura & Cenografia", "Espaços autorais que traduzem identidade com estética, função e intenção."],
+      ["Produção & Execução", "Excelência técnica, gestão integrada e cuidado absoluto com cada detalhe."],
+    ],
+    ritualLabel: "Nosso ritual",
+    ritualTitle: ["Da escuta", "ao", "extraordinário."],
+    ritualCopy: "Um processo contínuo, próximo e transparente — porque as melhores experiências começam antes de o espaço existir.",
+    steps: [
+      ["Compreender", "Mergulhamos na marca, nas pessoas e no que ainda não foi dito.", "Imersão · Briefing"],
+      ["Idealizar", "Transformamos estratégia em conceito, narrativa, desenho e atmosfera.", "Conceito · Projeto"],
+      ["Materializar", "Coordenamos produção, fornecedores, montagem e cada acabamento.", "Produção · Gestão"],
+      ["Fazer viver", "Entregamos o espaço pronto para gerar presença, encontro e memória.", "Experiência · Entrega"],
+    ],
+    brandsLabel: "Marcas que já viveram experiências Maoka",
+    brandsCopy: "Marcas que já viveram essa experiência",
+    closingQuestion: "Tem uma ideia em movimento?",
+    closingTitle: ["Vamos criar algo", "que ninguém", "esquece?"],
+    startProject: "Começar um projeto",
+    footerStatement: "Projetos singulares para interações coletivas",
+    conversation: "Conversa",
+    base: "Base",
+    country: "Brasil",
+    return: "Retorno",
+    backToTop: "Voltar ao topo ↑",
+    footerBrand: "Maoka Cenografia",
+    footerTagline: "Estratégia · Espaço · Experiência",
+    closeProject: "Fechar projeto",
+    projectDialog: "Projeto",
+    createWithMaoka: "Criar uma experiência com a Maoka",
+  },
+  en: {
+    metaTitle: "Maoka — Scenography & Experience",
+    metaDescription: "Scenography, architecture and brand experiences created by Maoka.",
+    brandAlt: "MAOKA — Scenography & Experience",
+    languageLabel: "Translate site to Portuguese",
+    startLabel: "Maoka - home",
+    openMenu: "Open menu",
+    closeMenu: "Close menu",
+    mainNavigation: "Main navigation",
+    menu: ["Home", "Manifesto", "Projects", "Services", "Process", "Contact"],
+    headerContact: "Let's talk",
+    entryLabel: "Maoka opening",
+    entryTitle: ["Idea in", "motion"],
+    symbolAlt: "Maoka symbol",
+    heroTitle: ["We shape what your", " brand wants people to feel."],
+    heroSubtitle: "Scenography · Architecture · Experience",
+    heroSymbols: "Maoka symbols in motion",
+    carnivalAlt: "Carnaval dos Sonhos scenographic experience created by Maoka",
+    manifestoLabel: "What moves us",
+    manifestoTitle: ["We don't build", "sets.", "We design", "connections."],
+    manifestoParagraphs: [
+      "Maoka was born from the desire to renew social connections through inventive architectural projects. We create spaces where brands find form, shelter and presence.",
+      "From concept to delivery, we balance strategy, design and technique to transform physical environments into living sensations.",
+    ],
+    processLink: "Discover our process",
+    tokaAlt: "Toka scenographic experience created by Maoka",
+    areasLabel: "Maoka areas of expertise",
+    numbers: ["End-to-end creation", "Areas of expertise", "Integrated experience"],
+    marquee: ["ENTERTAINMENT", "CORPORATE", "COMMERCIAL ARCHITECTURE"],
+    projectsLabel: "Featured projects",
+    projectsTitle: ["Spaces to", "remember.", " And live."],
+    openProject: "Open project",
+    viewProject: "View project",
+    categories: {
+      entertainment: "Entertainment",
+      corporate: "Corporate",
+      activations: "Activations",
+    },
+    mosaicLabel: "Moving mosaic forming the word Maoka",
+    craftLabel: "What we do",
+    craftTitle: ["Where strategy,", "design and", "experience", "meet."],
+    services: [
+      ["Concept & Strategy", "Listening, research and one central idea strong enough to sustain the entire experience."],
+      ["Architecture & Scenography", "Original spaces that translate identity through aesthetics, function and intention."],
+      ["Production & Delivery", "Technical excellence, integrated management and absolute care for every detail."],
+    ],
+    ritualLabel: "Our ritual",
+    ritualTitle: ["From listening", "to the", "extraordinary."],
+    ritualCopy: "A continuous, collaborative and transparent process — because the best experiences begin before the space exists.",
+    steps: [
+      ["Understand", "We immerse ourselves in the brand, the people and what has not yet been said.", "Immersion · Briefing"],
+      ["Envision", "We turn strategy into concept, narrative, design and atmosphere.", "Concept · Design"],
+      ["Build", "We coordinate production, suppliers, installation and every finish.", "Production · Management"],
+      ["Bring to life", "We deliver a space ready to generate presence, connection and memory.", "Experience · Delivery"],
+    ],
+    brandsLabel: "Brands that have experienced Maoka",
+    brandsCopy: "Brands that have shared this experience",
+    closingQuestion: "Got an idea in motion?",
+    closingTitle: ["Let's create something", "no one", "forgets?"],
+    startProject: "Start a project",
+    footerStatement: "Singular projects for collective interactions",
+    conversation: "Let's talk",
+    base: "Base",
+    country: "Brazil",
+    return: "Return",
+    backToTop: "Back to top ↑",
+    footerBrand: "Maoka Scenography",
+    footerTagline: "Strategy · Space · Experience",
+    closeProject: "Close project",
+    projectDialog: "Project",
+    createWithMaoka: "Create an experience with Maoka",
+  },
+} as const;
 
-function Brand({ compact = false }: { compact?: boolean }) {
+function Brand({ compact = false, alt }: { compact?: boolean; alt: string }) {
   return (
     <span className={`brand ${compact ? "brand--compact" : ""}`}>
       <img
         className="brand-logo"
         src={projectImage("LOGOTYPEx.svg")}
-        alt="MAOKA — Cenografia & Experiência"
+        alt={alt}
       />
     </span>
   );
 }
 
 export default function Home() {
+  const [locale, setLocale] = useState<Locale>("pt");
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [entryActive, setEntryActive] = useState(true);
   const [orbsVisible, setOrbsVisible] = useState(false);
-  const [filter, setFilter] = useState("Todos");
   const [activeProject, setActiveProject] = useState<Project | null>(null);
   const cursorRef = useRef<HTMLDivElement>(null);
   const entryRef = useRef<HTMLElement>(null);
   const heroOrbsRef = useRef<HTMLDivElement>(null);
+  const projectsSectionRef = useRef<HTMLElement>(null);
+  const projectsViewportRef = useRef<HTMLDivElement>(null);
+  const projectsTrackRef = useRef<HTMLDivElement>(null);
+  const mosaicSectionRef = useRef<HTMLElement>(null);
+  const mosaicLayersRef = useRef<Array<HTMLDivElement | null>>([]);
+  const copy = translations[locale];
 
-  const visibleProjects = useMemo(
-    () =>
-      filter === "Todos"
-        ? projects
-        : projects.filter((project) => project.category === filter),
-    [filter],
-  );
+  useEffect(() => {
+    const savedLocale = window.localStorage.getItem("maoka-locale");
+    const browserLocale = window.navigator.language.toLowerCase();
+    const initialLocale: Locale = savedLocale === "pt" || savedLocale === "en"
+      ? savedLocale
+      : browserLocale.startsWith("en")
+        ? "en"
+        : "pt";
+
+    setLocale(initialLocale);
+  }, []);
+
+  useEffect(() => {
+    document.documentElement.lang = locale === "pt" ? "pt-BR" : "en";
+    document.title = copy.metaTitle;
+    document
+      .querySelector<HTMLMetaElement>('meta[name="description"]')
+      ?.setAttribute("content", copy.metaDescription);
+    window.localStorage.setItem("maoka-locale", locale);
+  }, [copy.metaDescription, copy.metaTitle, locale]);
+
+  const toggleLocale = () => {
+    setLocale((currentLocale) => currentLocale === "pt" ? "en" : "pt");
+  };
 
   useEffect(() => {
     if (!heroOrbsRef.current) return;
@@ -384,7 +566,7 @@ export default function Home() {
     );
     elements.forEach((element) => observer.observe(element));
     return () => observer.disconnect();
-  }, [filter]);
+  }, []);
 
   useEffect(() => {
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
@@ -452,7 +634,167 @@ export default function Home() {
       window.removeEventListener("resize", queueRender);
       if (frame) window.cancelAnimationFrame(frame);
     };
-  }, [filter]);
+  }, []);
+
+  useEffect(() => {
+    const section = projectsSectionRef.current;
+    const viewport = projectsViewportRef.current;
+    const track = projectsTrackRef.current;
+
+    if (!section || !viewport || !track) return;
+
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+    let horizontalTravel = 0;
+    let frame = 0;
+
+    const render = () => {
+      const sectionRect = section.getBoundingClientRect();
+      const progress = horizontalTravel
+        ? Math.max(0, Math.min(1, -sectionRect.top / horizontalTravel))
+        : 0;
+
+      track.style.transform = `translate3d(${(-progress * horizontalTravel).toFixed(2)}px, 0, 0)`;
+      frame = 0;
+    };
+
+    const queueRender = () => {
+      if (!frame) frame = window.requestAnimationFrame(render);
+    };
+
+    const measure = () => {
+      horizontalTravel = Math.max(0, track.scrollWidth - viewport.clientWidth);
+      section.style.height = reducedMotion.matches
+        ? "auto"
+        : `${window.innerHeight + horizontalTravel}px`;
+      queueRender();
+    };
+
+    const resizeObserver = new ResizeObserver(measure);
+    resizeObserver.observe(viewport);
+    resizeObserver.observe(track);
+    measure();
+
+    window.addEventListener("scroll", queueRender, { passive: true });
+    window.addEventListener("resize", measure);
+
+    return () => {
+      resizeObserver.disconnect();
+      window.removeEventListener("scroll", queueRender);
+      window.removeEventListener("resize", measure);
+      if (frame) window.cancelAnimationFrame(frame);
+      section.style.removeProperty("height");
+      track.style.removeProperty("transform");
+    };
+  }, []);
+
+  useEffect(() => {
+    const section = mosaicSectionRef.current;
+    const layers = mosaicLayersRef.current.filter(
+      (layer): layer is HTMLDivElement => Boolean(layer),
+    );
+
+    if (!section || !layers.length) return;
+
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const videos = layers
+      .map((layer) => layer.querySelector("video"))
+      .filter((video): video is HTMLVideoElement => Boolean(video));
+    let frame = 0;
+    let sectionVisible = false;
+    let playbackStep = -1;
+
+    const render = () => {
+      const progressInSteps = Math.max(
+        0,
+        Math.min(
+          mosaicVideos.length - 1,
+          -section.getBoundingClientRect().top / Math.max(window.innerHeight, 1),
+        ),
+      );
+
+      layers.forEach((layer, index) => {
+        const reveal = index === 0
+          ? 1
+          : Math.max(0, Math.min(1, progressInSteps - (index - 1)));
+
+        layer.style.setProperty(
+          "--mosaic-reveal",
+          `${((1 - reveal) * 100).toFixed(2)}%`,
+        );
+        layer.style.setProperty(
+          "--mosaic-scale",
+          (1.08 - reveal * 0.08).toFixed(3),
+        );
+      });
+
+      const nextPlaybackStep = Math.min(
+        mosaicVideos.length - 1,
+        Math.floor(progressInSteps),
+      );
+
+      if (
+        sectionVisible &&
+        !reducedMotion.matches &&
+        nextPlaybackStep !== playbackStep
+      ) {
+        playbackStep = nextPlaybackStep;
+        videos.forEach((video, index) => {
+          if (index === playbackStep || index === playbackStep + 1) {
+            void video.play().catch(() => undefined);
+          } else {
+            video.pause();
+          }
+        });
+      }
+      frame = 0;
+    };
+
+    const queueRender = () => {
+      if (!frame && !reducedMotion.matches) {
+        frame = window.requestAnimationFrame(render);
+      }
+    };
+
+    const measure = () => {
+      section.style.height = reducedMotion.matches
+        ? "auto"
+        : `${window.innerHeight * mosaicVideos.length}px`;
+      queueRender();
+    };
+
+    const playbackObserver = new IntersectionObserver(
+      ([entry]) => {
+        sectionVisible = entry.isIntersecting;
+        playbackStep = -1;
+
+        if (sectionVisible && !reducedMotion.matches) {
+          queueRender();
+        } else {
+          videos.forEach((video) => video.pause());
+        }
+      },
+      { threshold: 0.02 },
+    );
+
+    playbackObserver.observe(section);
+    measure();
+    render();
+    window.addEventListener("scroll", queueRender, { passive: true });
+    window.addEventListener("resize", measure);
+
+    return () => {
+      playbackObserver.disconnect();
+      window.removeEventListener("scroll", queueRender);
+      window.removeEventListener("resize", measure);
+      if (frame) window.cancelAnimationFrame(frame);
+      videos.forEach((video) => video.pause());
+      section.style.removeProperty("height");
+      layers.forEach((layer) => {
+        layer.style.removeProperty("--mosaic-reveal");
+        layer.style.removeProperty("--mosaic-scale");
+      });
+    };
+  }, []);
 
   useEffect(() => {
     const onMove = (event: MouseEvent) => {
@@ -469,14 +811,14 @@ export default function Home() {
       <div className="cursor" ref={cursorRef} aria-hidden="true" />
 
       <header className={`site-header ${scrolled ? "site-header--scrolled" : ""} ${entryActive ? "site-header--entry" : ""} ${menuOpen ? "site-header--menu" : ""}`}>
-        <a className="header-brand" href="#top" aria-label="Maoka - início" onClick={() => setMenuOpen(false)}>
-          <Brand compact />
+        <a className="header-brand" href="#top" aria-label={copy.startLabel} onClick={() => setMenuOpen(false)}>
+          <Brand compact alt={copy.brandAlt} />
         </a>
         <div className={`menu-shell ${menuOpen ? "is-open" : ""}`}>
           <button
             className={`menu-toggle ${menuOpen ? "is-open" : ""}`}
             type="button"
-            aria-label={menuOpen ? "Fechar menu" : "Abrir menu"}
+            aria-label={menuOpen ? copy.closeMenu : copy.openMenu}
             aria-controls="menu-panel"
             aria-expanded={menuOpen}
             onClick={() => setMenuOpen((open) => !open)}
@@ -487,11 +829,11 @@ export default function Home() {
           </button>
 
           <div className="menu-panel" id="menu-panel" aria-hidden={!menuOpen}>
-            <nav aria-label="Navegação principal">
-              {menuItems.map(([number, label, href]) => (
+            <nav aria-label={copy.mainNavigation}>
+              {menuLinks.map((href, index) => (
                 <a key={href} href={href} onClick={() => setMenuOpen(false)} tabIndex={menuOpen ? 0 : -1}>
-                  <small>{number}</small>
-                  <span>{label}</span>
+                  <small>{String(index + 1).padStart(2, "0")}</small>
+                  <span>{copy.menu[index]}</span>
                   <i aria-hidden="true">↗</i>
                 </a>
               ))}
@@ -500,106 +842,111 @@ export default function Home() {
               <a href="tel:+5531992066650" tabIndex={menuOpen ? 0 : -1}>+55 31 99206-6650 ↗</a>
               <a href="mailto:maokacenografia@gmail.com" tabIndex={menuOpen ? 0 : -1}>maokacenografia@gmail.com ↗</a>
               <a href="https://www.instagram.com/maokacenografia/" target="_blank" rel="noreferrer" tabIndex={menuOpen ? 0 : -1}>Instagram ↗</a>
+              <a href="https://www.behance.net/maokacenografia" target="_blank" rel="noreferrer" tabIndex={menuOpen ? 0 : -1}>Behance ↗</a>
+              <a href="https://www.linkedin.com/company/maokacenografia" target="_blank" rel="noreferrer" tabIndex={menuOpen ? 0 : -1}>LinkedIn ↗</a>
             </div>
           </div>
         </div>
+        <button
+          className="language-toggle"
+          type="button"
+          aria-label={copy.languageLabel}
+          onClick={toggleLocale}
+        >
+          <span className={locale === "pt" ? "is-active" : ""}>PT</span>
+          <i aria-hidden="true">/</i>
+          <span className={locale === "en" ? "is-active" : ""}>EN</span>
+        </button>
         <a className="header-contact" href="mailto:maokacenografia@gmail.com">
-          Vamos conversar
+          {copy.headerContact}
         </a>
       </header>
 
       <button
         className={`menu-backdrop ${menuOpen ? "is-open" : ""}`}
         type="button"
-        aria-label="Fechar menu"
+        aria-label={copy.closeMenu}
         aria-hidden={!menuOpen}
         tabIndex={menuOpen ? 0 : -1}
         onClick={() => setMenuOpen(false)}
       />
 
       <main id="top">
-        <section className="site-entry" ref={entryRef} aria-label="Abertura Maoka">
+        <section className="site-entry" ref={entryRef} aria-label={copy.entryLabel}>
           <div className="site-entry-inner">
             <p className="site-entry-title" aria-hidden="true">
-              Ideia em<br />movimento
+              {copy.entryTitle[0]}<br />{copy.entryTitle[1]}
             </p>
             <div className="site-entry-zoom">
               <img
                 className="site-entry-sign"
                 src={projectImage("Sign Outline.svg")}
-                alt="Símbolo da Maoka"
+                alt={copy.symbolAlt}
                 fetchPriority="high"
               />
             </div>
           </div>
         </section>
 
-        <section className="hero" aria-labelledby="hero-title">
-          <div className="hero-intro">
-            <div className="hero-statement">
-              <h1 id="hero-title">Damos forma ao que sua<br className="mobile-only" aria-hidden="true" /> marca quer fazer sentir.</h1>
-              <p>Cenografia · Arquitetura · Experiência</p>
-            </div>
+        <div className="hero-transition">
+          <section className="hero" aria-labelledby="hero-title">
+            <div className="hero-intro">
+              <div className="hero-statement">
+                <h1 id="hero-title">{copy.heroTitle[0]}<br className="mobile-only" aria-hidden="true" />{copy.heroTitle[1]}</h1>
+                <p>{copy.heroSubtitle}</p>
+              </div>
 
-            <div
-              className={`hero-orbs ${orbsVisible ? "is-visible" : ""}`}
-              ref={heroOrbsRef}
-              role="img"
-              aria-label="Símbolos da Maoka em movimento"
-            >
-              {heroLetters.map(([letter, filename], index) => (
-                <span className="hero-orb" key={`${letter}-${index}`}>
-                  <img src={projectImage(filename)} alt="" aria-hidden="true" />
-                </span>
-              ))}
+              <div
+                className={`hero-orbs ${orbsVisible ? "is-visible" : ""}`}
+                ref={heroOrbsRef}
+                role="img"
+                aria-label={copy.heroSymbols}
+              >
+                {heroLetters.map(([letter, filename], index) => (
+                  <span className="hero-orb" key={`${letter}-${index}`}>
+                    <img src={projectImage(filename)} alt="" aria-hidden="true" />
+                  </span>
+                ))}
+              </div>
             </div>
-          </div>
-        </section>
+          </section>
 
-        <figure
-          className="hero-image hero-scroll-reveal photo-reactive"
-          data-scroll-reveal
-        >
-          <img
-            className="parallax-media"
-            data-parallax="110"
-            src={projectImage("carnaval-dos-sonhos.webp")}
-            alt="Experiência cenográfica Carnaval dos Sonhos criada pela Maoka"
-            loading="eager"
-            fetchPriority="high"
-          />
-          <figcaption>Carnaval dos Sonhos · Entretenimento</figcaption>
-        </figure>
+          <figure
+            className="hero-image hero-scroll-reveal photo-reactive"
+            data-scroll-reveal
+          >
+            <img
+              className="parallax-media"
+              data-parallax="110"
+              src={projectImage("carnaval-dos-sonhos.webp")}
+              alt={copy.carnivalAlt}
+              loading="eager"
+              fetchPriority="high"
+            />
+          </figure>
+        </div>
 
         <section className="manifesto section-pad" id="manifesto">
           <div className="section-label reveal">
             <span>01</span>
-            <p>O que nos move</p>
+            <p>{copy.manifestoLabel}</p>
           </div>
           <div className="manifesto-grid">
             <h2 className="display-copy reveal">
-              Não montamos<br />
-              <em>cenários.</em><br /> Desenhamos<br />
-              relações.
+              {copy.manifestoTitle[0]}<br />
+              <em>{copy.manifestoTitle[1]}</em><br /> {copy.manifestoTitle[2]}<br />
+              {copy.manifestoTitle[3]}
             </h2>
             <div className="manifesto-copy reveal">
-              <p>
-                A Maoka nasce do desejo de renovar conexões sociais por meio de projetos arquitetônicos inventivos. Criamos espaços onde marcas encontram forma, abrigo e presença.
-              </p>
-              <p>
-                Do conceito à execução, equilibramos estratégia, design e técnica para transformar ambientes físicos em sensações vivas.
-              </p>
+              <p>{copy.manifestoParagraphs[0]}</p>
+              <p>{copy.manifestoParagraphs[1]}</p>
               <a className="text-link" href="#processo">
-                <strong>Conheça nosso processo</strong>
+                <strong>{copy.processLink}</strong>
                 <span aria-hidden="true" />
               </a>
             </div>
           </div>
           <div className="manifesto-feature">
-            <p className="manifesto-aside reveal">
-              <span>Forma com intenção</span>
-              Cada projeto é pensado como uma paisagem viva: uma composição de matéria, luz, percurso e encontro.
-            </p>
             <div className="manifesto-sign reveal" aria-hidden="true">
               <div className="manifesto-sign-motion" data-parallax="92">
                 <img src={projectImage("Sign_3D.svg")} alt="" loading="lazy" />
@@ -610,104 +957,113 @@ export default function Home() {
                 className="parallax-media"
                 data-parallax="82"
                 src={projectImage("toka.webp")}
-                alt="Experiência cenográfica Toka criada pela Maoka"
+                alt={copy.tokaAlt}
                 loading="lazy"
               />
-              <figcaption>Toka · Arquitetura comercial</figcaption>
             </figure>
           </div>
-          <div className="manifesto-numbers reveal" aria-label="Áreas de atuação da Maoka">
-            <div><strong>360°</strong><span>Criação de ponta a ponta</span></div>
-            <div><strong>03</strong><span>Frentes de atuação</span></div>
-            <div><strong>01</strong><span>Experiência integrada</span></div>
+          <div className="manifesto-numbers reveal" aria-label={copy.areasLabel}>
+            <div><strong>360°</strong><span>{copy.numbers[0]}</span></div>
+            <div><strong>03</strong><span>{copy.numbers[1]}</span></div>
+            <div><strong>01</strong><span>{copy.numbers[2]}</span></div>
           </div>
         </section>
 
         <div className="marquee" aria-hidden="true">
           <div className="marquee-track">
-            <span>ENTRETENIMENTO</span><i>✦</i><span>CORPORATIVO</span><i>✦</i><span>ARQUITETURA COMERCIAL</span><i>✦</i>
-            <span>ENTRETENIMENTO</span><i>✦</i><span>CORPORATIVO</span><i>✦</i><span>ARQUITETURA COMERCIAL</span><i>✦</i>
+            <span>{copy.marquee[0]}</span><i>✦</i><span>{copy.marquee[1]}</span><i>✦</i><span>{copy.marquee[2]}</span><i>✦</i>
+            <span>{copy.marquee[0]}</span><i>✦</i><span>{copy.marquee[1]}</span><i>✦</i><span>{copy.marquee[2]}</span><i>✦</i>
           </div>
         </div>
 
-        <section className="projects section-pad" id="projetos">
-          <div className="projects-heading reveal">
-            <div className="section-label">
-              <span>02</span>
-              <p>Projetos em destaque</p>
+        <section className="projects" id="projetos" ref={projectsSectionRef}>
+          <div className="projects-sticky">
+            <div className="projects-heading reveal">
+              <div className="section-label">
+                <span>02</span>
+                <p>{copy.projectsLabel}</p>
+              </div>
+              <h2>{copy.projectsTitle[0]}<br /><em>{copy.projectsTitle[1]}</em>{copy.projectsTitle[2]}</h2>
             </div>
-            <h2>Espaços para<br /><em>lembrar.</em> E viver.</h2>
-          </div>
 
-          <div className="filter-bar reveal" aria-label="Filtrar projetos">
-            {filters.map((item) => (
-              <button
-                type="button"
-                key={item}
-                className={filter === item ? "is-active" : ""}
-                onClick={() => setFilter(item)}
-              >
-                {item}<sup>{item === "Todos" ? projects.length : projects.filter((project) => project.category === item).length}</sup>
-              </button>
-            ))}
+            <div className="project-viewport" ref={projectsViewportRef}>
+              <div className="project-track" ref={projectsTrackRef}>
+                {projects.map((project, index) => (
+                  <button
+                    className={`project-card project-card--${(index % 7) + 1} photo-reactive reveal`}
+                    type="button"
+                    key={project.name}
+                    onClick={() => setActiveProject(project)}
+                    aria-label={`${copy.openProject} ${project.name}`}
+                  >
+                    <span className="project-image media-mask">
+                      <img
+                        className="parallax-media"
+                        data-parallax={index % 2 === 0 ? "62" : "48"}
+                        src={project.image}
+                        alt={project.name}
+                        loading="lazy"
+                      />
+                      <span className="project-open" aria-hidden="true">{copy.viewProject} ↗</span>
+                    </span>
+                    <span className="project-meta">
+                      <span className="project-index">{String(index + 1).padStart(2, "0")}</span>
+                      <span>
+                        <strong>{project.name}</strong>
+                        <small>{copy.categories[project.category]} · {project.year}</small>
+                      </span>
+                      <i aria-hidden="true">↗</i>
+                    </span>
+                  </button>
+                ))}
+              </div>
+            </div>
           </div>
+        </section>
 
-          <div className="project-grid">
-            {visibleProjects.map((project, index) => (
-              <button
-                className={`project-card project-card--${(index % 7) + 1} photo-reactive reveal`}
-                type="button"
-                key={project.name}
-                onClick={() => setActiveProject(project)}
-                aria-label={`Abrir projeto ${project.name}`}
+        <section
+          className="video-mosaic"
+          ref={mosaicSectionRef}
+          aria-label={copy.mosaicLabel}
+        >
+          <div className="video-mosaic-sticky">
+            {mosaicVideos.map((filename, index) => (
+              <div
+                className="video-mosaic-layer"
+                key={filename}
+                ref={(element) => {
+                  mosaicLayersRef.current[index] = element;
+                }}
+                style={{ zIndex: index + 1 }}
               >
-                <span className="project-image media-mask">
-                  <img
-                    className="parallax-media"
-                    data-parallax={index % 2 === 0 ? "62" : "48"}
-                    src={project.image}
-                    alt={project.name}
-                    loading="lazy"
-                  />
-                  <span className="project-open" aria-hidden="true">Ver projeto ↗</span>
-                </span>
-                <span className="project-meta">
-                  <span className="project-index">{String(index + 1).padStart(2, "0")}</span>
-                  <span>
-                    <strong>{project.name}</strong>
-                    <small>{project.category} · {project.year}</small>
-                  </span>
-                  <i aria-hidden="true">↗</i>
-                </span>
-              </button>
+                <video
+                  src={projectImage(filename)}
+                  muted
+                  loop
+                  playsInline
+                  preload={index < 2 ? "auto" : "metadata"}
+                  aria-hidden="true"
+                />
+                <span aria-hidden="true">{String(index + 1).padStart(2, "0")} / 06</span>
+              </div>
             ))}
           </div>
         </section>
 
         <section className="craft" id="servicos">
-          <div className="craft-image photo-reactive reveal media-reveal">
-            <img className="parallax-media" data-parallax="86" src={projectImage("purina-pro-plan.webp")} alt="Ambiente imersivo criado pela Maoka para Purina Pro Plan" loading="lazy" />
-            <span className="image-note">Purina Pro Plan · Experiência corporativa</span>
-          </div>
           <div className="craft-content section-pad">
             <div className="section-label reveal">
               <span>03</span>
-              <p>O que fazemos</p>
+              <p>{copy.craftLabel}</p>
             </div>
-            <h2 className="reveal">Onde estratégia,<br />design e <br /><em>experiência</em><br />se encontram.</h2>
+            <h2 className="reveal">{copy.craftTitle[0]}<br />{copy.craftTitle[1]} <br /><em>{copy.craftTitle[2]}</em><br />{copy.craftTitle[3]}</h2>
             <div className="service-list">
-              <article className="reveal">
-                <span>01</span>
-                <div><h3>Conceito &amp; Estratégia</h3><p>Escuta, pesquisa e uma ideia central capaz de sustentar toda a experiência.</p></div>
-              </article>
-              <article className="reveal">
-                <span>02</span>
-                <div><h3>Arquitetura &amp; Cenografia</h3><p>Espaços autorais que traduzem identidade com estética, função e intenção.</p></div>
-              </article>
-              <article className="reveal">
-                <span>03</span>
-                <div><h3>Produção &amp; Execução</h3><p>Excelência técnica, gestão integrada e cuidado absoluto com cada detalhe.</p></div>
-              </article>
+              {copy.services.map(([title, description], index) => (
+                <article className="reveal" key={`service-${index}`}>
+                  <span>{String(index + 1).padStart(2, "0")}</span>
+                  <div><h3>{title}</h3><p>{description}</p></div>
+                </article>
+              ))}
             </div>
           </div>
         </section>
@@ -716,21 +1072,23 @@ export default function Home() {
           <div className="process-intro">
             <div className="section-label reveal">
               <span>04</span>
-              <p>Nosso ritual</p>
+              <p>{copy.ritualLabel}</p>
             </div>
-            <h2 className="reveal">Da escuta<br />ao <br /><em>extraordinário.</em></h2>
-            <p className="reveal">Um processo contínuo, próximo e transparente — porque as melhores experiências começam antes de o espaço existir.</p>
+            <h2 className="reveal">{copy.ritualTitle[0]}<br />{copy.ritualTitle[1]} <br /><em>{copy.ritualTitle[2]}</em></h2>
+            <p className="reveal">{copy.ritualCopy}</p>
           </div>
           <div className="process-steps">
-            <article className="reveal"><span>01</span><h3>Compreender</h3><p>Mergulhamos na marca, nas pessoas e no que ainda não foi dito.</p><i>Imersão · Briefing</i></article>
-            <article className="reveal"><span>02</span><h3>Idealizar</h3><p>Transformamos estratégia em conceito, narrativa, desenho e atmosfera.</p><i>Conceito · Projeto</i></article>
-            <article className="reveal"><span>03</span><h3>Materializar</h3><p>Coordenamos produção, fornecedores, montagem e cada acabamento.</p><i>Produção · Gestão</i></article>
-            <article className="reveal"><span>04</span><h3>Fazer viver</h3><p>Entregamos o espaço pronto para gerar presença, encontro e memória.</p><i>Experiência · Entrega</i></article>
+            {copy.steps.map(([title, description, note], index) => (
+              <article className="reveal" key={`step-${index}`}>
+                <span>{String(index + 1).padStart(2, "0")}</span>
+                <h3>{title}</h3><p>{description}</p><i>{note}</i>
+              </article>
+            ))}
           </div>
         </section>
 
-        <section className="brand-strip" aria-label="Marcas que já viveram experiências Maoka">
-          <p>Marcas que já viveram essa experiência</p>
+        <section className="brand-strip" aria-label={copy.brandsLabel}>
+          <p>{copy.brandsCopy}</p>
           <div className="client-marquee">
             <div>
               <span>GOOGLE</span><span>TOYOTA</span><span>ELECTROLUX</span><span>PURINA</span><span>SHEIN</span><span>ARCELORMITTAL</span><span>ANGLOGOLD</span>
@@ -745,10 +1103,10 @@ export default function Home() {
           </div>
           <div className="closing-shade" />
           <div className="closing-content reveal">
-            <p>Tem uma ideia em movimento?</p>
-            <h2>Vamos criar algo<br />que ninguém <br /><em>esquece?</em></h2>
+            <p>{copy.closingQuestion}</p>
+            <h2>{copy.closingTitle[0]}<br />{copy.closingTitle[1]} <br /><em>{copy.closingTitle[2]}</em></h2>
             <a className="cta-orbit" href="https://wa.me/5531992066650" target="_blank" rel="noreferrer">
-              <span>Começar um projeto</span>
+              <span>{copy.startProject}</span>
               <i aria-hidden="true">↗</i>
             </a>
           </div>
@@ -756,30 +1114,37 @@ export default function Home() {
       </main>
 
       <footer className="footer">
-        <div className="footer-top">
-          <Brand />
-          <p>Projetos singulares<br />para interações coletivas.</p>
+        <div className="footer-statement" aria-label={copy.footerStatement}>
+          <div className="footer-statement-track" aria-hidden="true">
+            <span>{copy.footerStatement}</span><i>✦</i>
+            <span>{copy.footerStatement}</span><i>✦</i>
+          </div>
         </div>
         <div className="footer-grid">
-          <div><small>Conversa</small><a href="mailto:maokacenografia@gmail.com">maokacenografia@gmail.com</a><a href="tel:+5531992066650">+55 31 99206-6650</a></div>
-          <div><small>Social</small><a href="https://www.instagram.com/maokacenografia/" target="_blank" rel="noreferrer">Instagram ↗</a></div>
-          <div><small>Base</small><span>Belo Horizonte<br />Brasil</span></div>
-          <div><small>Retorno</small><a href="#top">Voltar ao topo ↑</a></div>
+          <div><small>{copy.conversation}</small><a href="mailto:maokacenografia@gmail.com">maokacenografia@gmail.com</a><a href="tel:+5531992066650">+55 31 99206-6650</a></div>
+          <div>
+            <small>Social</small>
+            <a href="https://www.instagram.com/maokacenografia/" target="_blank" rel="noreferrer">Instagram ↗</a>
+            <a href="https://www.behance.net/maokacenografia" target="_blank" rel="noreferrer">Behance ↗</a>
+            <a href="https://www.linkedin.com/company/maokacenografia" target="_blank" rel="noreferrer">LinkedIn ↗</a>
+          </div>
+          <div><small>{copy.base}</small><span>Belo Horizonte<br />{copy.country}</span></div>
+          <div><small>{copy.return}</small><a href="#top">{copy.backToTop}</a></div>
         </div>
-        <div className="footer-bottom"><span>© {new Date().getFullYear()} Maoka Cenografia</span><span>Estratégia · Espaço · Experiência</span></div>
+        <div className="footer-bottom"><span>© {new Date().getFullYear()} {copy.footerBrand}</span><span>{copy.footerTagline}</span></div>
       </footer>
 
       {activeProject && (
-        <div className="project-modal" role="dialog" aria-modal="true" aria-label={`Projeto ${activeProject.name}`}>
-          <button className="modal-backdrop" aria-label="Fechar projeto" onClick={() => setActiveProject(null)} />
+        <div className="project-modal" role="dialog" aria-modal="true" aria-label={`${copy.projectDialog} ${activeProject.name}`}>
+          <button className="modal-backdrop" aria-label={copy.closeProject} onClick={() => setActiveProject(null)} />
           <div className="modal-panel">
-            <button className="modal-close" type="button" onClick={() => setActiveProject(null)} aria-label="Fechar projeto"><span /> <span /></button>
+            <button className="modal-close" type="button" onClick={() => setActiveProject(null)} aria-label={copy.closeProject}><span /> <span /></button>
             <div className="modal-media photo-reactive is-visible"><img src={activeProject.image} alt={activeProject.name} /></div>
             <div className="modal-copy">
-              <div className="modal-tags"><span>{activeProject.category}</span><span>{activeProject.year}</span><span>{activeProject.place}</span></div>
+              <div className="modal-tags"><span>{copy.categories[activeProject.category]}</span><span>{activeProject.year}</span><span>{activeProject.place[locale]}</span></div>
               <h2>{activeProject.name}</h2>
-              <p>{activeProject.description}</p>
-              <a href="mailto:maokacenografia@gmail.com">Criar uma experiência com a Maoka <span>↗</span></a>
+              <p>{activeProject.description[locale]}</p>
+              <a href="mailto:maokacenografia@gmail.com">{copy.createWithMaoka} <span>↗</span></a>
             </div>
           </div>
         </div>

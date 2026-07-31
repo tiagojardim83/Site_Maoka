@@ -33,7 +33,18 @@ test("server-renders the Maoka portfolio", async () => {
   assert.match(html, /Sign Outline\.svg/);
   assert.match(html, /Ideia em/i);
   assert.match(html, /movimento/i);
+  assert.match(html, /class="language-toggle"/i);
+  assert.match(html, /Traduzir site para inglês/i);
   assert.match(html, /Projetos em destaque/);
+  assert.match(html, /class="project-viewport"/i);
+  assert.match(html, /class="project-track"/i);
+  assert.match(
+    html,
+    /Mosaico_Maoka_01\.mp4[\s\S]*Mosaico_Maoka_06\.mp4/i,
+  );
   assert.match(html, /maokacenografia@gmail\.com/);
+  assert.match(html, /behance\.net\/maokacenografia/i);
+  assert.match(html, /linkedin\.com\/company\/maokacenografia/i);
+  assert.doesNotMatch(html, /aria-label="Filtrar projetos"/i);
   assert.doesNotMatch(html, /codex-preview|Building your site|react-loading-skeleton/i);
 });
