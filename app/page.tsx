@@ -1021,6 +1021,7 @@ export default function Home() {
               className="parallax-media"
               data-parallax="110"
               src={projectImage("CDS_MAPA3D.mp4")}
+              poster={projectImage("carnaval-dos-sonhos.webp")}
               aria-label={copy.carnivalAlt}
               autoPlay
               muted
