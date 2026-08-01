@@ -480,6 +480,23 @@ export default function Home() {
   }, []);
 
   useEffect(() => {
+    // Same "blue while centered" behavior as the manifesto numbers: on
+    // mobile this fires as each row crosses dead-center of the viewport;
+    // on desktop it's redundant with the CSS :hover rule but harmless.
+    const rows = Array.from(document.querySelectorAll<HTMLElement>(".areas-row"));
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          entry.target.classList.toggle("is-centered", entry.isIntersecting);
+        });
+      },
+      { rootMargin: "-50% 0px -50% 0px" },
+    );
+    rows.forEach((row) => observer.observe(row));
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
     if (!heroOrbsRef.current) return;
 
     const observer = new IntersectionObserver(
