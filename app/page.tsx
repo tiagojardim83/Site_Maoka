@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState, type RefObject } from "react";
 import Link from "next/link";
 import { projects, projectImage, type Locale } from "./data/projects";
+import Header from "./components/Header";
 
 const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
 
@@ -19,17 +20,12 @@ const heroLetters = [
   ["A", "Asset 3_A.svg"],
 ];
 
-const mosaicVideo = {
-  mobile: "Mosaico_Maoka_05.mp4",
-  desktop: "Mosaico_Maoka_05_desktop.mp4",
-};
+const categoryOrder = ["entertainment", "corporate", "activations"] as const;
 
 const itaipavaImages = Array.from(
   { length: 6 },
   (_, index) => `maoka_itaipava_0${index + 1}.webp`,
 );
-
-const menuLinks = ["#top", "#manifesto", "#projetos", "#servicos", "#processo", "#contato"];
 
 const translations = {
   pt: {
@@ -71,7 +67,8 @@ const translations = {
       corporate: "Corporativo",
       activations: "Ativações",
     },
-    mosaicLabel: "Mosaico em movimento formando a palavra Maoka",
+    areasKicker: "Frentes de atuação",
+    areasProjectsWord: "projetos",
     craftLabel: "O que fazemos",
     craftTitle: ["Onde estratégia,", "design e", "experiência", "se encontram."],
     services: [
@@ -144,7 +141,8 @@ const translations = {
       corporate: "Corporate",
       activations: "Activations",
     },
-    mosaicLabel: "Moving mosaic forming the word Maoka",
+    areasKicker: "Areas of expertise",
+    areasProjectsWord: "projects",
     craftLabel: "What we do",
     craftTitle: ["Where strategy,", "design and", "experience", "meet."],
     services: [
@@ -180,17 +178,6 @@ const translations = {
   },
 } as const;
 
-function Brand({ compact = false, alt }: { compact?: boolean; alt: string }) {
-  return (
-    <span className={`brand ${compact ? "brand--compact" : ""}`}>
-      <img
-        className="brand-logo"
-        src={projectImage("LOGOTYPEx.svg")}
-        alt={alt}
-      />
-    </span>
-  );
-}
 
 function ArrowIcon() {
   return (
@@ -340,11 +327,8 @@ function useScrollJackCarousel<T extends HTMLElement>(
 
 export default function Home() {
   const [locale, setLocale] = useState<Locale>("pt");
-  const [menuOpen, setMenuOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
   const [entryActive, setEntryActive] = useState(true);
   const [orbsVisible, setOrbsVisible] = useState(false);
-  const [desktopMosaic, setDesktopMosaic] = useState(false);
   const cursorRef = useRef<HTMLDivElement>(null);
   const entryRef = useRef<HTMLElement>(null);
   const heroOrbsRef = useRef<HTMLDivElement>(null);
@@ -372,15 +356,6 @@ export default function Home() {
   const toggleLocale = () => {
     setLocale((currentLocale) => currentLocale === "pt" ? "en" : "pt");
   };
-
-  useEffect(() => {
-    const desktopQuery = window.matchMedia("(min-width: 901px)");
-    const syncMosaicFormat = () => setDesktopMosaic(desktopQuery.matches);
-
-    syncMosaicFormat();
-    desktopQuery.addEventListener("change", syncMosaicFormat);
-    return () => desktopQuery.removeEventListener("change", syncMosaicFormat);
-  }, []);
 
   useEffect(() => {
     if (!manifestoNumbersRef.current) return;
@@ -665,8 +640,6 @@ export default function Home() {
 
   useEffect(() => {
     const onScroll = () => {
-      setScrolled(window.scrollY > 32);
-
       const scrollRange = Math.max(window.innerHeight * 0.65, 1);
       const progress = Math.max(0, Math.min(1, window.scrollY / scrollRange));
       const easedProgress = 1 - Math.pow(1 - progress, 3);
@@ -694,18 +667,6 @@ export default function Home() {
       window.removeEventListener("resize", onScroll);
     };
   }, []);
-
-  useEffect(() => {
-    document.body.style.overflow = menuOpen ? "hidden" : "";
-    const onKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "Escape") setMenuOpen(false);
-    };
-    window.addEventListener("keydown", onKeyDown);
-    return () => {
-      document.body.style.overflow = "";
-      window.removeEventListener("keydown", onKeyDown);
-    };
-  }, [menuOpen]);
 
   useEffect(() => {
     const elements = document.querySelectorAll<HTMLElement>(
@@ -808,62 +769,7 @@ export default function Home() {
     <>
       <div className="cursor" ref={cursorRef} aria-hidden="true" />
 
-      <header className={`site-header ${scrolled ? "site-header--scrolled" : ""} ${entryActive ? "site-header--entry" : ""} ${menuOpen ? "site-header--menu" : ""}`}>
-        <a className="header-brand" href="#top" aria-label={copy.startLabel} onClick={() => setMenuOpen(false)}>
-          <Brand compact alt={copy.brandAlt} />
-        </a>
-        <div className={`menu-shell ${menuOpen ? "is-open" : ""}`}>
-          <button
-            className={`menu-toggle ${menuOpen ? "is-open" : ""}`}
-            type="button"
-            aria-label={menuOpen ? copy.closeMenu : copy.openMenu}
-            aria-controls="menu-panel"
-            aria-expanded={menuOpen}
-            onClick={() => setMenuOpen((open) => !open)}
-          >
-            <small>Menu</small>
-            <span />
-            <span />
-          </button>
-
-          <div className="menu-panel" id="menu-panel" aria-hidden={!menuOpen}>
-            <nav aria-label={copy.mainNavigation}>
-              {menuLinks.map((href, index) => (
-                <a key={href} href={href} onClick={() => setMenuOpen(false)} tabIndex={menuOpen ? 0 : -1}>
-                  <small>{String(index + 1).padStart(2, "0")}</small>
-                  <span>{copy.menu[index]}</span>
-                  <i aria-hidden="true"><ArrowIcon /></i>
-                </a>
-              ))}
-            </nav>
-            <div className="menu-footer">
-              <a href="https://www.instagram.com/maokacenografia/" target="_blank" rel="noreferrer" tabIndex={menuOpen ? 0 : -1}>Instagram <ArrowIcon /></a>
-              <a href="https://www.behance.net/maokacenografia" target="_blank" rel="noreferrer" tabIndex={menuOpen ? 0 : -1}>Behance <ArrowIcon /></a>
-              <a href="https://www.linkedin.com/company/maokacenografia" target="_blank" rel="noreferrer" tabIndex={menuOpen ? 0 : -1}>LinkedIn <ArrowIcon /></a>
-            </div>
-          </div>
-        </div>
-        <button
-          className="language-toggle"
-          type="button"
-          aria-label={copy.languageLabel}
-          onClick={toggleLocale}
-        >
-          {locale.toUpperCase()}
-        </button>
-        <a className="header-contact" href="mailto:maokacenografia@gmail.com">
-          {copy.headerContact}
-        </a>
-      </header>
-
-      <button
-        className={`menu-backdrop ${menuOpen ? "is-open" : ""}`}
-        type="button"
-        aria-label={copy.closeMenu}
-        aria-hidden={!menuOpen}
-        tabIndex={menuOpen ? 0 : -1}
-        onClick={() => setMenuOpen(false)}
-      />
+      <Header locale={locale} onToggleLocale={toggleLocale} entryActive={entryActive} />
 
       <main id="top">
         <section className="site-entry" ref={entryRef} aria-label={copy.entryLabel}>
@@ -1023,17 +929,25 @@ export default function Home() {
           </div>
         </section>
 
-        <section className="video-mosaic" aria-label={copy.mosaicLabel}>
-          <video
-            className="video-mosaic-media"
-            src={projectImage(desktopMosaic ? mosaicVideo.desktop : mosaicVideo.mobile)}
-            autoPlay
-            muted
-            loop
-            playsInline
-            preload="auto"
-            aria-hidden="true"
-          />
+        <section className="areas section-pad">
+          <div className="section-label reveal">
+            <span>03</span>
+            <p>{copy.areasKicker}</p>
+          </div>
+          <div className="areas-list">
+            {categoryOrder.map((category) => {
+              const count = projects.filter((project) => project.category === category).length;
+              return (
+                <a className="areas-row reveal" href="/#projetos" key={category}>
+                  <span className="areas-row-text">
+                    <strong>{copy.categories[category]}</strong>
+                    <small>{count} {copy.areasProjectsWord}</small>
+                  </span>
+                  <i aria-hidden="true"><ArrowIcon /></i>
+                </a>
+              );
+            })}
+          </div>
         </section>
 
         <div className="marquee" aria-hidden="true">
@@ -1046,7 +960,7 @@ export default function Home() {
         <section className="craft" id="servicos">
           <div className="craft-content section-pad">
             <div className="section-label reveal">
-              <span>03</span>
+              <span>04</span>
               <p>{copy.craftLabel}</p>
             </div>
             <div className="craft-title-wrap">
@@ -1071,7 +985,7 @@ export default function Home() {
         <section className="process section-pad" id="processo">
           <div className="process-intro">
             <div className="section-label reveal" id="processo-04">
-              <span>04</span>
+              <span>05</span>
               <p>{copy.ritualLabel}</p>
             </div>
             <h2 className="reveal">{copy.ritualTitle[0]} {copy.ritualTitle[1]}<br /><em>{copy.ritualTitle[2]}</em></h2>
