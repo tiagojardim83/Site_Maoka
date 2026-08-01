@@ -298,6 +298,13 @@ function useScrollJackCarousel<T extends HTMLElement>(
   // section doesn't need a full vertical scroll-px per horizontal-px to
   // clear the whole track — shortens the empty-feeling scroll runway.
   speed = 1,
+  // When the pinned box holds more than the carousel itself (e.g. a block
+  // stacked below it), its height isn't a fixed CSS value anymore, so the
+  // section's total scroll height has to be measured from the real DOM
+  // rather than computed with a calc(). This keeps that trailing block
+  // pinned in view together with the carousel instead of only appearing
+  // once the whole (much taller) section has scrolled past.
+  stickyRef?: RefObject<HTMLElement | null>,
 ) {
   useEffect(() => {
     const section = sectionRef.current;
@@ -309,6 +316,12 @@ function useScrollJackCarousel<T extends HTMLElement>(
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
     let horizontalTravel = 0;
     let pinDistance = 0;
+    // How far from the viewport top the pinned box sticks. Left at 0 for the
+    // projects carousel (pins flush to the top, as before); for itaipava
+    // (stickyRef passed in) this gets set to vertically center the pinned
+    // box instead, so the carousel settles in the middle of the screen
+    // rather than jammed against the top edge.
+    let stickyTopOffset = 0;
     let frame = 0;
 
     const render = () => {
@@ -319,7 +332,7 @@ function useScrollJackCarousel<T extends HTMLElement>(
 
       const sectionRect = section.getBoundingClientRect();
       const progress = pinDistance
-        ? Math.max(0, Math.min(1, -sectionRect.top / pinDistance))
+        ? Math.max(0, Math.min(1, (stickyTopOffset - sectionRect.top) / pinDistance))
         : 0;
 
       // Driven via scrollLeft rather than a CSS transform: some WebKit
@@ -358,6 +371,15 @@ function useScrollJackCarousel<T extends HTMLElement>(
       horizontalTravel = Math.max(0, trackWidth - viewport.clientWidth);
       pinDistance = horizontalTravel / speed;
       section.style.setProperty("--horizontal-travel", `${pinDistance}px`);
+
+      const sticky = stickyRef?.current;
+      if (sticky) {
+        const stickyHeight = sticky.getBoundingClientRect().height;
+        stickyTopOffset = Math.max(0, (window.innerHeight - stickyHeight) / 2);
+        section.style.setProperty("--itaipava-sticky-top", `${stickyTopOffset}px`);
+        section.style.height = `${stickyHeight + pinDistance}px`;
+      }
+
       queueRender();
     };
 
@@ -371,9 +393,13 @@ function useScrollJackCarousel<T extends HTMLElement>(
       window.removeEventListener("resize", measure);
       if (frame) window.cancelAnimationFrame(frame);
       section.style.removeProperty("--horizontal-travel");
+      if (stickyRef?.current) {
+        section.style.removeProperty("height");
+        section.style.removeProperty("--itaipava-sticky-top");
+      }
       viewport.scrollLeft = 0;
     };
-  }, [sectionRef, viewportRef, trackRef, speed]);
+  }, [sectionRef, viewportRef, trackRef, speed, stickyRef]);
 }
 
 export default function Home() {
@@ -394,10 +420,11 @@ export default function Home() {
   const itaipavaSectionRef = useRef<HTMLElement>(null);
   const itaipavaViewportRef = useRef<HTMLDivElement>(null);
   const itaipavaTrackRef = useRef<HTMLDivElement>(null);
+  const itaipavaStickyRef = useRef<HTMLDivElement>(null);
   const copy = translations[locale];
 
   useScrollJackCarousel(projectsSectionRef, projectsViewportRef, projectsTrackRef);
-  useScrollJackCarousel(itaipavaSectionRef, itaipavaViewportRef, itaipavaTrackRef, 2.5);
+  useScrollJackCarousel(itaipavaSectionRef, itaipavaViewportRef, itaipavaTrackRef, 2.5, itaipavaStickyRef);
 
   useEffect(() => {
     document.documentElement.lang = locale === "pt" ? "pt-BR" : "en";
@@ -421,11 +448,14 @@ export default function Home() {
   }, []);
 
   useEffect(() => {
-    const container = manifestoNumbersRef.current;
-    if (!container) return;
+    if (!manifestoNumbersRef.current) return;
 
+    // The 360° card lives inside the pinned carousel and the 03/01 cards
+    // live in normal flow right after it (so the pin only needs to cover
+    // the carousel + that first card, not the whole three-card block) —
+    // query the whole document since they're no longer under one container.
     const cards = Array.from(
-      container.querySelectorAll<HTMLElement>(".manifesto-number"),
+      document.querySelectorAll<HTMLElement>(".manifesto-number"),
     );
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
     const animationFrames = new Map<HTMLElement, number>();
@@ -984,14 +1014,10 @@ export default function Home() {
               <p>{copy.manifestoParagraphs[1]}</p>
             </div>
           </div>
-          <a className="text-link manifesto-process-link reveal" href="#processo-04">
-            <strong>{copy.processLink}</strong>
-            <span aria-hidden="true" />
-          </a>
         </section>
 
         <section className="itaipava-section" ref={itaipavaSectionRef}>
-          <div className="itaipava-sticky">
+          <div className="itaipava-sticky" ref={itaipavaStickyRef}>
             <div className="itaipava-viewport" ref={itaipavaViewportRef}>
               <div className="itaipava-track" ref={itaipavaTrackRef}>
                 {itaipavaImages.map((filename) => (
@@ -1006,14 +1032,17 @@ export default function Home() {
                 ))}
               </div>
             </div>
+
+            <div className="manifesto-numbers manifesto-numbers--lead" aria-label={copy.areasLabel}>
+              <div className="manifesto-number" tabIndex={0} aria-label={`360 ${copy.degrees} — ${copy.numbers[0]}`}>
+                <strong data-count="360" data-suffix="°" aria-hidden="true">360°</strong>
+                <span>{copy.numbers[0]}</span>
+              </div>
+            </div>
           </div>
         </section>
 
-        <div className="manifesto-numbers reveal" aria-label={copy.areasLabel} ref={manifestoNumbersRef}>
-          <div className="manifesto-number" tabIndex={0} aria-label={`360 ${copy.degrees} — ${copy.numbers[0]}`}>
-            <strong data-count="360" data-suffix="°" aria-hidden="true">360°</strong>
-            <span>{copy.numbers[0]}</span>
-          </div>
+        <div className="manifesto-numbers manifesto-numbers--rest" ref={manifestoNumbersRef}>
           <div className="manifesto-number" tabIndex={0} aria-label={`03 — ${copy.numbers[1]}`}>
             <strong data-count="3" data-pad="2" aria-hidden="true">03</strong>
             <span>{copy.numbers[1]}</span>

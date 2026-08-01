@@ -710,6 +710,7 @@ body:has(a:hover, button:hover) .cursor {
 
 .manifesto {
   background: var(--paper);
+  padding-bottom: 41px;
 }
 
 .manifesto-grid {
@@ -785,22 +786,17 @@ body:has(a:hover, button:hover) .cursor {
 
 .itaipava-section {
   --itaipava-card-height: min(56svh, 580px);
-  --itaipava-sticky-pad: 48px;
   position: relative;
-  height: calc(
-    var(--itaipava-card-height) + var(--itaipava-sticky-pad) * 2 +
-      var(--horizontal-travel, 130svh)
-  );
+  height: calc(var(--itaipava-card-height) + var(--horizontal-travel, 130svh));
   background: var(--paper);
 }
 
 .itaipava-sticky {
   position: sticky;
-  top: 0;
-  height: calc(var(--itaipava-card-height) + var(--itaipava-sticky-pad) * 2);
+  top: var(--itaipava-sticky-top, 0px);
   display: flex;
-  align-items: center;
-  overflow: hidden;
+  flex-direction: column;
+  gap: 41px;
 }
 
 .itaipava-viewport {
@@ -903,10 +899,21 @@ body:has(a:hover, button:hover) .cursor {
 .manifesto-numbers {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  margin: var(--space-section) 4vw 0;
+  margin: 0 4vw;
   background: var(--paper);
   border-top: 1px solid var(--line);
   border-bottom: 1px solid var(--line);
+}
+
+/* Split from the 03/01 pair so the scroll-jack pin only has to cover the
+   carousel + this card, not the whole three-card block (see .itaipava-sticky). */
+.manifesto-numbers--lead {
+  grid-template-columns: 1fr;
+  border-bottom: 0;
+}
+
+.manifesto-numbers--rest {
+  grid-template-columns: repeat(2, 1fr);
 }
 
 .manifesto-number {
@@ -1762,7 +1769,7 @@ body:has(a:hover, button:hover) .cursor {
   .process h2 em,
   .closing h2 em { padding-right: .06em; }
   .manifesto-grid { margin-top: var(--space-block); gap: 42px; }
-  .manifesto-numbers { grid-template-columns: 1fr; margin: var(--space-section) 18px 0; }
+  .manifesto-numbers { grid-template-columns: 1fr; margin: 0 18px; }
   .manifesto-number { min-height: 220px; padding: 38px 18px; }
   .manifesto-number + .manifesto-number { border-left: 0; border-top: 1px solid var(--line); }
   .itaipava-section { --itaipava-card-height: clamp(460px, 68svh, 520px); }
@@ -1850,7 +1857,7 @@ body:has(a:hover, button:hover) .cursor {
   }
   .project-viewport { overflow-x: auto; }
   .itaipava-section { height: auto !important; }
-  .itaipava-sticky { position: relative; height: auto; }
+  .itaipava-sticky { position: relative; top: 0; height: auto; }
   .itaipava-viewport { overflow-x: auto; }
   .cursor { display: none; }
   body, button, a { cursor: auto; }
