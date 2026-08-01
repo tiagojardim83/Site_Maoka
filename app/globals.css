@@ -1104,7 +1104,7 @@ body:has(a:hover, button:hover) .cursor {
 .project-card--7 .project-image { aspect-ratio: 16 / 10; }
 
 .project-track .project-image {
-  height: min(70svh, 740px);
+  height: min(56svh, 580px);
   aspect-ratio: auto;
 }
 
@@ -1651,7 +1651,7 @@ body:has(a:hover, button:hover) .cursor {
   .project-track .project-card--5,
   .project-track .project-card--6,
   .project-track .project-card--7 {
-    flex-basis: clamp(320px, 36vw, 580px);
+    flex-basis: clamp(420px, 50vw, 730px);
   }
 
   .project-track .project-card:nth-child(1) { margin-top: 0; }
@@ -1820,7 +1820,7 @@ body:has(a:hover, button:hover) .cursor {
     margin-top: 0;
   }
   .project-track .project-image {
-    height: clamp(400px, 64svh, 460px);
+    height: clamp(460px, 68svh, 520px);
     aspect-ratio: auto;
   }
   .project-open { display: none; }
