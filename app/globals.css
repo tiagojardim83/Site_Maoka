@@ -784,24 +784,23 @@ body:has(a:hover, button:hover) .cursor {
 }
 
 .itaipava-section {
+  --itaipava-card-height: min(56svh, 580px);
   position: relative;
-  height: calc(100svh + var(--horizontal-travel, 200svh));
+  height: calc(var(--itaipava-card-height) + var(--horizontal-travel, 130svh));
   background: var(--paper);
 }
 
 .itaipava-sticky {
   position: sticky;
-  top: 0;
-  height: 100svh;
-  display: flex;
-  align-items: center;
+  top: 50%;
+  transform: translateY(-50%);
   overflow: hidden;
 }
 
 .itaipava-viewport {
   position: relative;
   width: 100%;
-  height: min(56svh, 580px);
+  height: var(--itaipava-card-height);
   overflow: hidden;
   border-radius: var(--media-radius);
 }
@@ -1615,7 +1614,7 @@ body:has(a:hover, button:hover) .cursor {
     flex-basis: clamp(420px, 50vw, 730px);
   }
 
-  .itaipava-viewport { height: clamp(236px, 28.125vw, 411px); }
+  .itaipava-section { --itaipava-card-height: clamp(236px, 28.125vw, 411px); }
   .itaipava-card { flex-basis: clamp(420px, 50vw, 730px); }
 }
 
@@ -1760,7 +1759,7 @@ body:has(a:hover, button:hover) .cursor {
   .manifesto-numbers { grid-template-columns: 1fr; margin: var(--space-section) 18px 0; }
   .manifesto-number { min-height: 220px; padding: 38px 18px; }
   .manifesto-number + .manifesto-number { border-left: 0; border-top: 1px solid var(--line); }
-  .itaipava-viewport { height: clamp(460px, 68svh, 520px); }
+  .itaipava-section { --itaipava-card-height: clamp(460px, 68svh, 520px); }
   .itaipava-track { padding: 0 18px; gap: 18px; }
   .itaipava-card { flex-basis: 84vw; }
   .projects-sticky { padding: 36px 0 10px; }
@@ -1845,7 +1844,7 @@ body:has(a:hover, button:hover) .cursor {
   }
   .project-viewport { overflow-x: auto; }
   .itaipava-section { height: auto !important; }
-  .itaipava-sticky { position: relative; height: auto; }
+  .itaipava-sticky { position: relative; top: auto; transform: none; }
   .itaipava-viewport { overflow-x: auto; }
   .cursor { display: none; }
   body, button, a { cursor: auto; }

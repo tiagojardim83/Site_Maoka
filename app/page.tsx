@@ -294,6 +294,10 @@ function useScrollJackCarousel<T extends HTMLElement>(
   sectionRef: RefObject<T | null>,
   viewportRef: RefObject<HTMLDivElement | null>,
   trackRef: RefObject<HTMLDivElement | null>,
+  // >1 moves the images faster than the scroll itself, so the pinned
+  // section doesn't need a full vertical scroll-px per horizontal-px to
+  // clear the whole track — shortens the empty-feeling scroll runway.
+  speed = 1,
 ) {
   useEffect(() => {
     const section = sectionRef.current;
@@ -304,6 +308,7 @@ function useScrollJackCarousel<T extends HTMLElement>(
 
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
     let horizontalTravel = 0;
+    let pinDistance = 0;
     let frame = 0;
 
     const render = () => {
@@ -313,8 +318,8 @@ function useScrollJackCarousel<T extends HTMLElement>(
       }
 
       const sectionRect = section.getBoundingClientRect();
-      const progress = horizontalTravel
-        ? Math.max(0, Math.min(1, -sectionRect.top / horizontalTravel))
+      const progress = pinDistance
+        ? Math.max(0, Math.min(1, -sectionRect.top / pinDistance))
         : 0;
 
       // Driven via scrollLeft rather than a CSS transform: some WebKit
@@ -351,7 +356,8 @@ function useScrollJackCarousel<T extends HTMLElement>(
       const trackWidth =
         cardsWidth + gap * Math.max(0, cards.length - 1) + paddingLeft + paddingRight;
       horizontalTravel = Math.max(0, trackWidth - viewport.clientWidth);
-      section.style.setProperty("--horizontal-travel", `${horizontalTravel}px`);
+      pinDistance = horizontalTravel / speed;
+      section.style.setProperty("--horizontal-travel", `${pinDistance}px`);
       queueRender();
     };
 
@@ -367,7 +373,7 @@ function useScrollJackCarousel<T extends HTMLElement>(
       section.style.removeProperty("--horizontal-travel");
       viewport.scrollLeft = 0;
     };
-  }, [sectionRef, viewportRef, trackRef]);
+  }, [sectionRef, viewportRef, trackRef, speed]);
 }
 
 export default function Home() {
@@ -391,7 +397,7 @@ export default function Home() {
   const copy = translations[locale];
 
   useScrollJackCarousel(projectsSectionRef, projectsViewportRef, projectsTrackRef);
-  useScrollJackCarousel(itaipavaSectionRef, itaipavaViewportRef, itaipavaTrackRef);
+  useScrollJackCarousel(itaipavaSectionRef, itaipavaViewportRef, itaipavaTrackRef, 2.5);
 
   useEffect(() => {
     document.documentElement.lang = locale === "pt" ? "pt-BR" : "en";
