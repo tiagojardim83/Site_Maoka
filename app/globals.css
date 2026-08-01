@@ -1654,13 +1654,6 @@ body:has(a:hover, button:hover) .cursor {
     flex-basis: clamp(420px, 50vw, 730px);
   }
 
-  .project-track .project-card:nth-child(1) { margin-top: 0; }
-  .project-track .project-card:nth-child(2) { margin-top: 18px; }
-  .project-track .project-card:nth-child(3) { margin-top: 36px; }
-  .project-track .project-card:nth-child(4) { margin-top: 54px; }
-  .project-track .project-card:nth-child(5) { margin-top: 72px; }
-  .project-track .project-card:nth-child(6) { margin-top: 90px; }
-  .project-track .project-card:nth-child(7) { margin-top: 108px; }
 }
 
 @media (max-width: 900px) {
