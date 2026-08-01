@@ -785,15 +785,21 @@ body:has(a:hover, button:hover) .cursor {
 
 .itaipava-section {
   --itaipava-card-height: min(56svh, 580px);
+  --itaipava-sticky-pad: 48px;
   position: relative;
-  height: calc(var(--itaipava-card-height) + var(--horizontal-travel, 130svh));
+  height: calc(
+    var(--itaipava-card-height) + var(--itaipava-sticky-pad) * 2 +
+      var(--horizontal-travel, 130svh)
+  );
   background: var(--paper);
 }
 
 .itaipava-sticky {
   position: sticky;
-  top: 50%;
-  transform: translateY(-50%);
+  top: 0;
+  height: calc(var(--itaipava-card-height) + var(--itaipava-sticky-pad) * 2);
+  display: flex;
+  align-items: center;
   overflow: hidden;
 }
 
@@ -1844,7 +1850,7 @@ body:has(a:hover, button:hover) .cursor {
   }
   .project-viewport { overflow-x: auto; }
   .itaipava-section { height: auto !important; }
-  .itaipava-sticky { position: relative; top: auto; transform: none; }
+  .itaipava-sticky { position: relative; height: auto; }
   .itaipava-viewport { overflow-x: auto; }
   .cursor { display: none; }
   body, button, a { cursor: auto; }
