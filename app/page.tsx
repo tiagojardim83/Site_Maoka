@@ -1064,13 +1064,6 @@ export default function Home() {
           </div>
         </div>
 
-        <div className="marquee" aria-hidden="true">
-          <div className="marquee-track">
-            <span>{copy.marquee[0]}</span><i>✦</i><span>{copy.marquee[1]}</span><i>✦</i><span>{copy.marquee[2]}</span><i>✦</i>
-            <span>{copy.marquee[0]}</span><i>✦</i><span>{copy.marquee[1]}</span><i>✦</i><span>{copy.marquee[2]}</span><i>✦</i>
-          </div>
-        </div>
-
         <section className="projects" id="projetos" ref={projectsSectionRef}>
           <div className="projects-sticky">
             <div className="projects-heading reveal">
@@ -1128,6 +1121,13 @@ export default function Home() {
             aria-hidden="true"
           />
         </section>
+
+        <div className="marquee" aria-hidden="true">
+          <div className="marquee-track">
+            <span>{copy.marquee[0]}</span><i>✦</i><span>{copy.marquee[1]}</span><i>✦</i><span>{copy.marquee[2]}</span><i>✦</i>
+            <span>{copy.marquee[0]}</span><i>✦</i><span>{copy.marquee[1]}</span><i>✦</i><span>{copy.marquee[2]}</span><i>✦</i>
+          </div>
+        </div>
 
         <section className="craft" id="servicos">
           <div className="craft-content section-pad">
