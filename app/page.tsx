@@ -385,9 +385,13 @@ export default function Home() {
   const projectsSectionRef = useRef<HTMLElement>(null);
   const projectsViewportRef = useRef<HTMLDivElement>(null);
   const projectsTrackRef = useRef<HTMLDivElement>(null);
+  const itaipavaSectionRef = useRef<HTMLElement>(null);
+  const itaipavaViewportRef = useRef<HTMLDivElement>(null);
+  const itaipavaTrackRef = useRef<HTMLDivElement>(null);
   const copy = translations[locale];
 
   useScrollJackCarousel(projectsSectionRef, projectsViewportRef, projectsTrackRef);
+  useScrollJackCarousel(itaipavaSectionRef, itaipavaViewportRef, itaipavaTrackRef);
 
   useEffect(() => {
     document.documentElement.lang = locale === "pt" ? "pt-BR" : "en";
@@ -978,39 +982,41 @@ export default function Home() {
             <strong>{copy.processLink}</strong>
             <span aria-hidden="true" />
           </a>
-          <div className="manifesto-feature">
-            <div className="itaipava-carousel">
-              <div className="itaipava-viewport">
-                <div className="itaipava-track">
-                  {itaipavaImages.map((filename) => (
-                    <figure className="itaipava-card photo-reactive reveal" key={filename}>
-                      <img
-                        className="parallax-media"
-                        src={projectImage(filename)}
-                        alt={copy.itaipavaAlt}
-                        loading="lazy"
-                      />
-                    </figure>
-                  ))}
-                </div>
+        </section>
+
+        <section className="itaipava-section" ref={itaipavaSectionRef}>
+          <div className="itaipava-sticky">
+            <div className="itaipava-viewport" ref={itaipavaViewportRef}>
+              <div className="itaipava-track" ref={itaipavaTrackRef}>
+                {itaipavaImages.map((filename) => (
+                  <figure className="itaipava-card photo-reactive reveal" key={filename}>
+                    <img
+                      className="parallax-media"
+                      src={projectImage(filename)}
+                      alt={copy.itaipavaAlt}
+                      loading="lazy"
+                    />
+                  </figure>
+                ))}
               </div>
             </div>
           </div>
-          <div className="manifesto-numbers reveal" aria-label={copy.areasLabel} ref={manifestoNumbersRef}>
-            <div className="manifesto-number" tabIndex={0} aria-label={`360 ${copy.degrees} — ${copy.numbers[0]}`}>
-              <strong data-count="360" data-suffix="°" aria-hidden="true">360°</strong>
-              <span>{copy.numbers[0]}</span>
-            </div>
-            <div className="manifesto-number" tabIndex={0} aria-label={`03 — ${copy.numbers[1]}`}>
-              <strong data-count="3" data-pad="2" aria-hidden="true">03</strong>
-              <span>{copy.numbers[1]}</span>
-            </div>
-            <div className="manifesto-number" tabIndex={0} aria-label={`01 — ${copy.numbers[2]}`}>
-              <strong data-count="1" data-pad="2" aria-hidden="true">01</strong>
-              <span>{copy.numbers[2]}</span>
-            </div>
-          </div>
         </section>
+
+        <div className="manifesto-numbers reveal" aria-label={copy.areasLabel} ref={manifestoNumbersRef}>
+          <div className="manifesto-number" tabIndex={0} aria-label={`360 ${copy.degrees} — ${copy.numbers[0]}`}>
+            <strong data-count="360" data-suffix="°" aria-hidden="true">360°</strong>
+            <span>{copy.numbers[0]}</span>
+          </div>
+          <div className="manifesto-number" tabIndex={0} aria-label={`03 — ${copy.numbers[1]}`}>
+            <strong data-count="3" data-pad="2" aria-hidden="true">03</strong>
+            <span>{copy.numbers[1]}</span>
+          </div>
+          <div className="manifesto-number" tabIndex={0} aria-label={`01 — ${copy.numbers[2]}`}>
+            <strong data-count="1" data-pad="2" aria-hidden="true">01</strong>
+            <span>{copy.numbers[2]}</span>
+          </div>
+        </div>
 
         <div className="marquee" aria-hidden="true">
           <div className="marquee-track">

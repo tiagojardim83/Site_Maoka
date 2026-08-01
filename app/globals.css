@@ -768,56 +768,6 @@ body:has(a:hover, button:hover) .cursor {
   line-height: 1.55;
 }
 
-.manifesto-feature {
-  position: relative;
-  width: 100%;
-  margin-top: var(--space-section);
-}
-
-.manifesto-sign {
-  position: absolute;
-  z-index: 4;
-  top: 50%;
-  left: 50%;
-  width: min(70%, 320px);
-  transform: translate(-50%, -50%);
-  pointer-events: none;
-}
-
-.manifesto-sign-motion {
-  --parallax-y: 0px;
-  width: 100%;
-  perspective: 1200px;
-  transform: translate3d(0, var(--parallax-y), 0);
-  will-change: transform;
-}
-
-.manifesto-sign img {
-  display: block;
-  width: 100%;
-  height: auto;
-  transform-origin: 50% 52%;
-  transform-style: preserve-3d;
-  animation: signoFloat 9s ease-in-out infinite paused;
-  will-change: transform;
-}
-
-.manifesto-sign.is-visible img {
-  animation-play-state: running;
-}
-
-/* .reveal also sets `transform` for its slide-in animation, which would
-   otherwise clobber the centering transform above (same specificity,
-   .reveal wins on source order). Combine both in one higher-specificity
-   rule so centering survives in every reveal state. */
-.manifesto-sign.reveal {
-  transform: translate(-50%, -50%) translateY(72px);
-}
-
-.manifesto-sign.reveal.is-visible {
-  transform: translate(-50%, -50%) translateY(0);
-}
-
 @keyframes signoFloat {
   0%, 100% {
     transform: translate3d(-4%, 7%, 0) rotate(-13deg) rotateX(8deg) rotateY(-6deg) scale(.82);
@@ -833,24 +783,35 @@ body:has(a:hover, button:hover) .cursor {
   }
 }
 
-.itaipava-carousel {
+.itaipava-section {
   position: relative;
+  height: calc(100svh + var(--horizontal-travel, 200svh));
+  background: var(--paper);
+}
+
+.itaipava-sticky {
+  position: sticky;
+  top: 0;
+  height: 100svh;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
 }
 
 .itaipava-viewport {
   position: relative;
   width: 100%;
   height: min(56svh, 580px);
-  overflow-x: auto;
-  overflow-y: hidden;
+  overflow: hidden;
   border-radius: var(--media-radius);
-  scroll-snap-type: x proximity;
-  -webkit-overflow-scrolling: touch;
 }
 
 .itaipava-track {
+  width: max-content;
   height: 100%;
+  padding: 0 4vw;
   display: flex;
+  align-items: flex-start;
   gap: 14px;
 }
 
@@ -861,7 +822,6 @@ body:has(a:hover, button:hover) .cursor {
   margin: 0;
   overflow: hidden;
   border-radius: var(--media-radius);
-  scroll-snap-align: start;
 }
 
 .itaipava-card img {
@@ -938,7 +898,8 @@ body:has(a:hover, button:hover) .cursor {
 .manifesto-numbers {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  margin-top: var(--space-section);
+  margin: var(--space-section) 4vw 0;
+  background: var(--paper);
   border-top: 1px solid var(--line);
   border-bottom: 1px solid var(--line);
 }
@@ -1678,7 +1639,6 @@ body:has(a:hover, button:hover) .cursor {
     justify-self: start;
     padding-top: 0;
   }
-  .manifesto-feature { margin-top: var(--space-section); }
   .projects-heading {
     grid-template-columns: 1fr;
     gap: clamp(24px, 4vh, 36px);
@@ -1797,11 +1757,11 @@ body:has(a:hover, button:hover) .cursor {
   .process h2 em,
   .closing h2 em { padding-right: .06em; }
   .manifesto-grid { margin-top: var(--space-block); gap: 42px; }
-  .manifesto-feature { margin-top: var(--space-section); }
-  .manifesto-numbers { grid-template-columns: 1fr; }
+  .manifesto-numbers { grid-template-columns: 1fr; margin: var(--space-section) 18px 0; }
   .manifesto-number { min-height: 220px; padding: 38px 18px; }
   .manifesto-number + .manifesto-number { border-left: 0; border-top: 1px solid var(--line); }
   .itaipava-viewport { height: clamp(460px, 68svh, 520px); }
+  .itaipava-track { padding: 0 18px; gap: 18px; }
   .itaipava-card { flex-basis: 84vw; }
   .projects-sticky { padding: 36px 0 10px; }
   .projects-heading { padding: 0 18px; gap: 12px; }
@@ -1858,9 +1818,6 @@ body:has(a:hover, button:hover) .cursor {
   .project-image { clip-path: none; }
   .parallax-media { transform: none; }
   .hero-scroll-reveal { clip-path: none; }
-  .manifesto-sign-motion,
-  .manifesto-sign img { transform: none; }
-  .manifesto-sign img { animation: none; }
   .craft-sign-motion,
   .craft-sign img { transform: none; }
   .craft-sign img { animation: none; }
@@ -1887,6 +1844,9 @@ body:has(a:hover, button:hover) .cursor {
     min-height: 100svh;
   }
   .project-viewport { overflow-x: auto; }
+  .itaipava-section { height: auto !important; }
+  .itaipava-sticky { position: relative; height: auto; }
+  .itaipava-viewport { overflow-x: auto; }
   .cursor { display: none; }
   body, button, a { cursor: auto; }
 }
