@@ -375,7 +375,14 @@ function useScrollJackCarousel<T extends HTMLElement>(
       const sticky = stickyRef?.current;
       if (sticky) {
         const stickyHeight = sticky.getBoundingClientRect().height;
-        stickyTopOffset = Math.max(0, (window.innerHeight - stickyHeight) / 2);
+        // Center within the space actually visible below the fixed header,
+        // not the raw window height — otherwise the "centered" offset can
+        // land underneath the header (or be small enough to look like it's
+        // still pinned flush to the top).
+        const headerHeight =
+          document.querySelector<HTMLElement>(".site-header")?.getBoundingClientRect().height ?? 0;
+        const visibleHeight = window.innerHeight - headerHeight;
+        stickyTopOffset = headerHeight + Math.max(0, (visibleHeight - stickyHeight) / 2);
         section.style.setProperty("--itaipava-sticky-top", `${stickyTopOffset}px`);
         section.style.height = `${stickyHeight + pinDistance}px`;
       }
