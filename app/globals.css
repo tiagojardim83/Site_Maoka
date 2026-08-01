@@ -9,6 +9,7 @@
   --red: #e51100;
   --red-rgb: 229, 17, 0;
   --blue: #6f8cb8;
+  --gray: #8f8b83;
   --line: rgba(var(--ink-rgb), 0.13);
   --serif: var(--font-monument), Arial, sans-serif;
   --sans: var(--font-botanica), Arial, sans-serif;
@@ -267,6 +268,7 @@ body:has(a:hover, button:hover) .cursor {
 .site-header--menu .language-toggle {
   top: calc(clamp(24px, 3.5vh, 38px) + 17px);
   left: calc(50% + min(44vw, 590px) - 170px);
+  background: var(--gray);
 }
 
 .menu-shell.is-open {
@@ -275,6 +277,7 @@ body:has(a:hover, button:hover) .cursor {
   width: min(88vw, 1180px);
   height: min(88svh, 860px);
   border-radius: 4px;
+  background: var(--gray);
   box-shadow: 0 20px 55px rgba(var(--ink-rgb), .18);
 }
 
@@ -378,7 +381,7 @@ body:has(a:hover, button:hover) .cursor {
 }
 
 .menu-panel nav a:hover { padding-left: 8px; }
-.menu-panel nav small { font-size: 7px; letter-spacing: .15em; }
+.menu-panel nav small { font-size: 7px; letter-spacing: .15em; color: rgba(var(--ink-rgb), .45); }
 .menu-panel nav span { font-size: clamp(24px, 3.2vw, 48px); letter-spacing: -.045em; line-height: 1.1; }
 .menu-panel nav i { display: flex; font-style: normal; }
 
