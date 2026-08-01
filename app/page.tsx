@@ -385,13 +385,9 @@ export default function Home() {
   const projectsSectionRef = useRef<HTMLElement>(null);
   const projectsViewportRef = useRef<HTMLDivElement>(null);
   const projectsTrackRef = useRef<HTMLDivElement>(null);
-  const itaipavaSectionRef = useRef<HTMLDivElement>(null);
-  const itaipavaViewportRef = useRef<HTMLDivElement>(null);
-  const itaipavaTrackRef = useRef<HTMLDivElement>(null);
   const copy = translations[locale];
 
   useScrollJackCarousel(projectsSectionRef, projectsViewportRef, projectsTrackRef);
-  useScrollJackCarousel(itaipavaSectionRef, itaipavaViewportRef, itaipavaTrackRef);
 
   useEffect(() => {
     document.documentElement.lang = locale === "pt" ? "pt-BR" : "en";
@@ -979,21 +975,19 @@ export default function Home() {
             <span aria-hidden="true" />
           </a>
           <div className="manifesto-feature">
-            <div className="itaipava-carousel" ref={itaipavaSectionRef}>
-              <div className="itaipava-carousel-sticky">
-                <div className="itaipava-viewport" ref={itaipavaViewportRef}>
-                  <div className="itaipava-track" ref={itaipavaTrackRef}>
-                    {itaipavaImages.map((filename) => (
-                      <figure className="itaipava-card photo-reactive reveal" key={filename}>
-                        <img
-                          className="parallax-media"
-                          src={projectImage(filename)}
-                          alt={copy.itaipavaAlt}
-                          loading="lazy"
-                        />
-                      </figure>
-                    ))}
-                  </div>
+            <div className="itaipava-carousel">
+              <div className="itaipava-viewport">
+                <div className="itaipava-track">
+                  {itaipavaImages.map((filename) => (
+                    <figure className="itaipava-card photo-reactive reveal" key={filename}>
+                      <img
+                        className="parallax-media"
+                        src={projectImage(filename)}
+                        alt={copy.itaipavaAlt}
+                        loading="lazy"
+                      />
+                    </figure>
+                  ))}
                 </div>
               </div>
             </div>
