@@ -1227,7 +1227,7 @@ body:has(a:hover, button:hover) .cursor {
 .areas-list {
   display: flex;
   flex-direction: column;
-  gap: 3px;
+  gap: clamp(20px, 2.6vw, 32px);
   margin-top: clamp(28px, 3.5vw, 44px);
 }
 
@@ -1236,13 +1236,13 @@ body:has(a:hover, button:hover) .cursor {
   align-items: center;
   justify-content: space-between;
   gap: 24px;
-  padding: clamp(28px, 4vw, 48px) clamp(24px, 3vw, 40px);
-  background: var(--paper);
-  color: var(--ink);
-  transition: padding-left 250ms ease;
+  padding: clamp(20px, 2.8vw, 32px) 0;
+  background: transparent;
+  color: var(--red);
+  border-top: 1px solid var(--red);
+  border-bottom: 1px solid var(--red);
+  transition: color 300ms ease, border-color 300ms ease;
 }
-
-.areas-row:hover { padding-left: calc(clamp(24px, 3vw, 40px) + 10px); }
 
 .areas-row-text {
   display: flex;
@@ -1251,16 +1251,15 @@ body:has(a:hover, button:hover) .cursor {
   min-width: 0;
 }
 
-.areas-row-text strong { overflow-wrap: break-word; }
-
 .areas-row-text strong {
+  overflow-wrap: break-word;
   font-family: var(--serif);
   font-weight: 900;
   font-size: clamp(28px, 4.4vw, 56px);
   line-height: 1;
   letter-spacing: -.03em;
   text-transform: uppercase;
-  color: var(--red);
+  color: inherit;
   transition: color 300ms ease;
 }
 
@@ -1269,25 +1268,34 @@ body:has(a:hover, button:hover) .cursor {
   font-size: 11px;
   font-weight: 700;
   letter-spacing: .14em;
-  color: rgba(var(--ink-rgb), .6);
+  color: inherit;
+  opacity: .78;
+  transition: color 300ms ease;
 }
 
-.areas-row:hover .areas-row-text strong,
-.areas-row.is-centered .areas-row-text strong {
+.areas-row-arrow {
+  display: grid;
+  place-items: center;
+  width: 56px;
+  height: 56px;
+  flex: 0 0 56px;
+  border: 1px solid currentColor;
+  border-radius: 50%;
+  transition: color 300ms ease, border-color 300ms ease;
+}
+
+.areas-row-arrow .arrow-icon {
+  width: 22px;
+  height: 22px;
+}
+
+.areas-row.is-centered {
   color: var(--blue);
 }
 
-.areas-row .arrow-icon {
-  width: 34px;
-  height: 34px;
-  flex: 0 0 34px;
-  color: var(--red);
-}
-
 @media (max-width: 620px) {
-  .areas-row .arrow-icon { width: 22px; height: 22px; flex-basis: 22px; }
-  .areas-row { padding-left: 18px; padding-right: 18px; gap: 14px; }
-  .areas-row:hover { padding-left: 28px; }
+  .areas-row-arrow { width: 40px; height: 40px; flex-basis: 40px; }
+  .areas-row-arrow .arrow-icon { width: 17px; height: 17px; }
   .areas-row-text strong { font-size: clamp(16px, 5.4vw, 20px); }
 }
 

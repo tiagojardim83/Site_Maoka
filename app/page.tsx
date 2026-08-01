@@ -480,20 +480,53 @@ export default function Home() {
   }, []);
 
   useEffect(() => {
-    // Same "blue while centered" behavior as the manifesto numbers: on
-    // mobile this fires as each row crosses dead-center of the viewport;
-    // on desktop it's redundant with the CSS :hover rule but harmless.
+    // Only one row highlighted blue at a time: whichever crosses
+    // dead-center of the viewport while scrolling (either direction, on
+    // any device), or whichever is hovered on desktop — hover wins while
+    // active, falling back to the centered row once the pointer leaves.
     const rows = Array.from(document.querySelectorAll<HTMLElement>(".areas-row"));
+    let centeredRow: HTMLElement | null = null;
+    let hoveredRow: HTMLElement | null = null;
+
+    const applyActive = () => {
+      const active = hoveredRow ?? centeredRow;
+      rows.forEach((row) => row.classList.toggle("is-centered", row === active));
+    };
+
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          entry.target.classList.toggle("is-centered", entry.isIntersecting);
+          const row = entry.target as HTMLElement;
+          if (entry.isIntersecting) centeredRow = row;
+          else if (centeredRow === row) centeredRow = null;
         });
+        applyActive();
       },
       { rootMargin: "-50% 0px -50% 0px" },
     );
-    rows.forEach((row) => observer.observe(row));
-    return () => observer.disconnect();
+
+    const onEnter = (event: Event) => {
+      hoveredRow = event.currentTarget as HTMLElement;
+      applyActive();
+    };
+    const onLeave = () => {
+      hoveredRow = null;
+      applyActive();
+    };
+
+    rows.forEach((row) => {
+      observer.observe(row);
+      row.addEventListener("pointerenter", onEnter);
+      row.addEventListener("pointerleave", onLeave);
+    });
+
+    return () => {
+      observer.disconnect();
+      rows.forEach((row) => {
+        row.removeEventListener("pointerenter", onEnter);
+        row.removeEventListener("pointerleave", onLeave);
+      });
+    };
   }, []);
 
   useEffect(() => {
@@ -1000,7 +1033,7 @@ export default function Home() {
                     <strong>{copy.categories[category]}</strong>
                     <small>{count} {copy.areasProjectsWord}</small>
                   </span>
-                  <i aria-hidden="true"><ArrowIcon /></i>
+                  <i className="areas-row-arrow" aria-hidden="true"><ArrowIcon /></i>
                 </a>
               );
             })}
