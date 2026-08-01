@@ -382,9 +382,13 @@ function useScrollJackCarousel<T extends HTMLElement>(
         const headerHeight =
           document.querySelector<HTMLElement>(".site-header")?.getBoundingClientRect().height ?? 0;
         const visibleHeight = window.innerHeight - headerHeight;
-        stickyTopOffset = headerHeight + Math.max(0, (visibleHeight - stickyHeight) / 2);
+        // Nudged a bit further down than dead-center: on most screens the
+        // carousel is nearly as tall as the visible area, leaving barely
+        // any room for the centering math above to actually move it.
+        const extraPush = 48;
+        stickyTopOffset = headerHeight + Math.max(0, (visibleHeight - stickyHeight) / 2) + extraPush;
         section.style.setProperty("--itaipava-sticky-top", `${stickyTopOffset}px`);
-        section.style.height = `${stickyHeight + pinDistance}px`;
+        section.style.height = `${stickyHeight + stickyTopOffset + pinDistance}px`;
       }
 
       queueRender();
