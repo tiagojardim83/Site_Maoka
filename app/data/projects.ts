@@ -102,8 +102,31 @@ export const projects: Project[] = [
   },
 ];
 
+export const categoryOrder: ProjectCategory[] = ["entertainment", "corporate", "activations"];
+
 export const categoryLabels: Record<ProjectCategory, Record<Locale, string>> = {
   entertainment: { pt: "Entretenimento", en: "Entertainment" },
   corporate: { pt: "Corporativo", en: "Corporate" },
   activations: { pt: "Ativações", en: "Activations" },
+};
+
+export const categorySlugs: Record<ProjectCategory, string> = {
+  entertainment: "entretenimento",
+  corporate: "corporativo",
+  activations: "ativacoes",
+};
+
+export const categoryDescriptions: Record<ProjectCategory, Record<Locale, string>> = {
+  entertainment: {
+    pt: "Palcos, ativações e experiências ao vivo que transformam o público em protagonista, do conceito à produção de ponta a ponta.",
+    en: "Stages, activations and live experiences that turn the audience into the protagonist, from concept to end-to-end production.",
+  },
+  corporate: {
+    pt: "Espaços institucionais e comerciais que traduzem estratégia de marca em presença física marcante, para eventos e ativações corporativas.",
+    en: "Institutional and commercial spaces that translate brand strategy into a striking physical presence, for corporate events and activations.",
+  },
+  activations: {
+    pt: "Ações de marca pontuais, pensadas para gerar conexão imediata com o público em ambientes urbanos e comerciais.",
+    en: "One-off brand activations designed to create an immediate connection with the audience in urban and commercial environments.",
+  },
 };

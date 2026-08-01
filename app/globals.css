@@ -1920,10 +1920,11 @@ body:has(a:hover, button:hover) .cursor {
   margin: 0 0 28px;
   font-family: var(--serif);
   font-weight: 900;
-  font-size: clamp(44px, 7vw, 96px);
+  font-size: clamp(26px, 8vw, 96px);
   line-height: .96;
   letter-spacing: -.03em;
   text-transform: uppercase;
+  overflow-wrap: break-word;
 }
 
 .project-detail-text {

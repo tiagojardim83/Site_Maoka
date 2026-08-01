@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState, type RefObject } from "react";
 import Link from "next/link";
-import { projects, projectImage, type Locale } from "./data/projects";
+import { projects, projectImage, categoryOrder, categorySlugs, type Locale } from "./data/projects";
 import Header from "./components/Header";
 
 const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
@@ -19,8 +19,6 @@ const heroLetters = [
   ["K", "Asset 1_K.svg"],
   ["A", "Asset 3_A.svg"],
 ];
-
-const categoryOrder = ["entertainment", "corporate", "activations"] as const;
 
 const itaipavaImages = Array.from(
   { length: 6 },
@@ -1028,13 +1026,13 @@ export default function Home() {
             {categoryOrder.map((category) => {
               const count = projects.filter((project) => project.category === category).length;
               return (
-                <a className="areas-row reveal" href="/#projetos" key={category}>
+                <Link className="areas-row reveal" href={`/categorias/${categorySlugs[category]}`} key={category}>
                   <span className="areas-row-text">
                     <strong>{copy.categories[category]}</strong>
                     <small>{count} {copy.areasProjectsWord}</small>
                   </span>
                   <i className="areas-row-arrow" aria-hidden="true"><ArrowIcon /></i>
-                </a>
+                </Link>
               );
             })}
           </div>
