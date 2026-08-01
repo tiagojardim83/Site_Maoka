@@ -1,20 +1,10 @@
 "use client";
 
 import { useEffect, useRef, useState, type RefObject } from "react";
-
-type Project = {
-  name: string;
-  category: "entertainment" | "corporate" | "activations";
-  image: string;
-  year: string;
-  place: Record<Locale, string>;
-  description: Record<Locale, string>;
-};
-
-type Locale = "pt" | "en";
+import Link from "next/link";
+import { projects, projectImage, type Locale } from "./data/projects";
 
 const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
-const projectImage = (filename: string) => `${basePath}/projects/${filename}`;
 
 const whatsAppContacts = [
   { label: "+55 12 98214-1215", href: "https://wa.me/5512982141215" },
@@ -38,86 +28,6 @@ const itaipavaImages = Array.from(
   { length: 6 },
   (_, index) => `maoka_itaipava_0${index + 1}.webp`,
 );
-
-const projects: Project[] = [
-  {
-    name: "Nossa Praia",
-    category: "entertainment",
-    image: projectImage("hero-nossa-praia.webp"),
-    year: "2026",
-    place: { pt: "Brasil", en: "Brazil" },
-    description: {
-      pt: "Materiais naturais, luz quente e cores de pôr do sol transformam a paisagem em um espaço de permanência, leveza e conexão.",
-      en: "Natural materials, warm light and sunset colors transform the landscape into a place for lingering, lightness and connection.",
-    },
-  },
-  {
-    name: "Google Marketing Live",
-    category: "corporate",
-    image: projectImage("hero-google.webp"),
-    year: "2026",
-    place: { pt: "São Paulo", en: "São Paulo" },
-    description: {
-      pt: "Uma jornada imersiva e acessível, com soluções tipológicas próprias para conteúdo, interação e aproximação entre público e marca.",
-      en: "An immersive, accessible journey with tailored spatial solutions for content, interaction and meaningful connections between people and brand.",
-    },
-  },
-  {
-    name: "Unigames",
-    category: "entertainment",
-    image: projectImage("hero-unigames.webp"),
-    year: "2026",
-    place: { pt: "Alfenas", en: "Alfenas" },
-    description: {
-      pt: "Um palco monumental que traduz energia, disputa e celebração em uma identidade visual impossível de ignorar.",
-      en: "A monumental stage that translates energy, competition and celebration into an impossible-to-ignore visual identity.",
-    },
-  },
-  {
-    name: "Toyota Yaris Cross",
-    category: "corporate",
-    image: projectImage("toyota-yaris.webp"),
-    year: "2026",
-    place: { pt: "São Paulo", en: "São Paulo" },
-    description: {
-      pt: "Três grandes painéis de LED e uma plataforma giratória transformam a revelação do veículo em um momento de movimento e impacto.",
-      en: "Three large LED screens and a rotating platform turn the vehicle reveal into a moment of movement and impact.",
-    },
-  },
-  {
-    name: "Shein",
-    category: "activations",
-    image: projectImage("shein.webp"),
-    year: "2026",
-    place: { pt: "Brasil", en: "Brazil" },
-    description: {
-      pt: "Circulação intuitiva, visibilidade total e uma linguagem visual vibrante unem funcionalidade, produto e experiência de marca.",
-      en: "Intuitive circulation, full visibility and a vibrant visual language bring together function, product and brand experience.",
-    },
-  },
-  {
-    name: "Purina Pro Plan",
-    category: "corporate",
-    image: projectImage("purina-pro-plan.webp"),
-    year: "2026",
-    place: { pt: "São Paulo", en: "São Paulo" },
-    description: {
-      pt: "Um encontro sofisticado que conecta inovação, pesquisa e relacionamento em uma jornada fluida entre conteúdo e convivência.",
-      en: "A sophisticated setting connecting innovation, research and relationships through a fluid journey between content and gathering.",
-    },
-  },
-  {
-    name: "Iced Coffee Club",
-    category: "activations",
-    image: projectImage("iced-coffee-club.webp"),
-    year: "2026",
-    place: { pt: "Edifício Itália, SP", en: "Edifício Itália, São Paulo" },
-    description: {
-      pt: "Café gelado, música e lifestyle se encontram em uma experiência urbana com ativações sensoriais e espaços de conexão social.",
-      en: "Iced coffee, music and lifestyle meet in an urban experience shaped by sensory activations and spaces for social connection.",
-    },
-  },
-];
 
 const menuLinks = ["#top", "#manifesto", "#projetos", "#servicos", "#processo", "#contato"];
 
@@ -435,7 +345,6 @@ export default function Home() {
   const [entryActive, setEntryActive] = useState(true);
   const [orbsVisible, setOrbsVisible] = useState(false);
   const [desktopMosaic, setDesktopMosaic] = useState(false);
-  const [activeProject, setActiveProject] = useState<Project | null>(null);
   const cursorRef = useRef<HTMLDivElement>(null);
   const entryRef = useRef<HTMLElement>(null);
   const heroOrbsRef = useRef<HTMLDivElement>(null);
@@ -787,19 +696,16 @@ export default function Home() {
   }, []);
 
   useEffect(() => {
-    document.body.style.overflow = menuOpen || activeProject ? "hidden" : "";
+    document.body.style.overflow = menuOpen ? "hidden" : "";
     const onKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "Escape") {
-        setMenuOpen(false);
-        setActiveProject(null);
-      }
+      if (event.key === "Escape") setMenuOpen(false);
     };
     window.addEventListener("keydown", onKeyDown);
     return () => {
       document.body.style.overflow = "";
       window.removeEventListener("keydown", onKeyDown);
     };
-  }, [menuOpen, activeProject]);
+  }, [menuOpen]);
 
   useEffect(() => {
     const elements = document.querySelectorAll<HTMLElement>(
@@ -1086,11 +992,10 @@ export default function Home() {
             <div className="project-viewport" ref={projectsViewportRef}>
               <div className="project-track" ref={projectsTrackRef}>
                 {projects.map((project, index) => (
-                  <button
+                  <Link
                     className={`project-card project-card--${(index % 7) + 1} photo-reactive reveal`}
-                    type="button"
-                    key={project.name}
-                    onClick={() => setActiveProject(project)}
+                    key={project.slug}
+                    href={`/projects/${project.slug}`}
                     aria-label={`${copy.openProject} ${project.name}`}
                   >
                     <span className="project-image media-mask">
@@ -1111,7 +1016,7 @@ export default function Home() {
                       </span>
                       <i aria-hidden="true">↗</i>
                     </span>
-                  </button>
+                  </Link>
                 ))}
               </div>
             </div>
@@ -1244,22 +1149,6 @@ export default function Home() {
         </div>
         <div className="footer-bottom"><span>© {new Date().getFullYear()} {copy.footerBrand}</span><span>{copy.footerTagline}</span></div>
       </footer>
-
-      {activeProject && (
-        <div className="project-modal" role="dialog" aria-modal="true" aria-label={`${copy.projectDialog} ${activeProject.name}`}>
-          <button className="modal-backdrop" aria-label={copy.closeProject} onClick={() => setActiveProject(null)} />
-          <div className="modal-panel">
-            <button className="modal-close" type="button" onClick={() => setActiveProject(null)} aria-label={copy.closeProject}><span /> <span /></button>
-            <div className="modal-media photo-reactive is-visible"><img src={activeProject.image} alt={activeProject.name} /></div>
-            <div className="modal-copy">
-              <div className="modal-tags"><span>{copy.categories[activeProject.category]}</span><span>{activeProject.year}</span><span>{activeProject.place[locale]}</span></div>
-              <h2>{activeProject.name}</h2>
-              <p>{activeProject.description[locale]}</p>
-              <a href="mailto:maokacenografia@gmail.com">{copy.createWithMaoka} <span>↗</span></a>
-            </div>
-          </div>
-        </div>
-      )}
     </>
   );
 }
