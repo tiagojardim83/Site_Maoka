@@ -282,6 +282,21 @@ function Brand({ compact = false, alt }: { compact?: boolean; alt: string }) {
   );
 }
 
+function ArrowIcon() {
+  return (
+    <svg className="arrow-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+      <path
+        d="M6 18 18 6M18 6H9M18 6v9"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
 function WhatsAppIcon() {
   return (
     <svg className="whatsapp-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
@@ -902,29 +917,14 @@ export default function Home() {
                 <a key={href} href={href} onClick={() => setMenuOpen(false)} tabIndex={menuOpen ? 0 : -1}>
                   <small>{String(index + 1).padStart(2, "0")}</small>
                   <span>{copy.menu[index]}</span>
-                  <i aria-hidden="true">↗</i>
+                  <i aria-hidden="true"><ArrowIcon /></i>
                 </a>
               ))}
             </nav>
             <div className="menu-footer">
-              {whatsAppContacts.map((contact) => (
-                <a
-                  className="whatsapp-link"
-                  href={contact.href}
-                  target="_blank"
-                  rel="noreferrer"
-                  tabIndex={menuOpen ? 0 : -1}
-                  aria-label={`WhatsApp ${contact.label}`}
-                  key={contact.href}
-                >
-                  <WhatsAppIcon />
-                  {contact.label}
-                </a>
-              ))}
-              <a href="mailto:maokacenografia@gmail.com" tabIndex={menuOpen ? 0 : -1}>maokacenografia@gmail.com ↗</a>
-              <a href="https://www.instagram.com/maokacenografia/" target="_blank" rel="noreferrer" tabIndex={menuOpen ? 0 : -1}>Instagram ↗</a>
-              <a href="https://www.behance.net/maokacenografia" target="_blank" rel="noreferrer" tabIndex={menuOpen ? 0 : -1}>Behance ↗</a>
-              <a href="https://www.linkedin.com/company/maokacenografia" target="_blank" rel="noreferrer" tabIndex={menuOpen ? 0 : -1}>LinkedIn ↗</a>
+              <a href="https://www.instagram.com/maokacenografia/" target="_blank" rel="noreferrer" tabIndex={menuOpen ? 0 : -1}>Instagram <ArrowIcon /></a>
+              <a href="https://www.behance.net/maokacenografia" target="_blank" rel="noreferrer" tabIndex={menuOpen ? 0 : -1}>Behance <ArrowIcon /></a>
+              <a href="https://www.linkedin.com/company/maokacenografia" target="_blank" rel="noreferrer" tabIndex={menuOpen ? 0 : -1}>LinkedIn <ArrowIcon /></a>
             </div>
           </div>
         </div>

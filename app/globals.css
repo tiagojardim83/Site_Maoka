@@ -380,7 +380,15 @@ body:has(a:hover, button:hover) .cursor {
 .menu-panel nav a:hover { padding-left: 8px; }
 .menu-panel nav small { font-size: 7px; letter-spacing: .15em; }
 .menu-panel nav span { font-size: clamp(24px, 3.2vw, 48px); letter-spacing: -.045em; line-height: 1.1; }
-.menu-panel nav i { font-family: var(--serif); font-size: 15px; font-style: normal; }
+.menu-panel nav i { display: flex; font-style: normal; }
+
+.arrow-icon {
+  width: 14px;
+  height: 14px;
+  flex: 0 0 14px;
+}
+
+.menu-panel nav i .arrow-icon { width: 15px; height: 15px; flex-basis: 15px; }
 
 .menu-footer {
   display: flex;
@@ -394,8 +402,10 @@ body:has(a:hover, button:hover) .cursor {
   letter-spacing: .11em;
 }
 
-.menu-footer a:nth-child(4) {
-  margin-top: 5px;
+.menu-footer a {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
 }
 
 .whatsapp-link {
