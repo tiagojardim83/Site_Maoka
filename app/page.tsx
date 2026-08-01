@@ -524,13 +524,24 @@ export default function Home() {
       animationFrames.set(card, window.requestAnimationFrame(tick));
     };
 
+    // On desktop, re-trigger (and highlight blue, like a hover) every time a
+    // card crosses dead-center of the viewport, scrolling up or down — not
+    // just once on first view. Mobile keeps the original "38% visible"
+    // one-way trigger untouched.
+    const canHover = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          if (entry.isIntersecting) animateCounter(entry.target as HTMLElement);
+          const card = entry.target as HTMLElement;
+          if (entry.isIntersecting) {
+            animateCounter(card);
+            if (canHover) card.classList.add("is-centered");
+          } else if (canHover) {
+            card.classList.remove("is-centered");
+          }
         });
       },
-      { threshold: 0.38 },
+      canHover ? { rootMargin: "-50% 0px -50% 0px" } : { threshold: 0.38 },
     );
 
     const replay = (event: Event) => animateCounter(event.currentTarget as HTMLElement);
