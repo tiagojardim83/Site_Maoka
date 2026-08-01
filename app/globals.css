@@ -841,8 +841,10 @@ body:has(a:hover, button:hover) .cursor {
   position: sticky;
   top: 0;
   height: 100svh;
+  overflow: hidden;
   display: flex;
-  align-items: center;
+  flex-direction: column;
+  justify-content: center;
   padding: 0 4vw;
 }
 
