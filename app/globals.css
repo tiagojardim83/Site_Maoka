@@ -505,8 +505,9 @@ body:has(a:hover, button:hover) .cursor {
 
 .hero-transition {
   --hero-media-height: max(82svh, 600px);
+  --hero-delay: 80svh;
   position: relative;
-  height: calc(100svh + var(--hero-media-height));
+  height: calc(100svh + var(--hero-delay) + var(--hero-media-height));
 }
 
 .hero {
@@ -634,7 +635,7 @@ body:has(a:hover, button:hover) .cursor {
 .hero-image {
   position: absolute;
   z-index: 3;
-  top: 100svh;
+  top: calc(100svh + var(--hero-delay));
   left: 2vw;
   width: calc(100% - 4vw);
   height: var(--hero-media-height);
