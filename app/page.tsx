@@ -375,13 +375,16 @@ function useScrollJackCarousel<T extends HTMLElement>(
       const sticky = stickyRef?.current;
       if (sticky) {
         const stickyHeight = sticky.getBoundingClientRect().height;
-        // Matches the CSS `top: 50svh; transform: translateY(-50%)` on
-        // .itaipava-sticky: the sticky threshold sits at mid-viewport, so
-        // the section needs that same half-viewport reserved (on top of the
-        // sticky box's own height) before the horizontal-drive distance for
-        // the pin to release exactly when the carousel finishes scrolling.
-        stickyTopOffset = window.innerHeight / 2;
-        section.style.height = `${stickyHeight + stickyTopOffset + pinDistance}px`;
+        // Center within the space actually visible below the fixed header,
+        // not the raw window height — otherwise the "centered" offset can
+        // land underneath the header (or be small enough to look like it's
+        // still pinned flush to the top).
+        const headerHeight =
+          document.querySelector<HTMLElement>(".site-header")?.getBoundingClientRect().height ?? 0;
+        const visibleHeight = window.innerHeight - headerHeight;
+        stickyTopOffset = headerHeight + Math.max(0, (visibleHeight - stickyHeight) / 2);
+        section.style.setProperty("--itaipava-sticky-top", `${stickyTopOffset}px`);
+        section.style.height = `${stickyHeight + pinDistance}px`;
       }
 
       queueRender();
@@ -397,7 +400,10 @@ function useScrollJackCarousel<T extends HTMLElement>(
       window.removeEventListener("resize", measure);
       if (frame) window.cancelAnimationFrame(frame);
       section.style.removeProperty("--horizontal-travel");
-      if (stickyRef?.current) section.style.removeProperty("height");
+      if (stickyRef?.current) {
+        section.style.removeProperty("height");
+        section.style.removeProperty("--itaipava-sticky-top");
+      }
       viewport.scrollLeft = 0;
     };
   }, [sectionRef, viewportRef, trackRef, speed, stickyRef]);

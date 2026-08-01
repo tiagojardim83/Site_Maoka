@@ -793,12 +793,7 @@ body:has(a:hover, button:hover) .cursor {
 
 .itaipava-sticky {
   position: sticky;
-  /* Sticks the element's own vertical CENTER to mid-viewport: the sticky
-     threshold lands at 50svh, then the transform shifts the box up by half
-     of its own (dynamic) height. Pure CSS, so it can't go stale like a
-     JS-measured offset would (e.g. after the fixed header resizes on scroll). */
-  top: 50svh;
-  transform: translateY(-50%);
+  top: var(--itaipava-sticky-top, 0px);
   display: flex;
   flex-direction: column;
   gap: 41px;
@@ -1862,7 +1857,7 @@ body:has(a:hover, button:hover) .cursor {
   }
   .project-viewport { overflow-x: auto; }
   .itaipava-section { height: auto !important; }
-  .itaipava-sticky { position: relative; top: 0; transform: none; height: auto; }
+  .itaipava-sticky { position: relative; top: 0; height: auto; }
   .itaipava-viewport { overflow-x: auto; }
   .cursor { display: none; }
   body, button, a { cursor: auto; }
