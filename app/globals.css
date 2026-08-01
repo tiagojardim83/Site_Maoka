@@ -963,11 +963,8 @@ body:has(a:hover, button:hover) .cursor {
 }
 
 .manifesto-number:hover strong,
-.manifesto-number:focus-visible strong { color: var(--blue); }
-
-@media (hover: hover) and (pointer: fine) {
-  .manifesto-number.is-centered strong { color: var(--blue); }
-}
+.manifesto-number:focus-visible strong,
+.manifesto-number.is-centered strong { color: var(--blue); }
 
 .manifesto-numbers span {
   max-width: 190px;
