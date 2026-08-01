@@ -683,10 +683,10 @@ export default function Home() {
     const onScroll = () => {
       setScrolled(window.scrollY > 32);
 
-      const scrollRange = Math.max(window.innerHeight, 1);
+      const scrollRange = Math.max(window.innerHeight * 0.65, 1);
       const progress = Math.max(0, Math.min(1, window.scrollY / scrollRange));
       const easedProgress = 1 - Math.pow(1 - progress, 3);
-      const fadeProgress = Math.max(0, (progress - 0.55) / 0.45);
+      const fadeProgress = Math.max(0, (progress - 0.3) / 0.7);
 
       entryRef.current?.style.setProperty(
         "--entry-scale",
@@ -695,6 +695,10 @@ export default function Home() {
       entryRef.current?.style.setProperty(
         "--entry-opacity",
         (1 - fadeProgress).toFixed(3),
+      );
+      entryRef.current?.style.setProperty(
+        "--entry-visibility",
+        progress >= 1 ? "hidden" : "visible",
       );
       setEntryActive(progress < 0.98);
     };
