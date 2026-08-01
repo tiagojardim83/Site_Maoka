@@ -979,6 +979,25 @@ export default function Home() {
             <span aria-hidden="true" />
           </a>
           <div className="manifesto-feature">
+            <div className="manifesto-numbers reveal" aria-label={copy.areasLabel} ref={manifestoNumbersRef}>
+              <div className="manifesto-number" tabIndex={0} aria-label={`360 ${copy.degrees} — ${copy.numbers[0]}`}>
+                <strong data-count="360" data-suffix="°" aria-hidden="true">360°</strong>
+                <span>{copy.numbers[0]}</span>
+              </div>
+              <div className="manifesto-number" tabIndex={0} aria-label={`03 — ${copy.numbers[1]}`}>
+                <div className="manifesto-sign reveal" aria-hidden="true">
+                  <div className="manifesto-sign-motion" data-parallax="92">
+                    <img src={projectImage("Sign_3D.svg")} alt="" loading="lazy" />
+                  </div>
+                </div>
+                <strong data-count="3" data-pad="2" aria-hidden="true">03</strong>
+                <span>{copy.numbers[1]}</span>
+              </div>
+              <div className="manifesto-number" tabIndex={0} aria-label={`01 — ${copy.numbers[2]}`}>
+                <strong data-count="1" data-pad="2" aria-hidden="true">01</strong>
+                <span>{copy.numbers[2]}</span>
+              </div>
+            </div>
             <div className="itaipava-carousel" ref={itaipavaSectionRef}>
               <div className="itaipava-carousel-sticky">
                 <div className="itaipava-viewport" ref={itaipavaViewportRef}>
@@ -996,25 +1015,6 @@ export default function Home() {
                   </div>
                 </div>
               </div>
-            </div>
-          </div>
-          <div className="manifesto-numbers reveal" aria-label={copy.areasLabel} ref={manifestoNumbersRef}>
-            <div className="manifesto-number" tabIndex={0} aria-label={`360 ${copy.degrees} — ${copy.numbers[0]}`}>
-              <strong data-count="360" data-suffix="°" aria-hidden="true">360°</strong>
-              <span>{copy.numbers[0]}</span>
-            </div>
-            <div className="manifesto-number" tabIndex={0} aria-label={`03 — ${copy.numbers[1]}`}>
-              <div className="manifesto-sign reveal" aria-hidden="true">
-                <div className="manifesto-sign-motion" data-parallax="92">
-                  <img src={projectImage("Sign_3D.svg")} alt="" loading="lazy" />
-                </div>
-              </div>
-              <strong data-count="3" data-pad="2" aria-hidden="true">03</strong>
-              <span>{copy.numbers[1]}</span>
-            </div>
-            <div className="manifesto-number" tabIndex={0} aria-label={`01 — ${copy.numbers[2]}`}>
-              <strong data-count="1" data-pad="2" aria-hidden="true">01</strong>
-              <span>{copy.numbers[2]}</span>
             </div>
           </div>
         </section>
