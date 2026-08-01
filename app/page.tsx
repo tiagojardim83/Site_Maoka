@@ -1002,11 +1002,6 @@ export default function Home() {
               <span>{copy.numbers[0]}</span>
             </div>
             <div className="manifesto-number" tabIndex={0} aria-label={`03 — ${copy.numbers[1]}`}>
-              <div className="manifesto-sign reveal" aria-hidden="true">
-                <div className="manifesto-sign-motion" data-parallax="92">
-                  <img src={projectImage("Sign_3D.svg")} alt="" loading="lazy" />
-                </div>
-              </div>
               <strong data-count="3" data-pad="2" aria-hidden="true">03</strong>
               <span>{copy.numbers[1]}</span>
             </div>
@@ -1088,7 +1083,14 @@ export default function Home() {
               <span>03</span>
               <p>{copy.craftLabel}</p>
             </div>
-            <h2 className="reveal">{copy.craftTitle[0]}<br />{copy.craftTitle[1]} <br /><em>{copy.craftTitle[2]}</em><br />{copy.craftTitle[3]}</h2>
+            <div className="craft-title-wrap">
+              <h2 className="reveal">{copy.craftTitle[0]}<br />{copy.craftTitle[1]} <br /><em>{copy.craftTitle[2]}</em><br />{copy.craftTitle[3]}</h2>
+              <div className="craft-sign reveal" aria-hidden="true">
+                <div className="craft-sign-motion" data-parallax="92">
+                  <img src={projectImage("Sign_3D.svg")} alt="" loading="lazy" />
+                </div>
+              </div>
+            </div>
             <div className="service-list">
               {copy.services.map(([title, description], index) => (
                 <article className="reveal" key={`service-${index}`}>

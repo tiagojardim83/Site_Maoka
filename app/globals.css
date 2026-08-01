@@ -1231,11 +1231,55 @@ body:has(a:hover, button:hover) .cursor {
 
 .craft-content > .section-label { grid-column: 1; grid-row: 1; }
 
-.craft h2 {
+.craft-title-wrap {
+  position: relative;
   grid-column: 1;
   grid-row: 2;
   margin-top: var(--space-block);
+}
+
+.craft h2 {
   font-size: clamp(36px, 4.2vw, 68px);
+}
+
+.craft-sign {
+  position: absolute;
+  z-index: 4;
+  top: 50%;
+  left: 50%;
+  width: min(78%, 420px);
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+
+.craft-sign-motion {
+  --parallax-y: 0px;
+  width: 100%;
+  perspective: 1200px;
+  transform: translate3d(0, var(--parallax-y), 0);
+  will-change: transform;
+}
+
+.craft-sign img {
+  display: block;
+  width: 100%;
+  height: auto;
+  transform-origin: 50% 52%;
+  transform-style: preserve-3d;
+  animation: signoFloat 9s ease-in-out infinite paused;
+  will-change: transform;
+}
+
+.craft-sign.is-visible img {
+  animation-play-state: running;
+}
+
+.craft-sign.reveal {
+  transform: translate(-50%, -50%) translateY(72px);
+}
+
+.craft-sign.reveal.is-visible {
+  transform: translate(-50%, -50%) translateY(0);
 }
 
 .service-list {
@@ -1822,6 +1866,9 @@ body:has(a:hover, button:hover) .cursor {
   .manifesto-sign-motion,
   .manifesto-sign img { transform: none; }
   .manifesto-sign img { animation: none; }
+  .craft-sign-motion,
+  .craft-sign img { transform: none; }
+  .craft-sign img { animation: none; }
   .site-entry { height: 100svh; }
   .site-entry-inner {
     position: relative;
