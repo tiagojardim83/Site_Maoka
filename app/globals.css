@@ -1758,8 +1758,8 @@ body:has(a:hover, button:hover) .cursor {
   .manifesto-numbers { grid-template-columns: 1fr; }
   .manifesto-number { min-height: 220px; padding: 38px 18px; }
   .manifesto-number + .manifesto-number { border-left: 0; border-top: 1px solid var(--line); }
-  .itaipava-viewport { height: clamp(280px, 82vw, 420px); }
-  .itaipava-card { flex-basis: min(72%, 320px); }
+  .itaipava-viewport { height: clamp(440px, 70svh, 620px); }
+  .itaipava-card { flex-basis: min(80%, 380px); }
   .projects-sticky { padding: 36px 0 10px; }
   .projects-heading { padding: 0 18px; gap: 12px; }
   .project-viewport { margin-top: 10px; }
