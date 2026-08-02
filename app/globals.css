@@ -805,7 +805,8 @@ body:has(a:hover, button:hover) .cursor {
 }
 
 .itaipava-intro {
-  padding: 0 4vw 41px;
+  flex: 0 0 auto;
+  padding: 0 4vw;
 }
 
 .itaipava-eyebrow {
@@ -844,10 +845,12 @@ body:has(a:hover, button:hover) .cursor {
 
 .itaipava-sticky {
   position: sticky;
-  top: var(--itaipava-sticky-top, 0px);
+  top: 0;
+  padding: clamp(70px, 8vh, 104px) 0 24px;
   display: flex;
   flex-direction: column;
   gap: 41px;
+  overflow: hidden;
 }
 
 .itaipava-viewport {

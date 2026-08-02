@@ -247,12 +247,6 @@ function useScrollJackCarousel<T extends HTMLElement>(
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
     let horizontalTravel = 0;
     let pinDistance = 0;
-    // How far from the viewport top the pinned box sticks. Left at 0 for the
-    // projects carousel (pins flush to the top, as before); for itaipava
-    // (stickyRef passed in) this gets set to vertically center the pinned
-    // box instead, so the carousel settles in the middle of the screen
-    // rather than jammed against the top edge.
-    let stickyTopOffset = 0;
     let frame = 0;
 
     const render = () => {
@@ -262,8 +256,12 @@ function useScrollJackCarousel<T extends HTMLElement>(
       }
 
       const sectionRect = section.getBoundingClientRect();
+      // Pins flush to the top (top: 0 in CSS, same as the projects
+      // carousel) — the heading now lives inside the sticky box itself
+      // instead of scrolling away above it, so it stays on screen with
+      // the images the whole time, like the projects carousel does.
       const progress = pinDistance
-        ? Math.max(0, Math.min(1, (stickyTopOffset - sectionRect.top) / pinDistance))
+        ? Math.max(0, Math.min(1, -sectionRect.top / pinDistance))
         : 0;
 
       // Driven via scrollLeft rather than a CSS transform: some WebKit
@@ -305,21 +303,13 @@ function useScrollJackCarousel<T extends HTMLElement>(
 
       const sticky = stickyRef?.current;
       if (sticky) {
+        // The sticky box holds more than the carousel now (heading above
+        // it, a number card below it), so its height isn't a fixed CSS
+        // value — measure the real rendered height and size the section
+        // to match (sticky height + the scroll distance still needed to
+        // clear the horizontal travel).
         const stickyHeight = sticky.getBoundingClientRect().height;
-        // Center within the space actually visible below the fixed header,
-        // not the raw window height — otherwise the "centered" offset can
-        // land underneath the header (or be small enough to look like it's
-        // still pinned flush to the top).
-        const headerHeight =
-          document.querySelector<HTMLElement>(".site-header")?.getBoundingClientRect().height ?? 0;
-        const visibleHeight = window.innerHeight - headerHeight;
-        // Nudged a bit further down than dead-center: on most screens the
-        // carousel is nearly as tall as the visible area, leaving barely
-        // any room for the centering math above to actually move it.
-        const extraPush = 48;
-        stickyTopOffset = headerHeight + Math.max(0, (visibleHeight - stickyHeight) / 2) + extraPush;
-        section.style.setProperty("--itaipava-sticky-top", `${stickyTopOffset}px`);
-        section.style.height = `${stickyHeight + stickyTopOffset + pinDistance}px`;
+        section.style.height = `${stickyHeight + pinDistance}px`;
       }
 
       queueRender();
@@ -327,17 +317,29 @@ function useScrollJackCarousel<T extends HTMLElement>(
 
     measure();
 
+    // Mobile Safari fires "resize" whenever its address bar shows or hides
+    // mid-scroll, which only changes window.innerHeight — not the width.
+    // Re-running measure() on that recalculated the section's height
+    // (stickyHeight + pinDistance) mid-gesture, visibly shifting the
+    // pinned carousel out from under the user. Only re-measure on a real
+    // width change (resize/orientation), never on a height-only one.
+    let lastWidth = window.innerWidth;
+    const onResize = () => {
+      if (window.innerWidth === lastWidth) return;
+      lastWidth = window.innerWidth;
+      measure();
+    };
+
     window.addEventListener("scroll", queueRender, { passive: true });
-    window.addEventListener("resize", measure);
+    window.addEventListener("resize", onResize);
 
     return () => {
       window.removeEventListener("scroll", queueRender);
-      window.removeEventListener("resize", measure);
+      window.removeEventListener("resize", onResize);
       if (frame) window.cancelAnimationFrame(frame);
       section.style.removeProperty("--horizontal-travel");
       if (stickyRef?.current) {
         section.style.removeProperty("height");
-        section.style.removeProperty("--itaipava-sticky-top");
       }
       viewport.scrollLeft = 0;
     };
@@ -917,13 +919,13 @@ export default function Home() {
           </div>
         </section>
 
-        <div className="itaipava-intro">
-          <p className="itaipava-eyebrow reveal"><TrophyIcon /> {copy.itaipavaEyebrow}</p>
-          <h3 className="itaipava-title reveal">{copy.itaipavaTitle}</h3>
-        </div>
-
         <section className="itaipava-section" ref={itaipavaSectionRef}>
           <div className="itaipava-sticky" ref={itaipavaStickyRef}>
+            <div className="itaipava-intro">
+              <p className="itaipava-eyebrow reveal"><TrophyIcon /> {copy.itaipavaEyebrow}</p>
+              <h3 className="itaipava-title reveal">{copy.itaipavaTitle}</h3>
+            </div>
+
             <div className="itaipava-viewport" ref={itaipavaViewportRef}>
               <div className="itaipava-track" ref={itaipavaTrackRef}>
                 {itaipavaImages.map((filename) => (
