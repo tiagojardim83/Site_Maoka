@@ -2027,12 +2027,16 @@ body:has(a:hover, button:hover) .cursor {
 .project-detail-image {
   position: relative;
   margin: 0;
-  aspect-ratio: 16 / 10;
+  aspect-ratio: 4 / 3;
   display: grid;
   place-items: center;
   border-radius: var(--media-radius);
   background: rgba(var(--ink-rgb), .06);
   border: 1px dashed rgba(var(--ink-rgb), .22);
+}
+
+@media (min-width: 901px) {
+  .project-detail-image { aspect-ratio: 16 / 9; }
 }
 
 .project-detail-image-index {
