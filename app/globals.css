@@ -837,6 +837,11 @@ body:has(a:hover, button:hover) .cursor {
 
 .itaipava-section {
   --itaipava-card-height: min(56svh, 580px);
+  /* Matches .site-header--scrolled's height (the state the header is
+     always in by the time this section is reachable) so the pin sits
+     right at its bottom edge — not the taller, pre-scroll header height,
+     which used to leave a gap the intro title could still peek through. */
+  --itaipava-sticky-top: 70px;
   position: relative;
   height: calc(var(--itaipava-card-height) + var(--horizontal-travel, 130svh));
   background: var(--paper);
@@ -844,7 +849,7 @@ body:has(a:hover, button:hover) .cursor {
 
 .itaipava-sticky {
   position: sticky;
-  top: var(--itaipava-sticky-top, 0px);
+  top: var(--itaipava-sticky-top);
   display: flex;
   flex-direction: column;
   gap: 41px;
@@ -1895,7 +1900,10 @@ body:has(a:hover, button:hover) .cursor {
   .manifesto-numbers { grid-template-columns: 1fr; margin: 0 18px; }
   .manifesto-number { min-height: 220px; padding: 38px 18px; }
   .manifesto-number + .manifesto-number { border-left: 0; border-top: 1px solid var(--line); }
-  .itaipava-section { --itaipava-card-height: clamp(460px, 68svh, 520px); }
+  .itaipava-section {
+    --itaipava-card-height: clamp(460px, 68svh, 520px);
+    --itaipava-sticky-top: 64px;
+  }
   .itaipava-track { padding: 0 18px; gap: 18px; }
   .itaipava-card { flex-basis: 84vw; }
   .projects-sticky { padding: 36px 0 10px; }

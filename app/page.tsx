@@ -306,19 +306,17 @@ function useScrollJackCarousel<T extends HTMLElement>(
       const sticky = stickyRef?.current;
       if (sticky) {
         const stickyHeight = sticky.getBoundingClientRect().height;
-        // Center within the space actually visible below the fixed header,
-        // not the raw window height — otherwise the "centered" offset can
-        // land underneath the header (or be small enough to look like it's
-        // still pinned flush to the top).
-        const headerHeight =
-          document.querySelector<HTMLElement>(".site-header")?.getBoundingClientRect().height ?? 0;
-        const visibleHeight = window.innerHeight - headerHeight;
-        // Nudged a bit further down than dead-center: on most screens the
-        // carousel is nearly as tall as the visible area, leaving barely
-        // any room for the centering math above to actually move it.
-        const extraPush = 48;
-        stickyTopOffset = headerHeight + Math.max(0, (visibleHeight - stickyHeight) / 2) + extraPush;
-        section.style.setProperty("--itaipava-sticky-top", `${stickyTopOffset}px`);
+        // --itaipava-sticky-top is a static, breakpoint-driven CSS value
+        // (matches .site-header--scrolled's height) — read the resolved
+        // value instead of re-deriving it from window.innerHeight or a
+        // live header measurement. Reading the header's own rect here was
+        // unreliable: at mount the header is still in its taller,
+        // pre-scroll state, so the pin ended up offset by the difference
+        // once the header later shrank on scroll, leaving a gap the intro
+        // text could still peek through at the exact moment the carousel
+        // was already fully pinned.
+        stickyTopOffset =
+          parseFloat(getComputedStyle(section).getPropertyValue("--itaipava-sticky-top")) || 0;
         section.style.height = `${stickyHeight + stickyTopOffset + pinDistance}px`;
       }
 
@@ -329,11 +327,10 @@ function useScrollJackCarousel<T extends HTMLElement>(
 
     // Mobile Safari fires "resize" whenever its address bar shows or hides
     // mid-scroll, which only changes window.innerHeight — not the width.
-    // Re-running measure() on that (it reads window.innerHeight for the
-    // sticky-centering offset above) recalculated --itaipava-sticky-top and
-    // the section's height mid-gesture, visibly shifting the pinned
-    // carousel out from under the user. Only re-measure on a real width
-    // change (resize/orientation), never on a height-only one.
+    // Re-running measure() on that recalculated the section's height
+    // (stickyHeight + pinDistance) mid-gesture, visibly shifting the
+    // pinned carousel out from under the user. Only re-measure on a real
+    // width change (resize/orientation), never on a height-only one.
     let lastWidth = window.innerWidth;
     const onResize = () => {
       if (window.innerWidth === lastWidth) return;
@@ -351,7 +348,6 @@ function useScrollJackCarousel<T extends HTMLElement>(
       section.style.removeProperty("--horizontal-travel");
       if (stickyRef?.current) {
         section.style.removeProperty("height");
-        section.style.removeProperty("--itaipava-sticky-top");
       }
       viewport.scrollLeft = 0;
     };
