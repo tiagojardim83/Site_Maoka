@@ -1025,13 +1025,23 @@ export default function Home() {
           <div className="areas-list">
             {categoryOrder.map((category) => {
               const count = projects.filter((project) => project.category === category).length;
+              const direction = category === "activations" ? "ltr" : "rtl";
+              const label = copy.categories[category];
               return (
-                <Link className="areas-row reveal" href={`/categorias/${categorySlugs[category]}`} key={category}>
-                  <span className="areas-row-text">
-                    <strong>{copy.categories[category]}</strong>
-                    <small>{count} {copy.areasProjectsWord}</small>
+                <Link
+                  className={`areas-row areas-row--${direction} reveal`}
+                  href={`/categorias/${categorySlugs[category]}`}
+                  key={category}
+                >
+                  <span className="areas-row-marquee" aria-hidden="true">
+                    <span className="areas-row-marquee-track">
+                      <strong>{label}</strong><i>•</i>
+                      <strong>{label}</strong><i>•</i>
+                    </span>
                   </span>
                   <i className="areas-row-arrow" aria-hidden="true"><ArrowIcon /></i>
+                  <small className="areas-row-count">{count} {copy.areasProjectsWord}</small>
+                  <span className="sr-only">{label}</span>
                 </Link>
               );
             })}
