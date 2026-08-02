@@ -1785,12 +1785,8 @@ body:has(a:hover, button:hover) .cursor {
   }
   .site-header--scrolled .language-toggle { top: 12px; }
   .site-header--menu .language-toggle {
-    top: 24px;
-    left: 20px;
-    right: auto;
-    background: transparent;
-    border-color: rgba(var(--paper-rgb), .4);
-    color: var(--paper);
+    opacity: 0;
+    pointer-events: none;
   }
 
   .menu-toggle {
@@ -1812,8 +1808,8 @@ body:has(a:hover, button:hover) .cursor {
   .menu-toggle.is-open span:first-of-type { top: 50%; transform: translateY(-.5px) rotate(45deg); }
   .menu-toggle.is-open span:last-child { top: 50%; transform: translateY(-.5px) rotate(-45deg); }
   .menu-panel { padding: 72px 20px 22px; }
-  .menu-panel nav a { min-height: 50px; grid-template-columns: 30px 1fr auto; padding-top: 11px; padding-bottom: 10px; }
-  .menu-panel nav span { font-size: 16px; }
+  .menu-panel nav a { min-height: 64px; grid-template-columns: 30px 1fr auto; padding-top: 11px; padding-bottom: 10px; }
+  .menu-panel nav span { font-size: clamp(30px, 9vw, 42px); }
   .menu-footer { font-size: 7px; }
   .site-entry { min-height: 520px; }
   .site-entry-title {
