@@ -327,12 +327,26 @@ function useScrollJackCarousel<T extends HTMLElement>(
 
     measure();
 
+    // Mobile Safari fires "resize" whenever its address bar shows or hides
+    // mid-scroll, which only changes window.innerHeight — not the width.
+    // Re-running measure() on that (it reads window.innerHeight for the
+    // sticky-centering offset above) recalculated --itaipava-sticky-top and
+    // the section's height mid-gesture, visibly shifting the pinned
+    // carousel out from under the user. Only re-measure on a real width
+    // change (resize/orientation), never on a height-only one.
+    let lastWidth = window.innerWidth;
+    const onResize = () => {
+      if (window.innerWidth === lastWidth) return;
+      lastWidth = window.innerWidth;
+      measure();
+    };
+
     window.addEventListener("scroll", queueRender, { passive: true });
-    window.addEventListener("resize", measure);
+    window.addEventListener("resize", onResize);
 
     return () => {
       window.removeEventListener("scroll", queueRender);
-      window.removeEventListener("resize", measure);
+      window.removeEventListener("resize", onResize);
       if (frame) window.cancelAnimationFrame(frame);
       section.style.removeProperty("--horizontal-travel");
       if (stickyRef?.current) {
