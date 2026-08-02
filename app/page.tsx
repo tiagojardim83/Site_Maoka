@@ -55,6 +55,7 @@ const translations = {
     itaipavaAlt: "Experiência cenográfica Itaipava criada pela Maoka",
     itaipavaEyebrow: "Projeto premiado",
     itaipavaTitle: "Itaipava",
+    itaipavaDetails: "Detalhes do projeto",
     areasLabel: "Áreas de atuação da Maoka",
     degrees: "graus",
     numbers: ["Criação de ponta a ponta", "Frentes de atuação", "Experiência integrada"],
@@ -131,6 +132,7 @@ const translations = {
     itaipavaAlt: "Itaipava scenographic experience created by Maoka",
     itaipavaEyebrow: "Award-winning project",
     itaipavaTitle: "Itaipava",
+    itaipavaDetails: "Project details",
     areasLabel: "Maoka areas of expertise",
     degrees: "degrees",
     numbers: ["End-to-end creation", "Areas of expertise", "Integrated experience"],
@@ -924,6 +926,10 @@ export default function Home() {
             <div className="itaipava-intro">
               <p className="itaipava-eyebrow reveal"><TrophyIcon /> {copy.itaipavaEyebrow}</p>
               <h3 className="itaipava-title reveal">{copy.itaipavaTitle}</h3>
+              <Link className="text-link itaipava-details-link reveal" href="/projects/itaipava">
+                <strong>{copy.itaipavaDetails}</strong>
+                <span aria-hidden="true" />
+              </Link>
             </div>
 
             <div className="itaipava-viewport" ref={itaipavaViewportRef}>
