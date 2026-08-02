@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import Header from "../../components/Header";
+import { ArrowIcon } from "../../components/icons";
 import { categoryLabels, type Locale, type Project } from "../../data/projects";
 
 const placeholderCount = 5;
@@ -76,7 +77,7 @@ export default function ProjectDetailClient({
             ))}
           </div>
           <Link className="project-detail-all" href="/#projetos">
-            {t.allProjects} ↗
+            {t.allProjects} <ArrowIcon />
           </Link>
         </section>
       </main>

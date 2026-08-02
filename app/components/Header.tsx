@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { projectImage, type Locale } from "../data/projects";
+import { ArrowIcon } from "./icons";
 
 const menuLinks: { href: string; label: Record<Locale, string> }[] = [
   { href: "/#top", label: { pt: "Início", en: "Home" } },
@@ -48,21 +49,6 @@ function Brand({ compact = false, alt }: { compact?: boolean; alt: string }) {
       <img className="brand-logo brand-logo--full" src={projectImage("LOGOTYPEx.svg")} alt={alt} />
       <img className="brand-logo brand-logo--mark" src={projectImage("SIGN_02.svg")} alt={alt} />
     </span>
-  );
-}
-
-function ArrowIcon() {
-  return (
-    <svg className="arrow-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-      <path
-        d="M6 18 18 6M18 6H9M18 6v9"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </svg>
   );
 }
 

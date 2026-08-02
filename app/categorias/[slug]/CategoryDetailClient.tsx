@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import Header from "../../components/Header";
+import { ArrowIcon } from "../../components/icons";
 import {
   categoryLabels,
   categoryDescriptions,
@@ -101,8 +102,7 @@ export default function CategoryDetailClient({
             })}
           </div>
           <Link className="project-detail-all" href="/#projetos">
-            {t.allFronts} ↗
-          </Link>
+            {t.allFronts} <ArrowIcon /></Link>
         </section>
       </main>
     </>
