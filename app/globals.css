@@ -2027,7 +2027,8 @@ body:has(a:hover, button:hover) .cursor {
 .project-detail-image {
   position: relative;
   margin: 0;
-  aspect-ratio: 4 / 3;
+  height: clamp(460px, 68svh, 520px);
+  aspect-ratio: auto;
   display: grid;
   place-items: center;
   border-radius: var(--media-radius);
@@ -2036,7 +2037,7 @@ body:has(a:hover, button:hover) .cursor {
 }
 
 @media (min-width: 901px) {
-  .project-detail-image { aspect-ratio: 16 / 9; }
+  .project-detail-image { height: auto; aspect-ratio: 16 / 9; }
 }
 
 .project-detail-image-index {
