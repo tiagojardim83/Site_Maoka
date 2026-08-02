@@ -1729,13 +1729,29 @@ body:has(a:hover, button:hover) .cursor {
   .section-pad { padding: var(--space-section) 18px; }
   .site-header { height: 74px; }
   .site-header--scrolled { height: 64px; }
-  .header-brand { display: none; }
-  .menu-shell { top: 19px; left: calc(50% - 25px); width: 176px; height: 36px; }
+
+  /* Traditional mobile nav bar: logo left (always visible), language
+     toggle + burger grouped on the right instead of the desktop's
+     center-floating pill. */
+  .header-brand { opacity: 1; transform: none; pointer-events: auto; }
+  .site-header--scrolled .header-brand { opacity: 1; transform: none; pointer-events: auto; }
+  .header-brand .brand-logo { width: 118px; }
+
+  .menu-shell {
+    top: 19px;
+    left: auto;
+    right: 18px;
+    width: 44px;
+    height: 36px;
+    transform: none;
+  }
   .site-header--scrolled .menu-shell { top: 14px; }
-  .menu-shell.is-open { top: 18px; width: 82vw; height: min(82svh, 680px); }
+  .menu-shell.is-open { top: 18px; left: auto; right: 18px; width: 82vw; height: min(82svh, 680px); transform: none; }
+
   .language-toggle {
     top: 19px;
-    left: calc(50% + 73px);
+    left: auto;
+    right: 72px;
     width: 40px;
     height: 36px;
     padding: 0;
@@ -1743,27 +1759,27 @@ body:has(a:hover, button:hover) .cursor {
   }
   .site-header--scrolled .language-toggle { top: 14px; }
   .site-header--menu .language-toggle {
-    top: 26px;
-    left: calc(50% + min(41vw, 160px) - 110px);
+    top: 22px;
+    left: 20px;
+    right: auto;
   }
+
   .menu-toggle {
     height: 36px;
-    padding: 0 46px 0 14px;
+    padding: 0;
     display: flex;
     align-items: center;
+    justify-content: center;
   }
-  .menu-toggle small { font-size: 9px; line-height: 1; }
-  .menu-toggle span { top: 50%; right: 11px; width: 24px; }
-  .menu-toggle span:first-of-type { top: 50%; transform: translateY(-4px); }
-  .menu-toggle span:last-child { top: 50%; transform: translateY(4px); }
+  .menu-toggle small { display: none; }
+  .menu-toggle span { top: 50%; left: 50%; right: auto; width: 20px; transform: translate(-50%, -50%); }
+  .menu-toggle span:first-of-type { transform: translate(-50%, -5px); }
+  .menu-toggle span:last-child { transform: translate(-50%, 5px); }
   .menu-toggle.is-open {
     height: 52px;
-    padding: 0 58px 0 18px;
+    padding: 0;
   }
-  .menu-toggle.is-open span {
-    right: 18px;
-    width: 22px;
-  }
+  .menu-toggle.is-open span { left: auto; right: 18px; width: 22px; transform: none; }
   .menu-toggle.is-open span:first-of-type { top: 50%; transform: translateY(-.5px) rotate(45deg); }
   .menu-toggle.is-open span:last-child { top: 50%; transform: translateY(-.5px) rotate(-45deg); }
   .menu-panel { padding: 72px 20px 22px; }
