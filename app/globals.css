@@ -1328,6 +1328,16 @@ body:has(a:hover, button:hover) .cursor {
   color: var(--blue);
 }
 
+@keyframes areas-arrow-spin {
+  0% { transform: rotate(0deg) scale(1); }
+  55% { transform: rotate(360deg) scale(1.28); }
+  100% { transform: rotate(360deg) scale(1); }
+}
+
+.areas-row.is-centered .areas-row-arrow .arrow-icon {
+  animation: areas-arrow-spin 700ms cubic-bezier(.22, 1, .36, 1);
+}
+
 @media (max-width: 620px) {
   .areas-row-marquee-track strong { font-size: clamp(38px, 15vw, 64px); }
   .areas-row-arrow { width: 48px; height: 48px; }
