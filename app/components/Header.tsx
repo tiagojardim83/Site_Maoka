@@ -45,7 +45,8 @@ const headerCopy: Record<Locale, {
 function Brand({ compact = false, alt }: { compact?: boolean; alt: string }) {
   return (
     <span className={`brand ${compact ? "brand--compact" : ""}`}>
-      <img className="brand-logo" src={projectImage("LOGOTYPEx.svg")} alt={alt} />
+      <img className="brand-logo brand-logo--full" src={projectImage("LOGOTYPEx.svg")} alt={alt} />
+      <img className="brand-logo brand-logo--mark" src={projectImage("SIGN_02.svg")} alt={alt} />
     </span>
   );
 }

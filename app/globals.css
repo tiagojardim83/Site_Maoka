@@ -120,6 +120,8 @@ body:has(a:hover, button:hover) .cursor {
   width: 148px;
 }
 
+.brand-logo--mark { display: none; }
+
 .site-header {
   position: fixed;
   z-index: 120;
@@ -228,10 +230,13 @@ body:has(a:hover, button:hover) .cursor {
   transform-origin: top center;
   transition:
     top 350ms ease,
+    right 350ms ease,
     width 700ms cubic-bezier(.76, 0, .24, 1),
     height 700ms cubic-bezier(.76, 0, .24, 1),
     border-radius 450ms ease,
-    box-shadow 450ms ease;
+    box-shadow 450ms ease,
+    background 450ms ease,
+    border-color 450ms ease;
 }
 
 .site-header--scrolled .menu-shell {
@@ -1730,38 +1735,62 @@ body:has(a:hover, button:hover) .cursor {
   .site-header { height: 74px; }
   .site-header--scrolled { height: 64px; }
 
-  /* Traditional mobile nav bar: logo left (always visible), language
-     toggle + burger grouped on the right instead of the desktop's
-     center-floating pill. */
+  /* Traditional mobile nav bar: round mark left (always visible),
+     outlined language toggle + burger grouped on the right. Opening the
+     menu takes over the full screen, then eases back to this compact
+     bar on close. */
   .header-brand { opacity: 1; transform: none; pointer-events: auto; }
   .site-header--scrolled .header-brand { opacity: 1; transform: none; pointer-events: auto; }
-  .header-brand .brand-logo { width: 118px; }
+  .brand-logo--full { display: none; }
+  .brand-logo--mark { display: block; }
+  .brand--compact .brand-logo--mark { width: 40px; }
 
   .menu-shell {
-    top: 19px;
+    top: 17px;
     left: auto;
     right: 18px;
-    width: 44px;
-    height: 36px;
+    width: 40px;
+    height: 40px;
+    border-radius: 8px;
+    background: transparent;
+    border: 1px solid rgba(var(--ink-rgb), .3);
+    color: var(--ink);
     transform: none;
   }
-  .site-header--scrolled .menu-shell { top: 14px; }
-  .menu-shell.is-open { top: 18px; left: auto; right: 18px; width: 82vw; height: min(82svh, 680px); transform: none; }
+  .site-header--scrolled .menu-shell { top: 12px; }
+  .menu-shell.is-open {
+    top: 0;
+    left: auto;
+    right: 0;
+    width: 100vw;
+    width: 100svw;
+    height: 100svh;
+    border-radius: 0;
+    background: var(--red);
+    border-color: transparent;
+    transform: none;
+  }
 
   .language-toggle {
-    top: 19px;
+    top: 17px;
     left: auto;
-    right: 72px;
+    right: 66px;
     width: 40px;
-    height: 36px;
+    height: 40px;
     padding: 0;
-    font-size: 7px;
+    font-size: 10px;
+    background: transparent;
+    border: 1px solid rgba(var(--ink-rgb), .3);
+    color: var(--ink);
   }
-  .site-header--scrolled .language-toggle { top: 14px; }
+  .site-header--scrolled .language-toggle { top: 12px; }
   .site-header--menu .language-toggle {
-    top: 22px;
+    top: 24px;
     left: 20px;
     right: auto;
+    background: transparent;
+    border-color: rgba(var(--paper-rgb), .4);
+    color: var(--paper);
   }
 
   .menu-toggle {
