@@ -730,7 +730,7 @@ body:has(a:hover, button:hover) .cursor {
 
 .manifesto {
   background: var(--paper);
-  padding-bottom: 41px;
+  padding-bottom: clamp(18px, 2vw, 28px);
 }
 
 .manifesto-grid {
@@ -837,7 +837,8 @@ body:has(a:hover, button:hover) .cursor {
 }
 
 .itaipava-details-link {
-  max-width: 320px;
+  width: 100%;
+  max-width: none;
   margin-top: 20px;
 }
 
@@ -851,7 +852,7 @@ body:has(a:hover, button:hover) .cursor {
 .itaipava-sticky {
   position: sticky;
   top: 0;
-  padding: clamp(70px, 8vh, 104px) 0 24px;
+  padding: clamp(26px, 4vh, 48px) 0 24px;
   display: flex;
   flex-direction: column;
   gap: 41px;
@@ -1900,6 +1901,9 @@ body:has(a:hover, button:hover) .cursor {
   .process h2 em,
   .closing h2 em { padding-right: .06em; }
   .manifesto-grid { margin-top: var(--space-block); gap: 42px; }
+  .manifesto { padding-bottom: 12px; }
+  .itaipava-sticky { padding-top: 24px; }
+  .itaipava-intro { padding-right: 18px; padding-left: 18px; }
   .manifesto-numbers { grid-template-columns: 1fr; margin: 0 18px; }
   .manifesto-number { min-height: 220px; padding: 38px 18px; }
   .manifesto-number + .manifesto-number { border-left: 0; border-top: 1px solid var(--line); }

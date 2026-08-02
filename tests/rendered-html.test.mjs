@@ -36,23 +36,16 @@ test("server-renders the Maoka portfolio", async () => {
   assert.match(html, /class="language-toggle"/i);
   assert.match(html, /Traduzir site para inglês/i);
   assert.match(html, /class="manifesto-lead reveal"/i);
-  assert.match(html, /class="text-link manifesto-process-link reveal"/i);
-  assert.match(html, /href="#processo-04"/i);
+  assert.match(html, /class="text-link itaipava-details-link reveal"/i);
+  assert.match(html, /href="\/projects\/itaipava"/i);
+  assert.match(html, /Projeto premiado/i);
   assert.match(html, /id="processo-04"/i);
   assert.match(html, /Projetos em destaque/);
   assert.match(html, /data-count="360"/i);
   assert.match(html, /data-count="3" data-pad="2"/i);
   assert.match(html, /class="project-viewport"/i);
   assert.match(html, /class="project-track"/i);
-  assert.match(
-    html,
-    /Mosaico_Maoka_01\.mp4[\s\S]*Mosaico_Maoka_05\.mp4/i,
-  );
-  assert.match(
-    html,
-    /Mosaico_Maoka_01_desktop\.mp4[\s\S]*Mosaico_Maoka_05_desktop\.mp4/i,
-  );
-  assert.doesNotMatch(html, /Mosaico_Maoka_06(?:_desktop)?\.mp4/i);
+  assert.match(html, /CDS_MAPA3D\.mp4/i);
   assert.match(html, /maokacenografia@gmail\.com/);
   assert.match(html, /wa\.me\/5512982141215/i);
   assert.match(html, /wa\.me\/553192066650/i);
