@@ -65,7 +65,7 @@ const translations = {
     categories: {
       entertainment: "Entretenimento",
       corporate: "Corporativo",
-      activations: "Ativações",
+      activations: "Arquitetura Comercial",
     },
     areasKicker: "Frentes de atuação",
     areasProjectsWord: "projetos",
@@ -141,7 +141,7 @@ const translations = {
     categories: {
       entertainment: "Entertainment",
       corporate: "Corporate",
-      activations: "Activations",
+      activations: "Commercial Architecture",
     },
     areasKicker: "Areas of expertise",
     areasProjectsWord: "projects",
@@ -1025,7 +1025,7 @@ export default function Home() {
           <div className="areas-list">
             {categoryOrder.map((category) => {
               const count = projects.filter((project) => project.category === category).length;
-              const direction = category === "activations" ? "ltr" : "rtl";
+              const direction = category === "activations" ? "rtl" : "ltr";
               const label = copy.categories[category];
               return (
                 <Link
