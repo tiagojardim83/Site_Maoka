@@ -1040,8 +1040,10 @@ export default function Home() {
                     </span>
                   </span>
                   <i className="areas-row-arrow" aria-hidden="true"><ArrowIcon /></i>
-                  <small className="areas-row-count">{count} {copy.areasProjectsWord}</small>
-                  <span className="sr-only">{label}</span>
+                  <small className="areas-row-count">
+                    <span>{count} {copy.areasProjectsWord}</span>
+                    <span>{label}</span>
+                  </small>
                 </Link>
               );
             })}
