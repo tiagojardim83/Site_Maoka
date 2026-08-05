@@ -5,7 +5,7 @@ import Link from "next/link";
 import Header from "../../components/Header";
 import Footer from "../../components/Footer";
 import { ArrowIcon } from "../../components/icons";
-import { categoryLabels, type Locale, type Project } from "../../data/projects";
+import { categoryLabels, categoryOrder, categorySlugs, type Locale, type Project } from "../../data/projects";
 
 const placeholderCount = 5;
 
@@ -22,7 +22,7 @@ const copy: Record<Locale, {
     back: "Voltar",
     next: "Próximo projeto",
     continueExploring: "Continue explorando",
-    allProjects: "Ver todos os projetos",
+    allProjects: "Ver projetos",
     socialCtaBefore: "Para acompanhar outros projetos e processos da Maoka, visite nosso ",
     socialCtaMiddle: " e ",
     socialCtaAfter: ".",
@@ -31,7 +31,7 @@ const copy: Record<Locale, {
     back: "Back",
     next: "Next project",
     continueExploring: "Keep exploring",
-    allProjects: "See all projects",
+    allProjects: "See projects",
     socialCtaBefore: "To follow more of Maoka's projects and process, visit our ",
     socialCtaMiddle: " and ",
     socialCtaAfter: ".",
@@ -92,9 +92,14 @@ export default function ProjectDetailClient({
               </Link>
             ))}
           </div>
-          <Link className="project-detail-all" href="/#projetos">
-            {t.allProjects} <ArrowIcon />
-          </Link>
+          <p className="project-detail-view-projects-label">{t.allProjects}</p>
+          <div className="project-detail-category-links">
+            {categoryOrder.map((cat) => (
+              <Link className="project-detail-all" href={`/categorias/${categorySlugs[cat]}`} key={cat}>
+                {categoryLabels[cat][locale]} <ArrowIcon />
+              </Link>
+            ))}
+          </div>
         </section>
 
         <p className="project-detail-social-cta">

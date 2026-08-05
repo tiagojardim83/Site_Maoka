@@ -2165,6 +2165,21 @@ body:has(a:hover, button:hover) .cursor {
   height: 12px;
 }
 
+.project-detail-view-projects-label {
+  margin: 0 0 14px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: rgba(var(--ink-rgb), .56);
+}
+
+.project-detail-category-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px 32px;
+}
+
 .project-detail-social-cta {
   margin: 0;
   padding: clamp(28px, 4vw, 48px) 4vw clamp(56px, 8vw, 96px);
