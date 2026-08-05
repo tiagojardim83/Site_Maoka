@@ -63,11 +63,17 @@ export default function ProjectDetailClient({
         </section>
 
         <section className="project-detail-images" aria-label={`${project.name} — ${t.next}`}>
-          {Array.from({ length: placeholderCount }, (_, i) => (
-            <figure className="project-detail-image" key={i}>
-              <span className="project-detail-image-index">{String(i + 1).padStart(2, "0")}</span>
-            </figure>
-          ))}
+          {project.images
+            ? project.images.map((src, i) => (
+                <figure className="project-detail-image project-detail-image--photo" key={src}>
+                  <img src={src} alt={`${project.name} ${i + 1}`} loading={i === 0 ? "eager" : "lazy"} />
+                </figure>
+              ))
+            : Array.from({ length: placeholderCount }, (_, i) => (
+                <figure className="project-detail-image" key={i}>
+                  <span className="project-detail-image-index">{String(i + 1).padStart(2, "0")}</span>
+                </figure>
+              ))}
         </section>
 
         <section className="project-detail-next">

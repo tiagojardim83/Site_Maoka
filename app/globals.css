@@ -2055,6 +2055,20 @@ body:has(a:hover, button:hover) .cursor {
   .project-detail-image { height: auto; aspect-ratio: 16 / 9; }
 }
 
+.project-detail-image--photo {
+  border-style: solid;
+  border-color: transparent;
+  background: none;
+  overflow: hidden;
+}
+
+.project-detail-image--photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
 .project-detail-image-index {
   font-family: var(--serif);
   font-weight: 900;
