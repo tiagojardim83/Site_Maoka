@@ -20,30 +20,6 @@ export const projectImage = (filename: string) => `${basePath}/projects/${filena
 
 export const projects: Project[] = [
   {
-    slug: "nossa-praia",
-    name: "Nossa Praia",
-    category: "entertainment",
-    image: projectImage("hero-nossa-praia.webp"),
-    year: "2026",
-    place: { pt: "Brasil", en: "Brazil" },
-    description: {
-      pt: "Materiais naturais, luz quente e cores de pôr do sol transformam a paisagem em um espaço de permanência, leveza e conexão.",
-      en: "Natural materials, warm light and sunset colors transform the landscape into a place for lingering, lightness and connection.",
-    },
-  },
-  {
-    slug: "google-marketing-live",
-    name: "Google Marketing Live",
-    category: "corporate",
-    image: projectImage("hero-google.webp"),
-    year: "2026",
-    place: { pt: "São Paulo", en: "São Paulo" },
-    description: {
-      pt: "Uma jornada imersiva e acessível, com soluções tipológicas próprias para conteúdo, interação e aproximação entre público e marca.",
-      en: "An immersive, accessible journey with tailored spatial solutions for content, interaction and meaningful connections between people and brand.",
-    },
-  },
-  {
     slug: "unigames",
     name: "Unigames",
     category: "entertainment",
@@ -55,18 +31,6 @@ export const projects: Project[] = [
       en: "A monumental stage that translates energy, competition and celebration into an impossible-to-ignore visual identity.",
     },
     images: [1, 2, 3, 4, 5, 6].map((n) => projectImage(`unigames-0${n}.webp`)),
-  },
-  {
-    slug: "toyota-yaris-cross",
-    name: "Toyota Yaris Cross",
-    category: "corporate",
-    image: projectImage("toyota-yaris.webp"),
-    year: "2026",
-    place: { pt: "São Paulo", en: "São Paulo" },
-    description: {
-      pt: "Três grandes painéis de LED e uma plataforma giratória transformam a revelação do veículo em um momento de movimento e impacto.",
-      en: "Three large LED screens and a rotating platform turn the vehicle reveal into a moment of movement and impact.",
-    },
   },
   {
     slug: "shein",
@@ -93,18 +57,6 @@ export const projects: Project[] = [
       en: "A sophisticated setting connecting innovation, research and relationships through a fluid journey between content and gathering.",
     },
     images: [1, 2, 3, 4, 5, 6].map((n) => projectImage(`purina-0${n}.webp`)),
-  },
-  {
-    slug: "iced-coffee-club",
-    name: "Iced Coffee Club",
-    category: "activations",
-    image: projectImage("iced-coffee-club.webp"),
-    year: "2026",
-    place: { pt: "Edifício Itália, SP", en: "Edifício Itália, São Paulo" },
-    description: {
-      pt: "Café gelado, música e lifestyle se encontram em uma experiência urbana com ativações sensoriais e espaços de conexão social.",
-      en: "Iced coffee, music and lifestyle meet in an urban experience shaped by sensory activations and spaces for social connection.",
-    },
   },
   // The 8 entries below were added from freshly uploaded photos with no
   // supplied name/description yet — name is derived from the folder, and
