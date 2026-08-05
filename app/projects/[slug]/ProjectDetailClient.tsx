@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import Header from "../../components/Header";
+import Footer from "../../components/Footer";
 import { ArrowIcon } from "../../components/icons";
 import { categoryLabels, type Locale, type Project } from "../../data/projects";
 
@@ -13,18 +14,27 @@ const copy: Record<Locale, {
   next: string;
   continueExploring: string;
   allProjects: string;
+  socialCtaBefore: string;
+  socialCtaMiddle: string;
+  socialCtaAfter: string;
 }> = {
   pt: {
     back: "Voltar",
     next: "Próximo projeto",
     continueExploring: "Continue explorando",
     allProjects: "Ver todos os projetos",
+    socialCtaBefore: "Para acompanhar outros projetos e processos da Maoka, visite nosso ",
+    socialCtaMiddle: " e ",
+    socialCtaAfter: ".",
   },
   en: {
     back: "Back",
     next: "Next project",
     continueExploring: "Keep exploring",
     allProjects: "See all projects",
+    socialCtaBefore: "To follow more of Maoka's projects and process, visit our ",
+    socialCtaMiddle: " and ",
+    socialCtaAfter: ".",
   },
 };
 
@@ -80,7 +90,17 @@ export default function ProjectDetailClient({
             {t.allProjects} <ArrowIcon />
           </Link>
         </section>
+
+        <p className="project-detail-social-cta">
+          {t.socialCtaBefore}
+          <a href="https://www.instagram.com/maokacenografia/" target="_blank" rel="noreferrer">Instagram</a>
+          {t.socialCtaMiddle}
+          <a href="https://www.behance.net/maokacenografia" target="_blank" rel="noreferrer">Behance</a>
+          {t.socialCtaAfter}
+        </p>
       </main>
+
+      <Footer locale={locale} />
     </>
   );
 }

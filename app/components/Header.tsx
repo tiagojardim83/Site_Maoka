@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { projectImage, type Locale } from "../data/projects";
 import { ArrowIcon } from "./icons";
@@ -63,6 +63,7 @@ export default function Header({
 }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const cursorRef = useRef<HTMLDivElement>(null);
   const copy = headerCopy[locale];
 
   useEffect(() => {
@@ -70,6 +71,20 @@ export default function Header({
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  // The site hides the native cursor globally (see `cursor: none` in
+  // globals.css) and replaces it with this tracked div — every page needs
+  // Header mounted for a visible pointer, since this is the only place
+  // that renders it.
+  useEffect(() => {
+    const onMove = (event: MouseEvent) => {
+      if (cursorRef.current) {
+        cursorRef.current.style.transform = `translate3d(${event.clientX}px, ${event.clientY}px, 0)`;
+      }
+    };
+    window.addEventListener("mousemove", onMove, { passive: true });
+    return () => window.removeEventListener("mousemove", onMove);
   }, []);
 
   useEffect(() => {
@@ -86,6 +101,8 @@ export default function Header({
 
   return (
     <>
+      <div className="cursor" ref={cursorRef} aria-hidden="true" />
+
       <header
         className={`site-header ${scrolled ? "site-header--scrolled" : ""} ${entryActive ? "site-header--entry" : ""} ${menuOpen ? "site-header--menu" : ""}`}
       >

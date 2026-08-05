@@ -2014,7 +2014,10 @@ body:has(a:hover, button:hover) .cursor {
   margin: 0 0 28px;
   font-family: var(--serif);
   font-weight: 900;
-  font-size: clamp(26px, 8vw, 96px);
+  /* Sized so the longest single-word label ("Entretenimento", used as a
+     category title) fits on one line without overflow-wrap breaking it
+     mid-word, at every viewport width. */
+  font-size: clamp(22px, 5.6vw, 58px);
   line-height: .96;
   letter-spacing: -.03em;
   text-transform: uppercase;
@@ -2146,6 +2149,27 @@ body:has(a:hover, button:hover) .cursor {
 .project-detail-all .arrow-icon {
   width: 12px;
   height: 12px;
+}
+
+.project-detail-social-cta {
+  margin: 0;
+  padding: clamp(28px, 4vw, 48px) 4vw clamp(56px, 8vw, 96px);
+  border-top: 1px solid var(--line);
+  max-width: 640px;
+  font-size: clamp(15px, 1.3vw, 17px);
+  line-height: 1.6;
+  color: rgba(var(--ink-rgb), .75);
+}
+
+.project-detail-social-cta a {
+  color: var(--ink);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  transition: opacity .2s ease;
+}
+
+.project-detail-social-cta a:hover {
+  opacity: .6;
 }
 
 @media (max-width: 700px) {

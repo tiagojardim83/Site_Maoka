@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import Header from "../../components/Header";
+import Footer from "../../components/Footer";
 import { ArrowIcon } from "../../components/icons";
 import {
   categoryLabels,
@@ -105,6 +106,8 @@ export default function CategoryDetailClient({
             {t.allFronts} <ArrowIcon /></Link>
         </section>
       </main>
+
+      <Footer locale={locale} />
     </>
   );
 }
