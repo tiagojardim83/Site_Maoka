@@ -2135,6 +2135,31 @@ body:has(.hover-title:hover) .cursor {
   color: rgba(var(--ink-rgb), .28);
 }
 
+.project-detail-image-pair {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(16px, 2vw, 28px);
+}
+
+.project-detail-image--portrait {
+  height: clamp(360px, 60svh, 620px);
+}
+
+@media (min-width: 901px) {
+  .project-detail-image--portrait { aspect-ratio: 3 / 4; height: auto; }
+}
+
+.project-detail-image--portrait img {
+  object-fit: contain;
+}
+
+@media (max-width: 700px) {
+  .project-detail-image-pair {
+    grid-template-columns: 1fr;
+    gap: clamp(24px, 3vw, 41px);
+  }
+}
+
 .project-detail-next {
   padding: clamp(48px, 7vw, 96px) 4vw clamp(64px, 9vw, 120px);
   border-top: 1px solid var(--line);

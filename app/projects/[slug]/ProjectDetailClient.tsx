@@ -5,10 +5,33 @@ import Link from "next/link";
 import Header from "../../components/Header";
 import Footer from "../../components/Footer";
 import { ArrowIcon } from "../../components/icons";
-import { categoryLabels, categoryOrder, categorySlugs, type Locale, type Project } from "../../data/projects";
+import { categoryLabels, categoryOrder, categorySlugs, type Locale, type Project, type ProjectImage } from "../../data/projects";
 import { useHoverTitles } from "../../lib/useHoverTitles";
 
 const placeholderCount = 5;
+
+type ImageRow =
+  | { kind: "pair"; images: [ProjectImage, ProjectImage] }
+  | { kind: "single"; image: ProjectImage };
+
+// Portrait photos get cropped into an unrecognizable sliver if forced into
+// the same widescreen box as the rest, so they're pulled out, paired up two
+// per row (any odd one left over rendered alone), and shown first — the
+// remaining landscape photos follow, each full-width as before.
+function groupProjectImages(images: ProjectImage[]): ImageRow[] {
+  const portraits = images.filter((img) => img.portrait);
+  const landscapes = images.filter((img) => !img.portrait);
+  const rows: ImageRow[] = [];
+
+  for (let i = 0; i < portraits.length; i += 2) {
+    const pair = portraits.slice(i, i + 2);
+    if (pair.length === 2) rows.push({ kind: "pair", images: [pair[0], pair[1]] });
+    else rows.push({ kind: "single", image: pair[0] });
+  }
+  landscapes.forEach((image) => rows.push({ kind: "single", image }));
+
+  return rows;
+}
 
 const copy: Record<Locale, {
   back: string;
@@ -67,11 +90,24 @@ export default function ProjectDetailClient({
 
         <section className="project-detail-images" aria-label={`${project.name} — ${t.next}`}>
           {project.images
-            ? project.images.map((src, i) => (
-                <figure className="project-detail-image project-detail-image--photo" key={src}>
-                  <img src={src} alt={`${project.name} ${i + 1}`} loading={i === 0 ? "eager" : "lazy"} />
-                </figure>
-              ))
+            ? groupProjectImages(project.images).map((row, i) =>
+                row.kind === "pair" ? (
+                  <div className="project-detail-image-pair" key={row.images[0].src}>
+                    {row.images.map((img, j) => (
+                      <figure className="project-detail-image project-detail-image--portrait" key={img.src}>
+                        <img src={img.src} alt={`${project.name} ${i + j + 1}`} loading={i === 0 ? "eager" : "lazy"} />
+                      </figure>
+                    ))}
+                  </div>
+                ) : (
+                  <figure
+                    className={`project-detail-image project-detail-image--photo${row.image.portrait ? " project-detail-image--portrait" : ""}`}
+                    key={row.image.src}
+                  >
+                    <img src={row.image.src} alt={`${project.name} ${i + 1}`} loading={i === 0 ? "eager" : "lazy"} />
+                  </figure>
+                ),
+              )
             : Array.from({ length: placeholderCount }, (_, i) => (
                 <figure className="project-detail-image" key={i}>
                   <span className="project-detail-image-index">{String(i + 1).padStart(2, "0")}</span>
