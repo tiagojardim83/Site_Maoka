@@ -25,7 +25,7 @@ const footerCopy: Record<Locale, {
     footerStatement: "Projetos singulares para interações coletivas",
     footerBrand: "Maoka Cenografia",
     footerTagline: "Estratégia · Espaço · Experiência",
-    madeBy: "Feito por",
+    madeBy: "Webdesign",
   },
   en: {
     conversation: "Let's talk",
@@ -36,7 +36,7 @@ const footerCopy: Record<Locale, {
     footerStatement: "Singular projects for collective interactions",
     footerBrand: "Maoka Scenography",
     footerTagline: "Strategy · Space · Experience",
-    madeBy: "Made by",
+    madeBy: "Webdesign",
   },
 };
 
@@ -101,7 +101,7 @@ export default function Footer({ locale }: { locale: Locale }) {
         <span>© {new Date().getFullYear()} {copy.footerBrand}</span>
         <span>{copy.footerTagline}</span>
         <span>
-          {copy.madeBy}: <a href="https://tgarden.com.br/" target="_blank" rel="noreferrer">TGARDEN_STUDIO</a>
+          {copy.madeBy}: <a className="footer-credit-link" href="https://tgarden.com.br/" target="_blank" rel="noreferrer">TGARDEN_STUDIO</a>
         </span>
       </div>
     </footer>

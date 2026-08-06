@@ -1808,6 +1808,10 @@ body:has(.hover-title:hover) .cursor {
   color: var(--paper);
 }
 
+.footer-credit-link {
+  font-weight: 700;
+}
+
 @media (hover: hover) and (pointer: fine) {
   .photo-reactive:hover img,
   .photo-reactive:hover video,
