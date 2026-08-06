@@ -1802,6 +1802,7 @@ body:has(.hover-title:hover) .cursor {
 
 .footer-callout strong {
   min-width: 0;
+  overflow-wrap: anywhere;
   font-family: var(--serif);
   font-size: clamp(42px, 6.6vw, 108px);
   font-weight: 900;
@@ -2186,7 +2187,7 @@ body:has(.hover-title:hover) .cursor {
   }
   .footer-callout p { margin-bottom: 0; }
   .footer-callout strong {
-    font-size: clamp(40px, 13vw, 58px);
+    font-size: clamp(28px, 8vw, 58px);
     line-height: .92;
   }
   .footer-grid { grid-template-columns: 1fr; }
