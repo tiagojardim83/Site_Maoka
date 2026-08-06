@@ -56,7 +56,7 @@ const siteUrl =
   process.env.NEXT_PUBLIC_SITE_URL ??
   "https://maoka-cenografia.vercel.app";
 const baseUrl = new URL(siteUrl.endsWith("/") ? siteUrl : `${siteUrl}/`);
-const socialImage = new URL("og.png", baseUrl).toString();
+const socialImage = new URL("og.jpg", baseUrl).toString();
 
 export const metadata: Metadata = {
   metadataBase: baseUrl,
@@ -90,8 +90,8 @@ export const metadata: Metadata = {
     images: [
       {
         url: socialImage,
-        width: 1731,
-        height: 909,
+        width: 1200,
+        height: 630,
         alt: "Maoka — ideias viram espaço, espaços viram experiência",
       },
     ],
