@@ -54,7 +54,7 @@ const monument = localFont({
 const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
 const siteUrl =
   process.env.NEXT_PUBLIC_SITE_URL ??
-  "https://maoka-cenografia.lobs83.site";
+  "https://maoka-cenografia.vercel.app";
 const baseUrl = new URL(siteUrl.endsWith("/") ? siteUrl : `${siteUrl}/`);
 const socialImage = new URL("og.png", baseUrl).toString();
 
