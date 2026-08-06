@@ -63,7 +63,7 @@ const translations = {
     numbers: ["Criação de ponta a ponta", "Frentes de atuação", "Experiência integrada"],
     marquee: ["ENTRETENIMENTO", "CORPORATIVO", "ARQUITETURA COMERCIAL"],
     projectsLabel: "Projetos em destaque",
-    projectsTitle: ["Espaços para", "lembrar.", " E viver."],
+    projectsTitle: ["Espaços para", "lembrar", " e viver."],
     openProject: "Abrir projeto",
     viewProject: "Ver projeto",
     categories: {
@@ -82,7 +82,7 @@ const translations = {
     ],
     ritualLabel: "Nosso ritual",
     ritualTitle: ["Da escuta", "ao", "extraordinário."],
-    ritualCopy: "Um processo contínuo, próximo e transparente — porque as melhores experiências começam antes de o espaço existir.",
+    ritualCopy: "Um processo contínuo, próximo e transparente, porque as melhores experiências começam antes de o espaço existir.",
     steps: [
       ["Compreender", "Mergulhamos na marca, nas pessoas e no que ainda não foi dito.", "Imersão · Briefing"],
       ["Idealizar", "Transformamos estratégia em conceito, narrativa, desenho e atmosfera.", "Conceito · Projeto"],
@@ -140,7 +140,7 @@ const translations = {
     numbers: ["End-to-end creation", "Areas of expertise", "Integrated experience"],
     marquee: ["ENTERTAINMENT", "CORPORATE", "COMMERCIAL ARCHITECTURE"],
     projectsLabel: "Featured projects",
-    projectsTitle: ["Spaces to", "remember.", " And live."],
+    projectsTitle: ["Spaces to", "remember", " and live."],
     openProject: "Open project",
     viewProject: "View project",
     categories: {
@@ -159,7 +159,7 @@ const translations = {
     ],
     ritualLabel: "Our ritual",
     ritualTitle: ["From listening", "to the", "extraordinary."],
-    ritualCopy: "A continuous, collaborative and transparent process — because the best experiences begin before the space exists.",
+    ritualCopy: "A continuous, collaborative and transparent process, because the best experiences begin before the space exists.",
     steps: [
       ["Understand", "We immerse ourselves in the brand, the people and what has not yet been said.", "Immersion · Briefing"],
       ["Envision", "We turn strategy into concept, narrative, design and atmosphere.", "Concept · Design"],
