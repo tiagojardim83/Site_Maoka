@@ -891,6 +891,12 @@ body:has(a:hover, button:hover) .cursor {
   border-radius: var(--media-radius);
 }
 
+.itaipava-card-link {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
 .itaipava-card img {
   width: 100%;
   height: 100%;

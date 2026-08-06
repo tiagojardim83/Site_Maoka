@@ -937,12 +937,14 @@ export default function Home() {
               <div className="itaipava-track" ref={itaipavaTrackRef}>
                 {itaipavaImages.map((filename) => (
                   <figure className="itaipava-card photo-reactive reveal" key={filename}>
-                    <img
-                      className="parallax-media"
-                      src={projectImage(filename)}
-                      alt={copy.itaipavaAlt}
-                      loading="lazy"
-                    />
+                    <Link href="/projects/itaipava" className="itaipava-card-link" aria-label={copy.itaipavaTitle}>
+                      <img
+                        className="parallax-media"
+                        src={projectImage(filename)}
+                        alt={copy.itaipavaAlt}
+                        loading="lazy"
+                      />
+                    </Link>
                   </figure>
                 ))}
               </div>
