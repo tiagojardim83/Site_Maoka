@@ -2305,6 +2305,15 @@ body:has(.hover-title:hover) .cursor {
   color: var(--red);
 }
 
+.project-detail-meta {
+  margin: 0 0 18px;
+  text-transform: uppercase;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .16em;
+  color: rgba(var(--ink-rgb), .56);
+}
+
 .project-detail-title {
   margin: 0 0 28px;
   font-family: var(--serif);

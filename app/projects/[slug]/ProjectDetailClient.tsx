@@ -104,9 +104,12 @@ export default function ProjectDetailClient({
               <span aria-hidden="true">←</span> {t.back}
             </button>
             <p className="project-detail-kicker hover-title typewriter">
-              {categoryLabels[project.category][locale]} · {project.year} · {project.place[locale]}
+              {categoryLabels[project.category][locale]}
             </p>
           </div>
+          <p className="project-detail-meta hover-title typewriter">
+            {project.year} · {project.place[locale]}
+          </p>
           <h1 className="project-detail-title hover-title typewriter">{project.name}</h1>
           <p className="project-detail-text typewriter-words">{project.description[locale]}</p>
         </section>
