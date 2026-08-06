@@ -522,6 +522,22 @@ body:has(.hover-title:hover) .cursor {
   transform: translate(-50%, -50%);
 }
 
+.jelly-letter {
+  display: inline-block;
+  animation: jelly-wave 2.6s ease-in-out infinite;
+}
+
+@keyframes jelly-wave {
+  0%, 100% { transform: translateY(0) scaleY(1) scaleX(1); }
+  25% { transform: translateY(-5px) scaleY(1.06) scaleX(0.97); }
+  50% { transform: translateY(0) scaleY(0.95) scaleX(1.03); }
+  75% { transform: translateY(3px) scaleY(1.02) scaleX(0.99); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .jelly-letter { animation: none; }
+}
+
 .site-entry-zoom {
   position: relative;
   z-index: 1;

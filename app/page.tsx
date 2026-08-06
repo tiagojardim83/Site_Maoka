@@ -83,7 +83,7 @@ const translations = {
     ],
     ritualLabel: "Nosso ritual",
     ritualTitle: ["Da escuta", "ao", "extraordinário."],
-    ritualCopy: "Um processo contínuo, próximo e transparente, porque as melhores experiências começam antes de o espaço existir.",
+    ritualCopy: "Um processo contínuo, próximo e transparente.",
     steps: [
       ["Compreender", "Mergulhamos na marca, nas pessoas e no que ainda não foi dito.", "Imersão · Briefing"],
       ["Idealizar", "Transformamos estratégia em conceito, narrativa, desenho e atmosfera.", "Conceito · Projeto"],
@@ -161,7 +161,7 @@ const translations = {
     ],
     ritualLabel: "Our ritual",
     ritualTitle: ["From listening", "to the", "extraordinary."],
-    ritualCopy: "A continuous, collaborative and transparent process, because the best experiences begin before the space exists.",
+    ritualCopy: "A continuous, close and transparent process.",
     steps: [
       ["Understand", "We immerse ourselves in the brand, the people and what has not yet been said.", "Immersion · Briefing"],
       ["Envision", "We turn strategy into concept, narrative, design and atmosphere.", "Concept · Design"],
@@ -187,6 +187,21 @@ const translations = {
   },
 } as const;
 
+// Splits text into per-letter spans so each one can carry its own
+// animation-delay, turning a single CSS keyframe (see .jelly-letter) into a
+// soft wave that ripples across the word instead of the whole line bobbing
+// in lockstep.
+function WaveText({ text }: { text: string }) {
+  return (
+    <>
+      {text.split("").map((char, i) => (
+        <span className="jelly-letter" style={{ animationDelay: `${i * 70}ms` }} key={i}>
+          {char === " " ? " " : char}
+        </span>
+      ))}
+    </>
+  );
+}
 
 function TrophyIcon() {
   return (
@@ -854,7 +869,7 @@ export default function Home() {
         <section className="site-entry" ref={entryRef} aria-label={copy.entryLabel}>
           <div className="site-entry-inner">
             <p className="site-entry-title" aria-hidden="true">
-              {copy.entryTitle[0]}<br />{copy.entryTitle[1]}
+              <WaveText text={copy.entryTitle[0]} /><br /><WaveText text={copy.entryTitle[1]} />
             </p>
             <div className="site-entry-zoom">
               <img
