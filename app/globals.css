@@ -1553,7 +1553,7 @@ body:has(.hover-title:hover) .cursor {
 
 .service-list article:last-child { border-bottom: 1px solid rgba(var(--paper-rgb), .22); }
 .service-list article > span { padding-top: 6px; font-size: 9px; letter-spacing: .12em; color: var(--red); }
-.service-list h3 { margin: 0 0 12px; font-size: 25px; font-weight: 900; line-height: 1.2; letter-spacing: -.03em; overflow-wrap: break-word; }
+.service-list h3 { margin: 0 0 12px; font-size: clamp(18px, 1.7vw, 24px); font-weight: 900; line-height: 1.2; letter-spacing: -.03em; overflow-wrap: break-word; }
 .service-list p { margin: 0; max-width: 440px; color: rgba(var(--paper-rgb), .62); font-size: 13px; line-height: 1.6; }
 
 .process {

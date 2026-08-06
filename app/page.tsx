@@ -78,9 +78,9 @@ const translations = {
     craftLabel: "O que fazemos",
     craftTitle: ["Onde estratégia,", "design e", "experiência", "se encontram."],
     services: [
-      ["Conceito & Estratégia", "Escuta, pesquisa e uma ideia central capaz de sustentar toda a experiência."],
-      ["Arquitetura & Cenografia", "Espaços autorais que traduzem identidade com estética, função e intenção."],
-      ["Produção & Execução", "Excelência técnica, gestão integrada e cuidado absoluto com cada detalhe."],
+      ["Conceito & Estratégia", "Escuta, pesquisa e uma ideia central capaz de sustentar toda a experiência."],
+      ["Arquitetura & Cenografia", "Espaços autorais que traduzem identidade com estética, função e intenção."],
+      ["Produção & Execução", "Excelência técnica, gestão integrada e cuidado absoluto com cada detalhe."],
     ],
     ritualLabel: "Nosso ritual",
     ritualTitle: ["Da escuta", "ao", "extraordinário."],
@@ -1092,12 +1092,20 @@ export default function Home() {
               </div>
             </div>
             <div className="service-list">
-              {copy.services.map(([title, description], index) => (
-                <article className="reveal" key={`service-${index}`}>
-                  <span>{String(index + 1).padStart(2, "0")}</span>
-                  <div><h3 className="hover-title typewriter">{title}</h3><p className="typewriter-words">{description}</p></div>
-                </article>
-              ))}
+              {copy.services.map(([title, description], index) => {
+                const [beforeAmp, afterAmp] = title.split("& ");
+                return (
+                  <article className="reveal" key={`service-${index}`}>
+                    <span>{String(index + 1).padStart(2, "0")}</span>
+                    <div>
+                      <h3 className="hover-title typewriter">
+                        {afterAmp ? <>{beforeAmp}&<br />{afterAmp}</> : title}
+                      </h3>
+                      <p className="typewriter-words">{description}</p>
+                    </div>
+                  </article>
+                );
+              })}
             </div>
           </div>
         </section>
