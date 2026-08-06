@@ -745,7 +745,6 @@ body:has(.hover-title:hover) .cursor {
   width: 34px;
   height: 34px;
   border: 1px solid currentColor;
-  border-radius: 50%;
   font-size: 8px;
 }
 
@@ -983,25 +982,20 @@ body:has(.hover-title:hover) .cursor {
 }
 
 .text-link span {
-  position: relative;
-  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   border-left: 1px solid currentColor;
 }
 
-.text-link span::after {
-  content: "";
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 68px;
-  height: 1px;
-  background: currentColor;
-  transform: translate(-50%, -50%) rotate(-45deg);
+.arrow-down-icon {
+  width: 14px;
+  height: 14px;
   transition: transform 350ms cubic-bezier(.16, 1, .3, 1);
 }
 
 .text-link:hover strong { transform: translateX(5px); }
-.text-link:hover span::after { transform: translate(-50%, -50%) rotate(-45deg) scaleX(.72); }
+.text-link:hover .arrow-down-icon { transform: translateY(3px); }
 
 /* "Detalhes do projeto" signals it's clickable with a color change (to
    the brand red, since border/arrow both ride on currentColor) on top of
@@ -1014,7 +1008,7 @@ body:has(.hover-title:hover) .cursor {
   color: var(--red);
 }
 .itaipava-details-link.hover-interactive--active strong { transform: translateX(5px); }
-.itaipava-details-link.hover-interactive--active span::after { transform: translate(-50%, -50%) rotate(-45deg) scaleX(.72); }
+.itaipava-details-link.hover-interactive--active .arrow-down-icon { transform: translateY(3px); }
 
 .manifesto-process-link {
   width: 100%;
@@ -1764,6 +1758,15 @@ body:has(.hover-title:hover) .cursor {
   font-size: 8px;
   letter-spacing: .16em;
   color: rgba(255,255,255,.45);
+}
+
+.footer-bottom a {
+  color: inherit;
+  transition: color .2s ease;
+}
+
+.footer-bottom a:hover {
+  color: var(--paper);
 }
 
 @media (hover: hover) and (pointer: fine) {

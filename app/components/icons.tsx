@@ -12,3 +12,18 @@ export function ArrowIcon() {
     </svg>
   );
 }
+
+export function ArrowDownIcon() {
+  return (
+    <svg className="arrow-down-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+      <path
+        d="M12 4v14M6 13l6 6 6-6"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}

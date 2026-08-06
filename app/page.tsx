@@ -5,7 +5,7 @@ import Link from "next/link";
 import { projects, projectImage, categoryOrder, categorySlugs, type Locale } from "./data/projects";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
-import { ArrowIcon } from "./components/icons";
+import { ArrowDownIcon, ArrowIcon } from "./components/icons";
 import { useHoverTitles } from "./lib/useHoverTitles";
 
 const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
@@ -949,7 +949,7 @@ export default function Home() {
               <h3 className="itaipava-title reveal hover-title">{copy.itaipavaTitle}</h3>
               <Link className="text-link itaipava-details-link hover-interactive reveal" href="/projects/itaipava">
                 <strong>{copy.itaipavaDetails}</strong>
-                <span aria-hidden="true" />
+                <span aria-hidden="true"><ArrowDownIcon /></span>
               </Link>
             </div>
 

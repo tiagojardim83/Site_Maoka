@@ -14,6 +14,7 @@ const footerCopy: Record<Locale, {
   footerStatement: string;
   footerBrand: string;
   footerTagline: string;
+  madeBy: string;
 }> = {
   pt: {
     conversation: "Conversa",
@@ -24,6 +25,7 @@ const footerCopy: Record<Locale, {
     footerStatement: "Projetos singulares para interações coletivas",
     footerBrand: "Maoka Cenografia",
     footerTagline: "Estratégia · Espaço · Experiência",
+    madeBy: "Feito por",
   },
   en: {
     conversation: "Let's talk",
@@ -34,6 +36,7 @@ const footerCopy: Record<Locale, {
     footerStatement: "Singular projects for collective interactions",
     footerBrand: "Maoka Scenography",
     footerTagline: "Strategy · Space · Experience",
+    madeBy: "Made by",
   },
 };
 
@@ -94,7 +97,13 @@ export default function Footer({ locale }: { locale: Locale }) {
         <div><small>{copy.base}</small><span>Belo Horizonte<br />{copy.country}</span></div>
         <div><small>{copy.return}</small><a href="#top">{copy.backToTop}</a></div>
       </div>
-      <div className="footer-bottom"><span>© {new Date().getFullYear()} {copy.footerBrand}</span><span>{copy.footerTagline}</span></div>
+      <div className="footer-bottom">
+        <span>© {new Date().getFullYear()} {copy.footerBrand}</span>
+        <span>{copy.footerTagline}</span>
+        <span>
+          {copy.madeBy}: <a href="https://tgarden.com.br/" target="_blank" rel="noreferrer">TGARDEN_STUDIO</a>
+        </span>
+      </div>
     </footer>
   );
 }
