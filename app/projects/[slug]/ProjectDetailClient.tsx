@@ -8,6 +8,7 @@ import Footer from "../../components/Footer";
 import { ArrowIcon } from "../../components/icons";
 import { categoryLabels, categoryOrder, categorySlugs, type Locale, type Project, type ProjectImage } from "../../data/projects";
 import { useHoverTitles } from "../../lib/useHoverTitles";
+import { useTypewriterReveal } from "../../lib/useTypewriterReveal";
 
 const placeholderCount = 5;
 
@@ -90,6 +91,7 @@ export default function ProjectDetailClient({
   const router = useRouter();
 
   useHoverTitles();
+  useTypewriterReveal(locale);
 
   return (
     <>
@@ -101,12 +103,12 @@ export default function ProjectDetailClient({
             <button type="button" className="project-detail-back" onClick={() => router.back()}>
               <span aria-hidden="true">←</span> {t.back}
             </button>
-            <p className="project-detail-kicker hover-title">
+            <p className="project-detail-kicker hover-title typewriter">
               {categoryLabels[project.category][locale]} · {project.year} · {project.place[locale]}
             </p>
           </div>
-          <h1 className="project-detail-title hover-title">{project.name}</h1>
-          <p className="project-detail-text">{project.description[locale]}</p>
+          <h1 className="project-detail-title hover-title typewriter">{project.name}</h1>
+          <p className="project-detail-text typewriter-words">{project.description[locale]}</p>
         </section>
 
         <section className="project-detail-images" aria-label={`${project.name} — ${t.next}`}>
@@ -141,8 +143,8 @@ export default function ProjectDetailClient({
         </section>
 
         <section className="project-detail-next">
-          <p className="project-detail-next-kicker hover-title">{t.next}</p>
-          <h2 className="project-detail-next-heading hover-title">{t.continueExploring}</h2>
+          <p className="project-detail-next-kicker hover-title typewriter">{t.next}</p>
+          <h2 className="project-detail-next-heading hover-title typewriter">{t.continueExploring}</h2>
           <div className="project-detail-next-grid">
             {others.slice(0, 3).map((other) => (
               <Link className="project-detail-next-card" href={`/projects/${other.slug}`} key={other.slug}>

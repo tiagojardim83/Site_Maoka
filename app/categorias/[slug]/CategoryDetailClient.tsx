@@ -15,6 +15,7 @@ import {
   type ProjectCategory,
 } from "../../data/projects";
 import { useHoverTitles } from "../../lib/useHoverTitles";
+import { useTypewriterReveal } from "../../lib/useTypewriterReveal";
 
 const copy: Record<Locale, {
   eyebrow: string;
@@ -53,6 +54,7 @@ export default function CategoryDetailClient({
   const t = copy[locale];
 
   useHoverTitles();
+  useTypewriterReveal(locale);
 
   return (
     <>
@@ -60,11 +62,11 @@ export default function CategoryDetailClient({
 
       <main className="project-detail">
         <section className="project-detail-hero">
-          <p className="project-detail-kicker hover-title">
+          <p className="project-detail-kicker hover-title typewriter">
             {t.eyebrow} · {categoryProjects.length} {t.projectsWord}
           </p>
-          <h1 className="project-detail-title hover-title">{categoryLabels[category][locale]}</h1>
-          <p className="project-detail-text">{categoryDescriptions[category][locale]}</p>
+          <h1 className="project-detail-title hover-title typewriter">{categoryLabels[category][locale]}</h1>
+          <p className="project-detail-text typewriter-words">{categoryDescriptions[category][locale]}</p>
         </section>
 
         <section className="project-detail-next" aria-label={categoryLabels[category][locale]}>
@@ -84,8 +86,8 @@ export default function CategoryDetailClient({
         </section>
 
         <section className="project-detail-next">
-          <p className="project-detail-next-kicker hover-title">{t.next}</p>
-          <h2 className="project-detail-next-heading hover-title">{t.continueExploring}</h2>
+          <p className="project-detail-next-kicker hover-title typewriter">{t.next}</p>
+          <h2 className="project-detail-next-heading hover-title typewriter">{t.continueExploring}</h2>
           <div className="project-detail-next-grid">
             {otherCategories.map((other) => {
               const representative = allProjects.find((project) => project.category === other);

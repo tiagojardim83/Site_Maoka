@@ -739,7 +739,7 @@ body:has(.hover-title:hover) .cursor {
   letter-spacing: .2em;
 }
 
-.section-label span {
+.section-label > span {
   display: grid;
   place-items: center;
   width: 34px;
@@ -762,6 +762,45 @@ body:has(.hover-title:hover) .cursor {
 .reveal.is-visible {
   opacity: 1;
   transform: translateY(0);
+}
+
+/* Typewriter reveal for titles/copy — see useTypewriterReveal. Each
+   character (.typewriter) or word (.typewriter-words) starts hidden and
+   is animated in with a staggered delay driven by --i, so the text
+   appears to type itself out. Unlike .reveal this isn't a one-shot: the
+   is-typing class is toggled by the observer every time the element
+   crosses into/out of view, so the animation replays whichever way the
+   section is scrolled past. */
+.typewriter .tw-word-wrap {
+  display: inline-block;
+  /* inline-block alone isn't enough — browsers still allow a line break
+     between adjacent atomic inlines (our .tw-char spans) even with no
+     whitespace between them, so a long word could still wrap mid-word.
+     nowrap forces the whole word to stay on one line (overflowing
+     rather than breaking internally, same as plain unsplit text would
+     under the default overflow-wrap:normal). */
+  white-space: nowrap;
+}
+
+.typewriter .tw-char,
+.typewriter-words .tw-word {
+  display: inline-block;
+  opacity: 0;
+}
+
+.typewriter.is-typing .tw-char {
+  animation: typewriter-char-in 220ms ease both;
+  animation-delay: calc(var(--i, 0) * var(--tw-char-step, 16ms));
+}
+
+.typewriter-words.is-typing .tw-word {
+  animation: typewriter-char-in 260ms ease both;
+  animation-delay: calc(var(--i, 0) * var(--tw-word-step, 40ms));
+}
+
+@keyframes typewriter-char-in {
+  from { opacity: 0; transform: translateY(5px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 .parallax-media {
