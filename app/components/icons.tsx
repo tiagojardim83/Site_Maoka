@@ -17,7 +17,7 @@ export function ArrowDownIcon() {
   return (
     <svg className="arrow-down-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
       <path
-        d="M12 4v14M6 13l6 6 6-6"
+        d="M18 6 6 18M6 18h9M6 18V9"
         fill="none"
         stroke="currentColor"
         strokeWidth="1.5"

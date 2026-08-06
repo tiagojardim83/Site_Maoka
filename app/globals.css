@@ -995,7 +995,7 @@ body:has(.hover-title:hover) .cursor {
 }
 
 .text-link:hover strong { transform: translateX(5px); }
-.text-link:hover .arrow-down-icon { transform: translateY(3px); }
+.text-link:hover .arrow-down-icon { transform: translate(-2px, 2px); }
 
 /* "Detalhes do projeto" signals it's clickable with a color change (to
    the brand red, since border/arrow both ride on currentColor) on top of
@@ -1008,7 +1008,7 @@ body:has(.hover-title:hover) .cursor {
   color: var(--red);
 }
 .itaipava-details-link.hover-interactive--active strong { transform: translateX(5px); }
-.itaipava-details-link.hover-interactive--active .arrow-down-icon { transform: translateY(3px); }
+.itaipava-details-link.hover-interactive--active .arrow-down-icon { transform: translate(-2px, 2px); }
 
 .manifesto-process-link {
   width: 100%;
