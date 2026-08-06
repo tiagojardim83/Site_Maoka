@@ -997,7 +997,7 @@ export default function Home() {
                 <span>02</span>
                 <p className="hover-title">{copy.projectsLabel}</p>
               </div>
-              <h2 className="hover-title">{copy.projectsTitle[0]}<br /><em>{copy.projectsTitle[1]}</em>{copy.projectsTitle[2]}</h2>
+              <h2 className="hover-title">{copy.projectsTitle[0]}<br /><span className="projects-title-line2"><em>{copy.projectsTitle[1]}</em>{copy.projectsTitle[2]}</span></h2>
               <p>{copy.projectsCopy}</p>
             </div>
 
