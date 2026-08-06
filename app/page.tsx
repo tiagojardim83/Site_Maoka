@@ -6,6 +6,7 @@ import { projects, projectImage, categoryOrder, categorySlugs, type Locale } fro
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import { ArrowIcon } from "./components/icons";
+import { useHoverTitles } from "./lib/useHoverTitles";
 
 const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
 
@@ -356,6 +357,8 @@ export default function Home() {
   const itaipavaTrackRef = useRef<HTMLDivElement>(null);
   const itaipavaStickyRef = useRef<HTMLDivElement>(null);
   const copy = translations[locale];
+
+  useHoverTitles();
 
   useScrollJackCarousel(projectsSectionRef, projectsViewportRef, projectsTrackRef);
   useScrollJackCarousel(itaipavaSectionRef, itaipavaViewportRef, itaipavaTrackRef, 2.5, itaipavaStickyRef);
@@ -866,8 +869,8 @@ export default function Home() {
           <section className="hero" aria-labelledby="hero-title">
             <div className="hero-intro">
               <div className="hero-statement">
-                <h1 id="hero-title">{copy.heroTitle[0]}<br className="mobile-only" aria-hidden="true" />{copy.heroTitle[1]}</h1>
-                <p>{copy.heroSubtitle}</p>
+                <h1 id="hero-title" className="hover-title">{copy.heroTitle[0]}<br className="mobile-only" aria-hidden="true" />{copy.heroTitle[1]}</h1>
+                <p className="hover-title">{copy.heroSubtitle}</p>
               </div>
 
               <div
@@ -910,7 +913,7 @@ export default function Home() {
             <p>{copy.manifestoLabel}</p>
           </div>
           <div className="manifesto-grid">
-            <h2 className="display-copy reveal">
+            <h2 className="display-copy reveal hover-title">
               {copy.manifestoTitle[0]}<br />
               <em>{copy.manifestoTitle[1]}</em><br /> {copy.manifestoTitle[2]}<br />
               {copy.manifestoTitle[3]}
@@ -925,8 +928,8 @@ export default function Home() {
         <section className="itaipava-section" ref={itaipavaSectionRef}>
           <div className="itaipava-sticky" ref={itaipavaStickyRef}>
             <div className="itaipava-intro">
-              <p className="itaipava-eyebrow reveal"><TrophyIcon /> {copy.itaipavaEyebrow}</p>
-              <h3 className="itaipava-title reveal">{copy.itaipavaTitle}</h3>
+              <p className="itaipava-eyebrow reveal hover-title"><TrophyIcon /> {copy.itaipavaEyebrow}</p>
+              <h3 className="itaipava-title reveal hover-title">{copy.itaipavaTitle}</h3>
               <Link className="text-link itaipava-details-link reveal" href="/projects/itaipava">
                 <strong>{copy.itaipavaDetails}</strong>
                 <span aria-hidden="true" />
@@ -975,9 +978,9 @@ export default function Home() {
             <div className="projects-heading reveal">
               <div className="section-label">
                 <span>02</span>
-                <p>{copy.projectsLabel}</p>
+                <p className="hover-title">{copy.projectsLabel}</p>
               </div>
-              <h2>{copy.projectsTitle[0]}<br /><em>{copy.projectsTitle[1]}</em>{copy.projectsTitle[2]}</h2>
+              <h2 className="hover-title">{copy.projectsTitle[0]}<br /><em>{copy.projectsTitle[1]}</em>{copy.projectsTitle[2]}</h2>
             </div>
 
             <div className="project-viewport" ref={projectsViewportRef}>
@@ -1017,7 +1020,7 @@ export default function Home() {
         <section className="areas section-pad" id="frentes">
           <div className="section-label reveal">
             <span>03</span>
-            <p>{copy.areasKicker}</p>
+            <p className="hover-title">{copy.areasKicker}</p>
           </div>
           <div className="areas-list">
             {categoryOrder.map((category) => {
@@ -1058,10 +1061,10 @@ export default function Home() {
           <div className="craft-content section-pad">
             <div className="section-label reveal">
               <span>04</span>
-              <p>{copy.craftLabel}</p>
+              <p className="hover-title">{copy.craftLabel}</p>
             </div>
             <div className="craft-title-wrap">
-              <h2 className="reveal">{copy.craftTitle[0]}<br />{copy.craftTitle[1]} <br /><em>{copy.craftTitle[2]}</em><br />{copy.craftTitle[3]}</h2>
+              <h2 className="reveal hover-title">{copy.craftTitle[0]}<br />{copy.craftTitle[1]} <br /><em>{copy.craftTitle[2]}</em><br />{copy.craftTitle[3]}</h2>
               <div className="craft-sign reveal" aria-hidden="true">
                 <div className="craft-sign-motion" data-parallax="92">
                   <img src={projectImage("Sign_3D.svg")} alt="" loading="lazy" />
@@ -1072,7 +1075,7 @@ export default function Home() {
               {copy.services.map(([title, description], index) => (
                 <article className="reveal" key={`service-${index}`}>
                   <span>{String(index + 1).padStart(2, "0")}</span>
-                  <div><h3>{title}</h3><p>{description}</p></div>
+                  <div><h3 className="hover-title">{title}</h3><p>{description}</p></div>
                 </article>
               ))}
             </div>
@@ -1083,16 +1086,16 @@ export default function Home() {
           <div className="process-intro">
             <div className="section-label reveal" id="processo-04">
               <span>05</span>
-              <p>{copy.ritualLabel}</p>
+              <p className="hover-title">{copy.ritualLabel}</p>
             </div>
-            <h2 className="reveal">{copy.ritualTitle[0]} {copy.ritualTitle[1]}<br /><em>{copy.ritualTitle[2]}</em></h2>
+            <h2 className="reveal hover-title">{copy.ritualTitle[0]} {copy.ritualTitle[1]}<br /><em>{copy.ritualTitle[2]}</em></h2>
             <p className="reveal">{copy.ritualCopy}</p>
           </div>
           <div className="process-steps">
             {copy.steps.map(([title, description, note], index) => (
               <article className="reveal" key={`step-${index}`}>
                 <span>{String(index + 1).padStart(2, "0")}</span>
-                <h3>{title}</h3><p>{description}</p><i>{note}</i>
+                <h3 className="hover-title">{title}</h3><p>{description}</p><i>{note}</i>
               </article>
             ))}
           </div>
@@ -1114,8 +1117,8 @@ export default function Home() {
           </div>
           <div className="closing-shade" />
           <div className="closing-content reveal">
-            <p>{copy.closingQuestion}</p>
-            <h2>{copy.closingTitle[0]}<br />{copy.closingTitle[1]} <br /><em>{copy.closingTitle[2]}</em></h2>
+            <p className="hover-title">{copy.closingQuestion}</p>
+            <h2 className="hover-title">{copy.closingTitle[0]}<br />{copy.closingTitle[1]} <br /><em>{copy.closingTitle[2]}</em></h2>
             <a className="cta-orbit" href={whatsAppContacts[0].href} target="_blank" rel="noreferrer">
               <span>{copy.startProject}</span>
               <i aria-hidden="true">↗</i>

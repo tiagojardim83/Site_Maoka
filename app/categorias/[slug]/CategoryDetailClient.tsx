@@ -14,6 +14,7 @@ import {
   type Project,
   type ProjectCategory,
 } from "../../data/projects";
+import { useHoverTitles } from "../../lib/useHoverTitles";
 
 const copy: Record<Locale, {
   eyebrow: string;
@@ -51,16 +52,18 @@ export default function CategoryDetailClient({
   const toggleLocale = () => setLocale((current) => (current === "pt" ? "en" : "pt"));
   const t = copy[locale];
 
+  useHoverTitles();
+
   return (
     <>
       <Header locale={locale} onToggleLocale={toggleLocale} />
 
       <main className="project-detail">
         <section className="project-detail-hero">
-          <p className="project-detail-kicker">
+          <p className="project-detail-kicker hover-title">
             {t.eyebrow} · {categoryProjects.length} {t.projectsWord}
           </p>
-          <h1 className="project-detail-title">{categoryLabels[category][locale]}</h1>
+          <h1 className="project-detail-title hover-title">{categoryLabels[category][locale]}</h1>
           <p className="project-detail-text">{categoryDescriptions[category][locale]}</p>
         </section>
 
@@ -81,8 +84,8 @@ export default function CategoryDetailClient({
         </section>
 
         <section className="project-detail-next">
-          <p className="project-detail-next-kicker">{t.next}</p>
-          <h2 className="project-detail-next-heading">{t.continueExploring}</h2>
+          <p className="project-detail-next-kicker hover-title">{t.next}</p>
+          <h2 className="project-detail-next-heading hover-title">{t.continueExploring}</h2>
           <div className="project-detail-next-grid">
             {otherCategories.map((other) => {
               const representative = allProjects.find((project) => project.category === other);

@@ -10,6 +10,7 @@
   --red-rgb: 229, 17, 0;
   --blue: #6f8cb8;
   --gray: #d8dad0;
+  --orange: #ff7a1a;
   --line: rgba(var(--ink-rgb), 0.13);
   --serif: var(--font-monument), Arial, sans-serif;
   --sans: var(--font-botanica), Arial, sans-serif;
@@ -18,6 +19,23 @@
   --space-stagger: clamp(52px, 6vw, 96px);
   --media-radius: clamp(14px, 1.4vw, 24px);
   --studio-grade: contrast(1.12) brightness(.9) saturate(.86);
+}
+
+/* Titles/subtitles across the site turn orange on hover (desktop) or
+   while crossing the vertical center of the screen on scroll, in either
+   direction (touch devices — see useHoverTitles). !important guarantees
+   this state wins regardless of whatever color rule a given heading
+   already has (e.g. .closing h2, .closing h2 em). */
+@media (hover: hover) and (pointer: fine) {
+  .hover-title:hover,
+  .hover-title:hover * {
+    color: var(--orange) !important;
+  }
+}
+
+.hover-title.hover-title--active,
+.hover-title.hover-title--active * {
+  color: var(--orange) !important;
 }
 
 * {

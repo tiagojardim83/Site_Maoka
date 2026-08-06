@@ -6,6 +6,7 @@ import Header from "../../components/Header";
 import Footer from "../../components/Footer";
 import { ArrowIcon } from "../../components/icons";
 import { categoryLabels, categoryOrder, categorySlugs, type Locale, type Project } from "../../data/projects";
+import { useHoverTitles } from "../../lib/useHoverTitles";
 
 const placeholderCount = 5;
 
@@ -49,16 +50,18 @@ export default function ProjectDetailClient({
   const toggleLocale = () => setLocale((current) => (current === "pt" ? "en" : "pt"));
   const t = copy[locale];
 
+  useHoverTitles();
+
   return (
     <>
       <Header locale={locale} onToggleLocale={toggleLocale} />
 
       <main className="project-detail">
         <section className="project-detail-hero">
-          <p className="project-detail-kicker">
+          <p className="project-detail-kicker hover-title">
             {categoryLabels[project.category][locale]} · {project.year} · {project.place[locale]}
           </p>
-          <h1 className="project-detail-title">{project.name}</h1>
+          <h1 className="project-detail-title hover-title">{project.name}</h1>
           <p className="project-detail-text">{project.description[locale]}</p>
         </section>
 
@@ -77,8 +80,8 @@ export default function ProjectDetailClient({
         </section>
 
         <section className="project-detail-next">
-          <p className="project-detail-next-kicker">{t.next}</p>
-          <h2 className="project-detail-next-heading">{t.continueExploring}</h2>
+          <p className="project-detail-next-kicker hover-title">{t.next}</p>
+          <h2 className="project-detail-next-heading hover-title">{t.continueExploring}</h2>
           <div className="project-detail-next-grid">
             {others.slice(0, 3).map((other) => (
               <Link className="project-detail-next-card" href={`/projects/${other.slug}`} key={other.slug}>
