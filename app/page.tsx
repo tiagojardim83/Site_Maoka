@@ -64,7 +64,7 @@ const translations = {
     marquee: ["ENTRETENIMENTO", "CORPORATIVO", "ARQUITETURA COMERCIAL"],
     projectsLabel: "Projetos em destaque",
     projectsTitle: ["Espaços para", "lembrar", " e viver."],
-    projectsCopy: "Uma seleção dos projetos que melhor traduzem a Maoka, porque as melhores ideias merecem ser revividas.",
+    projectsCopy: "Uma seleção dos projetos que melhor traduzem a Maoka.",
     openProject: "Abrir projeto",
     viewProject: "Ver projeto",
     categories: {
@@ -142,7 +142,7 @@ const translations = {
     marquee: ["ENTERTAINMENT", "CORPORATE", "COMMERCIAL ARCHITECTURE"],
     projectsLabel: "Featured projects",
     projectsTitle: ["Spaces to", "remember", " and live."],
-    projectsCopy: "A curated selection of the projects that best translate Maoka, because the best ideas deserve to be relived.",
+    projectsCopy: "A curated selection of the projects that best translate Maoka.",
     openProject: "Open project",
     viewProject: "View project",
     categories: {
@@ -947,7 +947,7 @@ export default function Home() {
             <div className="itaipava-intro">
               <p className="itaipava-eyebrow reveal hover-title"><TrophyIcon /> {copy.itaipavaEyebrow}</p>
               <h3 className="itaipava-title reveal hover-title">{copy.itaipavaTitle}</h3>
-              <Link className="text-link itaipava-details-link reveal" href="/projects/itaipava">
+              <Link className="text-link itaipava-details-link hover-interactive reveal" href="/projects/itaipava">
                 <strong>{copy.itaipavaDetails}</strong>
                 <span aria-hidden="true" />
               </Link>

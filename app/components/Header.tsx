@@ -148,7 +148,7 @@ export default function Header({
         >
           {locale.toUpperCase()}
         </button>
-        <a className="header-contact" href="mailto:maokacenografia@gmail.com">
+        <a className="header-contact" href="https://wa.me/5512982141215" target="_blank" rel="noreferrer">
           {copy.headerContact}
         </a>
       </header>

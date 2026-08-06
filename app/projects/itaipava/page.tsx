@@ -19,7 +19,6 @@ const itaipavaProject: Project = {
   // portraitRowSize, in this exact order.
   images: [
     { src: projectImage("maoka_itaipava_01.webp"), portrait: true },
-    { src: projectImage("grupo-petropolis-video-01.mp4"), portrait: true, type: "video" },
     { src: projectImage("maoka_itaipava_02.webp"), portrait: true },
     { src: projectImage("grupo-petropolis-video-02.mp4"), portrait: true, type: "video" },
     { src: projectImage("maoka_itaipava_03.webp"), portrait: true },

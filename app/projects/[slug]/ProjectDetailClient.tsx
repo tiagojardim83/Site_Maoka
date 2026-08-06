@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import Header from "../../components/Header";
 import Footer from "../../components/Footer";
 import { ArrowIcon } from "../../components/icons";
@@ -16,17 +17,16 @@ type ImageRow =
 
 // Portrait photos get cropped into an unrecognizable sliver if forced into
 // the same widescreen box as the rest, so they're pulled out, grouped
-// `rowSize` per row (any remainder rendered alone), and shown first — the
-// remaining landscape photos follow, each full-width as before.
+// `rowSize` per row (a remainder row just has fewer columns — still full
+// width, never a lone undersized box), and shown first — the remaining
+// landscape photos follow, each full-width as before.
 function groupProjectImages(images: ProjectImage[], rowSize = 2): ImageRow[] {
   const portraits = images.filter((img) => img.portrait);
   const landscapes = images.filter((img) => !img.portrait);
   const rows: ImageRow[] = [];
 
   for (let i = 0; i < portraits.length; i += rowSize) {
-    const group = portraits.slice(i, i + rowSize);
-    if (group.length > 1) rows.push({ kind: "group", images: group });
-    else rows.push({ kind: "single", image: group[0] });
+    rows.push({ kind: "group", images: portraits.slice(i, i + rowSize) });
   }
   landscapes.forEach((image) => rows.push({ kind: "single", image }));
 
@@ -87,6 +87,7 @@ export default function ProjectDetailClient({
   const [locale, setLocale] = useState<Locale>("pt");
   const toggleLocale = () => setLocale((current) => (current === "pt" ? "en" : "pt"));
   const t = copy[locale];
+  const router = useRouter();
 
   useHoverTitles();
 
@@ -96,9 +97,14 @@ export default function ProjectDetailClient({
 
       <main className="project-detail">
         <section className="project-detail-hero">
-          <p className="project-detail-kicker hover-title">
-            {categoryLabels[project.category][locale]} · {project.year} · {project.place[locale]}
-          </p>
+          <div className="project-detail-kicker-row">
+            <button type="button" className="project-detail-back" onClick={() => router.back()}>
+              <span aria-hidden="true">←</span> {t.back}
+            </button>
+            <p className="project-detail-kicker hover-title">
+              {categoryLabels[project.category][locale]} · {project.year} · {project.place[locale]}
+            </p>
+          </div>
           <h1 className="project-detail-title hover-title">{project.name}</h1>
           <p className="project-detail-text">{project.description[locale]}</p>
         </section>
@@ -108,7 +114,7 @@ export default function ProjectDetailClient({
             ? groupProjectImages(project.images, project.portraitRowSize).map((row, i) =>
                 row.kind === "group" ? (
                   <div
-                    className="project-detail-image-pair"
+                    className={`project-detail-image-pair${row.images.length === 1 ? " project-detail-image-pair--solo" : ""}`}
                     style={{ "--row-size": row.images.length } as React.CSSProperties}
                     key={row.images[0].src}
                   >

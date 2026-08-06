@@ -45,6 +45,14 @@ function WhatsAppIcon() {
   );
 }
 
+function EmailIcon() {
+  return (
+    <svg className="whatsapp-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+      <path d="M2 5.5A1.5 1.5 0 0 1 3.5 4h17A1.5 1.5 0 0 1 22 5.5v13a1.5 1.5 0 0 1-1.5 1.5h-17A1.5 1.5 0 0 1 2 18.5zm2.2.5 7.3 5.85a.75.75 0 0 0 .94 0L19.8 6zM20 7.62l-6.85 5.49a2.75 2.75 0 0 1-3.44 0L3.86 7.62V18h16.14z" />
+    </svg>
+  );
+}
+
 export default function Footer({ locale }: { locale: Locale }) {
   const copy = footerCopy[locale];
 
@@ -59,7 +67,10 @@ export default function Footer({ locale }: { locale: Locale }) {
       <div className="footer-grid">
         <div>
           <small>{copy.conversation}</small>
-          <a href="mailto:maokacenografia@gmail.com">maokacenografia@gmail.com</a>
+          <a className="whatsapp-link" href="mailto:maokacenografia@gmail.com">
+            <EmailIcon />
+            maokacenografia@gmail.com
+          </a>
           {whatsAppContacts.map((contact) => (
             <a
               className="whatsapp-link"

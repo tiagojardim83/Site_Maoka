@@ -998,6 +998,19 @@ body:has(.hover-title:hover) .cursor {
 .text-link:hover strong { transform: translateX(5px); }
 .text-link:hover span::after { transform: translate(-50%, -50%) rotate(-45deg) scaleX(.72); }
 
+/* "Detalhes do projeto" signals it's clickable with a color change (to
+   the brand red, since border/arrow both ride on currentColor) on top of
+   the existing slide-in movement — on hover for mouse users, and on
+   touch devices while the button crosses the vertical center of the
+   screen (same mechanic as useHoverTitles, opted in via .hover-interactive
+   instead of .hover-title since this isn't a heading). */
+.itaipava-details-link:hover,
+.itaipava-details-link.hover-interactive--active {
+  color: var(--red);
+}
+.itaipava-details-link.hover-interactive--active strong { transform: translateX(5px); }
+.itaipava-details-link.hover-interactive--active span::after { transform: translate(-50%, -50%) rotate(-45deg) scaleX(.72); }
+
 .manifesto-process-link {
   width: 100%;
   min-height: 58px;
@@ -1974,16 +1987,29 @@ body:has(.hover-title:hover) .cursor {
     padding: 0 18px;
     gap: 18px;
   }
+  /* The card's height is capped by the pinned viewport (flex:1 inside a
+     100svh sticky box) — a fixed clamp() height on the image, sized
+     independently of that available space, could add up to more than
+     the box has room for and get silently clipped by the viewport's
+     overflow:hidden, taking the caption below it with it. Making the
+     card itself a flex column that fills the available height, with the
+     image as the only flexible piece, guarantees the caption always has
+     room regardless of viewport height. */
   .project-track .project-card {
     flex-basis: 84vw;
+    height: 100%;
     margin-top: 0;
+    display: flex;
+    flex-direction: column;
   }
   .project-track .project-image {
-    height: clamp(460px, 68svh, 520px);
+    flex: 1 1 auto;
+    min-height: 0;
+    height: auto;
     aspect-ratio: auto;
   }
   .project-open { display: none; }
-  .project-meta { grid-template-columns: 30px 1fr auto; }
+  .project-meta { flex: 0 0 auto; grid-template-columns: 30px 1fr auto; }
   .project-meta strong {
     display: block;
     font-size: clamp(19px, 6.2vw, 26px);
@@ -1996,6 +2022,7 @@ body:has(.hover-title:hover) .cursor {
   .process-steps article { min-height: 320px; border-left: 0 !important; border-top: 1px solid var(--line); }
   .process-steps article:first-child { border-top: 0; }
   .closing { min-height: 680px; height: 90svh; }
+  .closing-content > p { font-size: 11px; margin-bottom: 20px; }
   .cta-orbit { width: 136px; height: 136px; margin-top: 42px; }
   .footer-grid { grid-template-columns: 1fr; padding-bottom: 60px; }
   .footer-bottom { flex-direction: column; gap: 12px; }
@@ -2056,6 +2083,43 @@ body:has(.hover-title:hover) .cursor {
 .project-detail-hero {
   padding: clamp(120px, 14vw, 168px) 4vw clamp(40px, 6vw, 72px);
   max-width: 980px;
+}
+
+.project-detail-kicker-row {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  margin: 0 0 18px;
+}
+
+.project-detail-kicker-row .project-detail-kicker { margin: 0; }
+
+.project-detail-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0;
+  border: 0;
+  background: none;
+  text-transform: uppercase;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .16em;
+  color: rgba(var(--ink-rgb), .56);
+  cursor: pointer;
+  transition: color .2s ease;
+}
+
+.project-detail-back span {
+  transition: transform .2s ease;
+}
+
+.project-detail-back:hover {
+  color: var(--ink);
+}
+
+.project-detail-back:hover span {
+  transform: translateX(-3px);
 }
 
 .project-detail-kicker {
@@ -2140,14 +2204,7 @@ body:has(.hover-title:hover) .cursor {
   color: rgba(var(--ink-rgb), .28);
 }
 
-/* A lone remainder portrait (odd one out, not part of a row) keeps a
-   fixed, viewport-safe height instead of stretching edge to edge — a
-   single 3:4 image blown up to the full container width would be
-   enormous. Width follows from the aspect-ratio. */
 .project-detail-image--portrait {
-  align-self: flex-start;
-  width: auto;
-  height: clamp(320px, 55svh, 560px);
   aspect-ratio: 3 / 4;
   border-style: solid;
   border-color: transparent;
@@ -2161,6 +2218,11 @@ body:has(.hover-title:hover) .cursor {
   height: 100%;
   display: block;
   object-fit: cover;
+  /* Interiors tend to have their subject (display, product, people) in
+     the lower half and a lot of empty ceiling/rig above it — biasing the
+     crop down keeps the subject in frame instead of centering on the
+     ceiling. */
+  object-position: center 65%;
 }
 
 /* Same pan loop as every other photo on the site — videos keep their
@@ -2186,6 +2248,24 @@ body:has(.hover-title:hover) .cursor {
   width: 100%;
   height: auto;
   max-height: clamp(320px, 60svh, 620px);
+}
+
+/* A lone remainder portrait (odd one out, no partner to share the row
+   with) doesn't stretch to fill the full width — at that width a 3:4
+   photo forced short enough to fit the height cap turns into an
+   unrecognizable sliver. It keeps the fixed, viewport-safe height/width
+   used everywhere else, just centered instead of left-hugging so the
+   leftover space on either side reads as deliberate, not broken. */
+.project-detail-image-pair--solo {
+  display: flex;
+  justify-content: center;
+}
+
+.project-detail-image-pair--solo .project-detail-image--portrait {
+  width: auto;
+  height: clamp(320px, 55svh, 560px);
+  max-height: none;
+  aspect-ratio: 3 / 4;
 }
 
 @media (max-width: 700px) {
@@ -2322,4 +2402,5 @@ body:has(.hover-title:hover) .cursor {
 
 @media (max-width: 700px) {
   .project-detail-next-grid { grid-template-columns: 1fr; }
+  .project-detail-category-links { flex-direction: column; gap: 18px; }
 }
