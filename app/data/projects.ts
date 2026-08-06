@@ -24,6 +24,8 @@ export type Project = {
   /** Real photos for the project detail page's gallery. Falls back to
    * numbered placeholder boxes when absent. */
   images?: ProjectImage[];
+  /** How many portrait photos/videos sit per row on desktop. Defaults to 2. */
+  portraitRowSize?: number;
 };
 
 const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? "";

@@ -2143,18 +2143,19 @@ body:has(.hover-title:hover) .cursor {
 /* Portrait photos/videos get a fixed, viewport-safe height instead of
    stretching to the column's width and deriving height from that (a
    3:4 box at the width of a wide desktop column comes out taller than
-   the screen). Width instead follows from the aspect-ratio, and the
-   box is centered rather than stretched, so it stays a consistent,
-   sane size everywhere — solo or paired. */
+   the screen). Width instead follows from the aspect-ratio, and the row
+   is left-aligned (flush with the hero text above) rather than
+   stretched or centered, so it stays a consistent, sane size everywhere
+   — solo or grouped. */
 .project-detail-image-pair {
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
   gap: clamp(16px, 2vw, 28px);
 }
 
 .project-detail-image--portrait {
-  align-self: center;
+  align-self: flex-start;
   width: auto;
   height: clamp(320px, 55svh, 560px);
   aspect-ratio: 3 / 4;

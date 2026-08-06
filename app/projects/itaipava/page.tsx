@@ -15,8 +15,8 @@ const itaipavaProject: Project = {
   },
   // Photos and behind-the-scenes takes intercalated (photo, video, photo,
   // video...) rather than grouped apart, per Tiago's request. Every asset
-  // here is portrait, so groupProjectImages pairs them up two per row in
-  // this exact order — each row ends up one photo beside one video.
+  // here is portrait, so groupProjectImages lays them out in rows of
+  // portraitRowSize, in this exact order.
   images: [
     { src: projectImage("maoka_itaipava_01.webp"), portrait: true },
     { src: projectImage("grupo-petropolis-video-01.mp4"), portrait: true, type: "video" },
@@ -32,6 +32,7 @@ const itaipavaProject: Project = {
     { src: projectImage("grupo-petropolis-video-06.mp4"), portrait: true, type: "video" },
     { src: projectImage("grupo-petropolis-video-07.mp4"), portrait: true, type: "video" },
   ],
+  portraitRowSize: 3,
 };
 
 export const metadata: Metadata = {

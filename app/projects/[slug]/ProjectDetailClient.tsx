@@ -11,22 +11,22 @@ import { useHoverTitles } from "../../lib/useHoverTitles";
 const placeholderCount = 5;
 
 type ImageRow =
-  | { kind: "pair"; images: [ProjectImage, ProjectImage] }
+  | { kind: "group"; images: ProjectImage[] }
   | { kind: "single"; image: ProjectImage };
 
 // Portrait photos get cropped into an unrecognizable sliver if forced into
-// the same widescreen box as the rest, so they're pulled out, paired up two
-// per row (any odd one left over rendered alone), and shown first — the
+// the same widescreen box as the rest, so they're pulled out, grouped
+// `rowSize` per row (any remainder rendered alone), and shown first — the
 // remaining landscape photos follow, each full-width as before.
-function groupProjectImages(images: ProjectImage[]): ImageRow[] {
+function groupProjectImages(images: ProjectImage[], rowSize = 2): ImageRow[] {
   const portraits = images.filter((img) => img.portrait);
   const landscapes = images.filter((img) => !img.portrait);
   const rows: ImageRow[] = [];
 
-  for (let i = 0; i < portraits.length; i += 2) {
-    const pair = portraits.slice(i, i + 2);
-    if (pair.length === 2) rows.push({ kind: "pair", images: [pair[0], pair[1]] });
-    else rows.push({ kind: "single", image: pair[0] });
+  for (let i = 0; i < portraits.length; i += rowSize) {
+    const group = portraits.slice(i, i + rowSize);
+    if (group.length > 1) rows.push({ kind: "group", images: group });
+    else rows.push({ kind: "single", image: group[0] });
   }
   landscapes.forEach((image) => rows.push({ kind: "single", image }));
 
@@ -105,8 +105,8 @@ export default function ProjectDetailClient({
 
         <section className="project-detail-images" aria-label={`${project.name} — ${t.next}`}>
           {project.images
-            ? groupProjectImages(project.images).map((row, i) =>
-                row.kind === "pair" ? (
+            ? groupProjectImages(project.images, project.portraitRowSize).map((row, i) =>
+                row.kind === "group" ? (
                   <div className="project-detail-image-pair" key={row.images[0].src}>
                     {row.images.map((media, j) => (
                       <figure className="project-detail-image project-detail-image--portrait" key={media.src}>
