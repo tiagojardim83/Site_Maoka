@@ -2140,28 +2140,41 @@ body:has(.hover-title:hover) .cursor {
   color: rgba(var(--ink-rgb), .28);
 }
 
+/* Portrait photos/videos get a fixed, viewport-safe height instead of
+   stretching to the column's width and deriving height from that (a
+   3:4 box at the width of a wide desktop column comes out taller than
+   the screen). Width instead follows from the aspect-ratio, and the
+   box is centered rather than stretched, so it stays a consistent,
+   sane size everywhere — solo or paired. */
 .project-detail-image-pair {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   gap: clamp(16px, 2vw, 28px);
 }
 
 .project-detail-image--portrait {
-  height: clamp(360px, 60svh, 620px);
-}
-
-@media (min-width: 901px) {
-  .project-detail-image--portrait { aspect-ratio: 3 / 4; height: auto; }
+  align-self: center;
+  width: auto;
+  height: clamp(320px, 55svh, 560px);
+  aspect-ratio: 3 / 4;
+  border-style: solid;
+  border-color: transparent;
+  background: rgba(var(--ink-rgb), .06);
+  overflow: hidden;
 }
 
 .project-detail-image--portrait img,
 .project-detail-image--portrait video {
+  width: 100%;
+  height: 100%;
+  display: block;
   object-fit: contain;
 }
 
 @media (max-width: 700px) {
   .project-detail-image-pair {
-    grid-template-columns: 1fr;
+    flex-direction: column;
     gap: clamp(24px, 3vw, 41px);
   }
 }
