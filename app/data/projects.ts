@@ -210,14 +210,11 @@ export const projects: Project[] = [
     },
     images: [
       { src: projectImage("nescafe-01.webp"), portrait: true },
-      { src: projectImage("nescafe-02.webp"), portrait: true },
       { src: projectImage("nescafe-03.webp"), portrait: true },
       { src: projectImage("nescafe-04.webp"), portrait: true },
       { src: projectImage("nescafe-05.webp"), portrait: true },
-      { src: projectImage("nescafe-06.webp"), portrait: true },
       { src: projectImage("nescafe-07.webp"), portrait: true },
       { src: projectImage("nescafe-08.webp") },
-      { src: projectImage("nescafe-09.webp"), portrait: true },
     ],
   },
   {
@@ -252,13 +249,10 @@ export const projects: Project[] = [
     },
     images: [
       { src: projectImage("arcelormittal-detail-01.webp"), portrait: true },
-      { src: projectImage("arcelormittal-detail-02.webp"), portrait: true },
       { src: projectImage("arcelormittal-detail-03.webp"), portrait: true },
       { src: projectImage("arcelormittal-detail-04.webp"), portrait: true },
-      { src: projectImage("arcelormittal-detail-05.webp"), portrait: true },
       { src: projectImage("arcelormittal-detail-06.webp") },
       { src: projectImage("arcelormittal-detail-07.webp"), portrait: true },
-      { src: projectImage("arcelormittal-detail-08.webp") },
       { src: projectImage("arcelormittal-detail-09.webp") },
     ],
   },
