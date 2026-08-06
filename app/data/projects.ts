@@ -172,7 +172,6 @@ export const projects: Project[] = [
       { src: projectImage("imperio-detail-04.webp"), portrait: true },
       { src: projectImage("imperio-detail-05.webp") },
       { src: projectImage("imperio-detail-06.webp") },
-      { src: projectImage("imperio-detail-07.webp"), portrait: true },
     ],
   },
   {
