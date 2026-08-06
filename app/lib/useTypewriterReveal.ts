@@ -3,13 +3,14 @@
 import { useEffect } from "react";
 
 // Splits every text node under `root` into one <span class="tw-char"> per
-// non-space character (spaces stay as plain text so wrapping still works
-// naturally), tagging each with --i so CSS can stagger their reveal delay.
-// Recurses through element children (br, em, etc.) so inline formatting
-// inside a title survives — only the text content gets split. Each word's
-// characters are grouped inside an inline-block "tw-word-wrap" — without
-// it, adjacent inline-block char spans are individually breakable, so the
-// browser would happily wrap mid-word instead of only at real spaces.
+// non-space character (spaces stay as plain text so wrapping/collapsing
+// still works exactly like normal text), tagging each with --i so CSS can
+// stagger their reveal delay. Recurses through element children (br, em,
+// etc.) so inline formatting inside a title survives — only the text
+// content gets split. Each word's characters are grouped inside an
+// inline-block "tw-word-wrap" — without it, adjacent inline-block char
+// spans are individually breakable, so the browser would happily wrap
+// mid-word instead of only at real spaces.
 function splitChars(root: Node, counter: { i: number }) {
   if (root.nodeType === Node.TEXT_NODE) {
     const text = root.textContent ?? "";
@@ -78,6 +79,15 @@ function splitWords(root: Node, counter: { i: number }) {
  * locale) that changes the underlying copy makes the effect re-split the
  * fresh text React just wrote in place of our spans, instead of silently
  * losing the effect after a language toggle.
+ *
+ * Note: the split-out spaces are plain text nodes, same as normal text —
+ * don't apply .typewriter/.typewriter-words directly to a `display:flex`
+ * element. Flex blockifies its children (inline -> block), and a block
+ * box whose content is *only* collapsible whitespace gets trimmed to
+ * nothing by the CSS whitespace-processing rules, silently eating the
+ * space. Nest the split target inside the flex container instead (see
+ * .brand-strip-bar / .brand-strip-bar p for the pattern) rather than
+ * making the text element itself the flex box.
  */
 export function useTypewriterReveal(watch?: unknown) {
   useEffect(() => {

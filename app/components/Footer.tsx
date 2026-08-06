@@ -1,4 +1,5 @@
 import type { Locale } from "../data/projects";
+import { ArrowDownIcon } from "./icons";
 
 const whatsAppContacts = [
   { label: "+55 12 98214-1215", href: "https://wa.me/5512982141215" },
@@ -15,6 +16,8 @@ const footerCopy: Record<Locale, {
   footerBrand: string;
   footerTagline: string;
   madeBy: string;
+  footerKicker: string;
+  footerCta: string;
 }> = {
   pt: {
     conversation: "Conversa",
@@ -26,6 +29,8 @@ const footerCopy: Record<Locale, {
     footerBrand: "Maoka Cenografia",
     footerTagline: "Estratégia · Espaço · Experiência",
     madeBy: "Webdesign",
+    footerKicker: "Uma ideia em movimento?",
+    footerCta: "Vamos conversar",
   },
   en: {
     conversation: "Let's talk",
@@ -37,6 +42,8 @@ const footerCopy: Record<Locale, {
     footerBrand: "Maoka Scenography",
     footerTagline: "Strategy · Space · Experience",
     madeBy: "Webdesign",
+    footerKicker: "An idea in motion?",
+    footerCta: "Let's talk",
   },
 };
 
@@ -67,9 +74,18 @@ export default function Footer({ locale }: { locale: Locale }) {
           <span>{copy.footerStatement}</span><i>✦</i>
         </div>
       </div>
+
+      <div className="footer-callout">
+        <p>{copy.footerKicker}</p>
+        <a href="mailto:maokacenografia@gmail.com">
+          <strong>{copy.footerCta}</strong>
+          <span aria-hidden="true"><ArrowDownIcon /></span>
+        </a>
+      </div>
+
       <div className="footer-grid">
-        <div>
-          <small>{copy.conversation}</small>
+        <div className="footer-group footer-group--conversation">
+          <div className="footer-group-heading"><span>01</span><small>{copy.conversation}</small></div>
           <a className="whatsapp-link" href="mailto:maokacenografia@gmail.com">
             <EmailIcon />
             maokacenografia@gmail.com
@@ -88,14 +104,20 @@ export default function Footer({ locale }: { locale: Locale }) {
             </a>
           ))}
         </div>
-        <div>
-          <small>Social</small>
+        <div className="footer-group">
+          <div className="footer-group-heading"><span>02</span><small>Social</small></div>
           <a href="https://www.instagram.com/maokacenografia/" target="_blank" rel="noreferrer">Instagram ↗</a>
           <a href="https://www.behance.net/maokacenografia" target="_blank" rel="noreferrer">Behance ↗</a>
           <a href="https://www.linkedin.com/company/maokacenografia" target="_blank" rel="noreferrer">LinkedIn ↗</a>
         </div>
-        <div><small>{copy.base}</small><span>Belo Horizonte<br />{copy.country}</span></div>
-        <div><small>{copy.return}</small><a href="#top">{copy.backToTop}</a></div>
+        <div className="footer-group">
+          <div className="footer-group-heading"><span>03</span><small>{copy.base}</small></div>
+          <span>Belo Horizonte<br />{copy.country}</span>
+        </div>
+        <div className="footer-group">
+          <div className="footer-group-heading"><span>04</span><small>{copy.return}</small></div>
+          <a href="#top">{copy.backToTop}</a>
+        </div>
       </div>
       <div className="footer-bottom">
         <span>© {new Date().getFullYear()} {copy.footerBrand}</span>

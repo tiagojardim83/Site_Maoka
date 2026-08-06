@@ -1122,7 +1122,10 @@ export default function Home() {
         </section>
 
         <section className="brand-strip" aria-label={copy.brandsLabel}>
-          <p className="typewriter-words">{copy.brandsCopy}</p>
+          <div className="brand-strip-bar">
+            <p><span className="typewriter-words">{copy.brandsCopy}</span></p>
+            <span className="brand-strip-bar-arrow" aria-hidden="true"><ArrowDownIcon /></span>
+          </div>
           <div className="client-marquee">
             <div>
               <span>GOOGLE</span><span>TOYOTA</span><span>ELECTROLUX</span><span>PURINA</span><span>SHEIN</span><span>ARCELORMITTAL</span><span>ANGLOGOLD</span>
