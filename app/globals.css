@@ -2140,20 +2140,10 @@ body:has(.hover-title:hover) .cursor {
   color: rgba(var(--ink-rgb), .28);
 }
 
-/* Portrait photos/videos get a fixed, viewport-safe height instead of
-   stretching to the column's width and deriving height from that (a
-   3:4 box at the width of a wide desktop column comes out taller than
-   the screen). Width instead follows from the aspect-ratio, and the row
-   is left-aligned (flush with the hero text above) rather than
-   stretched or centered, so it stays a consistent, sane size everywhere
-   — solo or grouped. */
-.project-detail-image-pair {
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  gap: clamp(16px, 2vw, 28px);
-}
-
+/* A lone remainder portrait (odd one out, not part of a row) keeps a
+   fixed, viewport-safe height instead of stretching edge to edge — a
+   single 3:4 image blown up to the full container width would be
+   enormous. Width follows from the aspect-ratio. */
 .project-detail-image--portrait {
   align-self: flex-start;
   width: auto;
@@ -2180,9 +2170,27 @@ body:has(.hover-title:hover) .cursor {
   animation: project-pan 7s ease-in-out infinite;
 }
 
+/* Rows of portrait media (2 or 3 up, set per-row via --row-size) span
+   the full width of the section instead of hugging the left edge with
+   empty space on the right — each column stretches to fill, capped by
+   max-height so it never grows past a sane viewport-relative size. */
+.project-detail-image-pair {
+  display: grid;
+  grid-template-columns: repeat(var(--row-size, 2), 1fr);
+  gap: clamp(16px, 2vw, 28px);
+  width: 100%;
+}
+
+.project-detail-image-pair .project-detail-image--portrait {
+  align-self: stretch;
+  width: 100%;
+  height: auto;
+  max-height: clamp(320px, 60svh, 620px);
+}
+
 @media (max-width: 700px) {
   .project-detail-image-pair {
-    flex-direction: column;
+    grid-template-columns: 1fr;
     gap: clamp(24px, 3vw, 41px);
   }
 }

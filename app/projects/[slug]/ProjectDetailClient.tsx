@@ -107,7 +107,11 @@ export default function ProjectDetailClient({
           {project.images
             ? groupProjectImages(project.images, project.portraitRowSize).map((row, i) =>
                 row.kind === "group" ? (
-                  <div className="project-detail-image-pair" key={row.images[0].src}>
+                  <div
+                    className="project-detail-image-pair"
+                    style={{ "--row-size": row.images.length } as React.CSSProperties}
+                    key={row.images[0].src}
+                  >
                     {row.images.map((media, j) => (
                       <figure className="project-detail-image project-detail-image--portrait" key={media.src}>
                         <ProjectMedia media={media} alt={`${project.name} ${i + j + 1}`} eager={i === 0} />
