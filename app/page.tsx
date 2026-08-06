@@ -64,6 +64,7 @@ const translations = {
     marquee: ["ENTRETENIMENTO", "CORPORATIVO", "ARQUITETURA COMERCIAL"],
     projectsLabel: "Projetos em destaque",
     projectsTitle: ["Espaços para", "lembrar", " e viver."],
+    projectsCopy: "Uma seleção dos projetos que melhor traduzem a Maoka, porque as melhores ideias merecem ser revividas.",
     openProject: "Abrir projeto",
     viewProject: "Ver projeto",
     categories: {
@@ -141,6 +142,7 @@ const translations = {
     marquee: ["ENTERTAINMENT", "CORPORATE", "COMMERCIAL ARCHITECTURE"],
     projectsLabel: "Featured projects",
     projectsTitle: ["Spaces to", "remember", " and live."],
+    projectsCopy: "A curated selection of the projects that best translate Maoka, because the best ideas deserve to be relived.",
     openProject: "Open project",
     viewProject: "View project",
     categories: {
@@ -981,6 +983,7 @@ export default function Home() {
                 <p className="hover-title">{copy.projectsLabel}</p>
               </div>
               <h2 className="hover-title">{copy.projectsTitle[0]}<br /><em>{copy.projectsTitle[1]}</em>{copy.projectsTitle[2]}</h2>
+              <p>{copy.projectsCopy}</p>
             </div>
 
             <div className="project-viewport" ref={projectsViewportRef}>
