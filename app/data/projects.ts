@@ -49,7 +49,6 @@ export const projects: Project[] = [
       { src: projectImage("unigames-03.webp"), portrait: true },
       { src: projectImage("unigames-04.webp"), portrait: true },
       { src: projectImage("unigames-05.webp"), portrait: true },
-      { src: projectImage("unigames-06.webp"), portrait: true },
     ],
   },
   {
@@ -87,7 +86,6 @@ export const projects: Project[] = [
       { src: projectImage("purina-03.webp") },
       { src: projectImage("purina-04.webp"), portrait: true },
       { src: projectImage("purina-05.webp"), portrait: true },
-      { src: projectImage("purina-06.webp"), portrait: true },
     ],
   },
   // The 8 entries below were added from freshly uploaded photos with no
@@ -131,7 +129,6 @@ export const projects: Project[] = [
       { src: projectImage("ultimo-samba-02.webp") },
       { src: projectImage("ultimo-samba-03.webp") },
       { src: projectImage("ultimo-samba-04.webp"), portrait: true },
-      { src: projectImage("ultimo-samba-05.webp"), portrait: true },
     ],
   },
   {
@@ -222,7 +219,6 @@ export const projects: Project[] = [
       { src: projectImage("nescafe-07.webp"), portrait: true },
       { src: projectImage("nescafe-08.webp") },
       { src: projectImage("nescafe-09.webp"), portrait: true },
-      { src: projectImage("nescafe-10.webp"), portrait: true },
     ],
   },
   {
