@@ -10,7 +10,6 @@
   --red-rgb: 229, 17, 0;
   --blue: #6f8cb8;
   --gray: #d8dad0;
-  --teal: #0ec8cf;
   --line: rgba(var(--ink-rgb), 0.13);
   --serif: var(--font-monument), Arial, sans-serif;
   --sans: var(--font-botanica), Arial, sans-serif;
@@ -26,14 +25,20 @@
    see .cursor below) already grows over them exactly like it does over
    links, and that blend mode is what paints the teal-looking spotlight
    as it crosses the letters. Touch devices have no cursor to lean on, so
-   there each title instead turns solid teal while crossing the vertical
-   center of the screen on scroll, in either direction (see
+   there each title instead turns the site's red while crossing the
+   vertical center of the screen on scroll, in either direction (see
    useHoverTitles). !important guarantees that wins regardless of
    whatever color rule a given heading already has (e.g. .closing h2,
-   .closing h2 em). */
+   .closing h2 em). The hero title/subtitle are the one exception — they
+   stay on the section's default ink color instead of switching to red. */
 .hover-title.hover-title--active,
 .hover-title.hover-title--active * {
-  color: var(--teal) !important;
+  color: var(--red) !important;
+}
+
+.hero .hover-title.hover-title--active,
+.hero .hover-title.hover-title--active * {
+  color: inherit !important;
 }
 
 * {
