@@ -33,6 +33,21 @@ function groupProjectImages(images: ProjectImage[]): ImageRow[] {
   return rows;
 }
 
+function ProjectMedia({
+  media,
+  alt,
+  eager,
+}: {
+  media: ProjectImage;
+  alt: string;
+  eager?: boolean;
+}) {
+  if (media.type === "video") {
+    return <video src={media.src} autoPlay muted loop playsInline preload={eager ? "auto" : "none"} />;
+  }
+  return <img src={media.src} alt={alt} loading={eager ? "eager" : "lazy"} />;
+}
+
 const copy: Record<Locale, {
   back: string;
   next: string;
@@ -93,9 +108,9 @@ export default function ProjectDetailClient({
             ? groupProjectImages(project.images).map((row, i) =>
                 row.kind === "pair" ? (
                   <div className="project-detail-image-pair" key={row.images[0].src}>
-                    {row.images.map((img, j) => (
-                      <figure className="project-detail-image project-detail-image--portrait" key={img.src}>
-                        <img src={img.src} alt={`${project.name} ${i + j + 1}`} loading={i === 0 ? "eager" : "lazy"} />
+                    {row.images.map((media, j) => (
+                      <figure className="project-detail-image project-detail-image--portrait" key={media.src}>
+                        <ProjectMedia media={media} alt={`${project.name} ${i + j + 1}`} eager={i === 0} />
                       </figure>
                     ))}
                   </div>
@@ -104,7 +119,7 @@ export default function ProjectDetailClient({
                     className={`project-detail-image project-detail-image--photo${row.image.portrait ? " project-detail-image--portrait" : ""}`}
                     key={row.image.src}
                   >
-                    <img src={row.image.src} alt={`${project.name} ${i + 1}`} loading={i === 0 ? "eager" : "lazy"} />
+                    <ProjectMedia media={row.image} alt={`${project.name} ${i + 1}`} eager={i === 0} />
                   </figure>
                 ),
               )

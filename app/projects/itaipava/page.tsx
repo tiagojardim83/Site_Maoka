@@ -13,6 +13,25 @@ const itaipavaProject: Project = {
     pt: "Um estande premiado que traduz a energia da marca Grupo Petrópolis em uma experiência imersiva de luz, estrutura e presença de marca.",
     en: "An award-winning stand that translates Grupo Petrópolis' brand energy into an immersive experience of light, structure and brand presence.",
   },
+  // Photos and behind-the-scenes takes intercalated (photo, video, photo,
+  // video...) rather than grouped apart, per Tiago's request. Every asset
+  // here is portrait, so groupProjectImages pairs them up two per row in
+  // this exact order — each row ends up one photo beside one video.
+  images: [
+    { src: projectImage("maoka_itaipava_01.webp"), portrait: true },
+    { src: projectImage("grupo-petropolis-video-01.mp4"), portrait: true, type: "video" },
+    { src: projectImage("maoka_itaipava_02.webp"), portrait: true },
+    { src: projectImage("grupo-petropolis-video-02.mp4"), portrait: true, type: "video" },
+    { src: projectImage("maoka_itaipava_03.webp"), portrait: true },
+    { src: projectImage("grupo-petropolis-video-03.mp4"), portrait: true, type: "video" },
+    { src: projectImage("maoka_itaipava_04.webp"), portrait: true },
+    { src: projectImage("grupo-petropolis-video-04.mp4"), portrait: true, type: "video" },
+    { src: projectImage("maoka_itaipava_05.webp"), portrait: true },
+    { src: projectImage("grupo-petropolis-video-05.mp4"), portrait: true, type: "video" },
+    { src: projectImage("maoka_itaipava_06.webp"), portrait: true },
+    { src: projectImage("grupo-petropolis-video-06.mp4"), portrait: true, type: "video" },
+    { src: projectImage("grupo-petropolis-video-07.mp4"), portrait: true, type: "video" },
+  ],
 };
 
 export const metadata: Metadata = {

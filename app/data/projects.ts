@@ -4,10 +4,13 @@ export type ProjectCategory = "entertainment" | "corporate" | "activations";
 
 export type ProjectImage = {
   src: string;
-  /** Taller-than-wide photos are grouped two per row (see
+  /** Taller-than-wide media is grouped two per row (see
    * ProjectDetailClient) instead of being cropped into the same
-   * widescreen box as the rest, so they stay fully visible. */
+   * widescreen box as the rest, so it stays fully visible. */
   portrait?: boolean;
+  /** Defaults to "image". Videos autoplay muted/looped, same treatment
+   * as everywhere else on the site. */
+  type?: "image" | "video";
 };
 
 export type Project = {
