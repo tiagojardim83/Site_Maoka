@@ -360,6 +360,27 @@ export default function Home() {
   useScrollJackCarousel(projectsSectionRef, projectsViewportRef, projectsTrackRef);
   useScrollJackCarousel(itaipavaSectionRef, itaipavaViewportRef, itaipavaTrackRef, 2.5, itaipavaStickyRef);
 
+  // Arriving at a hash below the scroll-jacked carousels (e.g. #frentes,
+  // reached via "Ver todas as frentes") lands short: the browser's native
+  // hash-scroll runs before useScrollJackCarousel's effect resizes those
+  // sections to their real (measured) height, so it targets the anchor's
+  // pre-resize position. Re-scroll once that resize has settled.
+  useEffect(() => {
+    const hash = window.location.hash.slice(1);
+    if (!hash) return;
+
+    const scrollToHash = () => {
+      document.getElementById(hash)?.scrollIntoView();
+    };
+
+    if (document.readyState === "complete") {
+      requestAnimationFrame(() => requestAnimationFrame(scrollToHash));
+    } else {
+      window.addEventListener("load", scrollToHash, { once: true });
+      return () => window.removeEventListener("load", scrollToHash);
+    }
+  }, []);
+
   useEffect(() => {
     document.documentElement.lang = locale === "pt" ? "pt-BR" : "en";
     document.title = copy.metaTitle;
@@ -991,7 +1012,7 @@ export default function Home() {
           </div>
         </section>
 
-        <section className="areas section-pad">
+        <section className="areas section-pad" id="frentes">
           <div className="section-label reveal">
             <span>03</span>
             <p>{copy.areasKicker}</p>

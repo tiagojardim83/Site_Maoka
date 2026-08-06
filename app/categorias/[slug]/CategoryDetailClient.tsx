@@ -102,7 +102,7 @@ export default function CategoryDetailClient({
               );
             })}
           </div>
-          <Link className="project-detail-all" href="/#projetos">
+          <Link className="project-detail-all" href="/#frentes">
             {t.allFronts} <ArrowIcon /></Link>
         </section>
       </main>
