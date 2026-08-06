@@ -10,7 +10,7 @@
   --red-rgb: 229, 17, 0;
   --blue: #6f8cb8;
   --gray: #d8dad0;
-  --orange: #ff7a1a;
+  --teal: #0ec8cf;
   --line: rgba(var(--ink-rgb), 0.13);
   --serif: var(--font-monument), Arial, sans-serif;
   --sans: var(--font-botanica), Arial, sans-serif;
@@ -21,21 +21,19 @@
   --studio-grade: contrast(1.12) brightness(.9) saturate(.86);
 }
 
-/* Titles/subtitles across the site turn orange on hover (desktop) or
-   while crossing the vertical center of the screen on scroll, in either
-   direction (touch devices — see useHoverTitles). !important guarantees
-   this state wins regardless of whatever color rule a given heading
-   already has (e.g. .closing h2, .closing h2 em). */
-@media (hover: hover) and (pointer: fine) {
-  .hover-title:hover,
-  .hover-title:hover * {
-    color: var(--orange) !important;
-  }
-}
-
+/* Titles/subtitles react to interaction. Desktop has no separate color
+   rule here — the existing custom cursor (mix-blend-mode: difference,
+   see .cursor below) already grows over them exactly like it does over
+   links, and that blend mode is what paints the teal-looking spotlight
+   as it crosses the letters. Touch devices have no cursor to lean on, so
+   there each title instead turns solid teal while crossing the vertical
+   center of the screen on scroll, in either direction (see
+   useHoverTitles). !important guarantees that wins regardless of
+   whatever color rule a given heading already has (e.g. .closing h2,
+   .closing h2 em). */
 .hover-title.hover-title--active,
 .hover-title.hover-title--active * {
-  color: var(--orange) !important;
+  color: var(--teal) !important;
 }
 
 * {
@@ -121,6 +119,13 @@ body:has(a:hover, button:hover) .cursor {
   height: 48px;
   top: -24px;
   left: -24px;
+}
+
+body:has(.hover-title:hover) .cursor {
+  width: 72px;
+  height: 72px;
+  top: -36px;
+  left: -36px;
 }
 
 .brand {
