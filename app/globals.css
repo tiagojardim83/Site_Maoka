@@ -1174,7 +1174,7 @@ body:has(.hover-title:hover) .cursor {
 
 .projects-heading {
   display: grid;
-  grid-template-columns: .5fr 1.3fr .55fr;
+  grid-template-columns: minmax(0, .5fr) minmax(0, 1.3fr) minmax(0, .55fr);
   align-items: end;
   gap: 5vw;
   flex: 0 0 auto;
@@ -1185,11 +1185,12 @@ body:has(.hover-title:hover) .cursor {
   font-size: clamp(34px, 3.8vw, 60px);
 }
 
-/* "lembrar e viver." reads as one phrase — keep it from breaking across
-   a 3rd line at desktop widths where the heading column gets narrow
-   (the word "viver." would otherwise wrap down on its own). */
+/* Was a forced nowrap to keep the short original phrase ("e viver.") off
+   a lonely 3rd line — with longer copy that instead forces this column's
+   min-content wider than its grid share, squeezing the eyebrow column
+   next to it. Let it wrap like any other text. */
 .projects-title-line2 {
-  white-space: nowrap;
+  white-space: normal;
 }
 
 .projects-heading > p {
@@ -2111,10 +2112,6 @@ body:has(.hover-title:hover) .cursor {
     text-wrap: balance;
   }
   .projects-heading h2 { justify-self: start; }
-  /* The nowrap on .projects-title-line2 (desktop-only concern, see its
-     rule) forces a long phrase into an unbroken min-content width that
-     can overflow the viewport at mobile sizes — let it wrap here. */
-  .projects-title-line2 { white-space: normal; }
   .display-copy em,
   .projects-heading h2 em,
   .craft h2 em,
