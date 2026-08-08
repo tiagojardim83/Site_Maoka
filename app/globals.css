@@ -2111,6 +2111,10 @@ body:has(.hover-title:hover) .cursor {
     text-wrap: balance;
   }
   .projects-heading h2 { justify-self: start; }
+  /* The nowrap on .projects-title-line2 (desktop-only concern, see its
+     rule) forces a long phrase into an unbroken min-content width that
+     can overflow the viewport at mobile sizes — let it wrap here. */
+  .projects-title-line2 { white-space: normal; }
   .display-copy em,
   .projects-heading h2 em,
   .craft h2 em,

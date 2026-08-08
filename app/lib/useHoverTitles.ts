@@ -11,8 +11,13 @@ import { useEffect } from "react";
  * "hover-interactive" (toggles "hover-interactive--active", for buttons/
  * links that need a different active treatment than a text color swap).
  * Call this once per page.
+ *
+ * Pass a `watch` value (e.g. the current locale) if any observed elements
+ * can be remounted (fresh DOM node, e.g. via a `key` change) after copy
+ * changes — otherwise the observer keeps tracking the old, now-detached
+ * node and the remounted one never gets watched.
  */
-export function useHoverTitles() {
+export function useHoverTitles(watch?: unknown) {
   useEffect(() => {
     const canHover = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
     if (canHover) return;
@@ -38,5 +43,5 @@ export function useHoverTitles() {
     );
     entriesToWatch.forEach(({ element }) => observer.observe(element));
     return () => observer.disconnect();
-  }, []);
+  }, [watch]);
 }

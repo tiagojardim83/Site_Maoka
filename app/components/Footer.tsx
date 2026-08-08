@@ -77,7 +77,7 @@ export default function Footer({ locale }: { locale: Locale }) {
 
       <div className="footer-callout">
         <p>{copy.footerKicker}</p>
-        <a href="mailto:maokacenografia@gmail.com">
+        <a href="mailto:comercial@maokacenografia.com.br">
           <strong>{copy.footerCta}</strong>
           <span aria-hidden="true"><ArrowDownIcon /></span>
         </a>
@@ -86,9 +86,9 @@ export default function Footer({ locale }: { locale: Locale }) {
       <div className="footer-grid">
         <div className="footer-group footer-group--conversation">
           <div className="footer-group-heading"><span>01</span><small>{copy.conversation}</small></div>
-          <a className="whatsapp-link" href="mailto:maokacenografia@gmail.com">
+          <a className="whatsapp-link" href="mailto:comercial@maokacenografia.com.br">
             <EmailIcon />
-            maokacenografia@gmail.com
+            comercial@maokacenografia.com.br
           </a>
           {whatsAppContacts.map((contact) => (
             <a

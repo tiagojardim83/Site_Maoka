@@ -44,15 +44,15 @@ const translations = {
     entryLabel: "Abertura Maoka",
     entryTitle: ["Ideia em", "movimento"],
     symbolAlt: "Símbolo da Maoka",
-    heroTitle: ["Damos forma ao que sua", " marca quer fazer sentir."],
+    heroTitle: ["Arquitetura efêmera para marcas", " que querem ser vividas."],
     heroSubtitle: "Cenografia · Arquitetura · Experiência",
     heroSymbols: "Símbolos da Maoka em movimento",
     carnivalAlt: "Experiência cenográfica Carnaval dos Sonhos criada pela Maoka",
     manifestoLabel: "O que nos move",
-    manifestoTitle: ["Não montamos", "cenários", "Desenhamos", "relações."],
+    manifestoTitle: ["Não montamos", "cenários,", "construímos", "relações."],
     manifestoParagraphs: [
-      "A Maoka nasce do desejo de renovar conexões sociais por meio de projetos arquitetônicos inventivos. Criamos espaços onde marcas encontram forma, abrigo e presença.",
-      "Do conceito à execução, equilibramos estratégia, design e técnica para transformar ambientes físicos em sensações vivas.",
+      "A Maoka surge da proposta de renovar as conexões sociais por meio de projetos arquitetônicos inventivos. A nossa oka é o espaço onde as marcas encontram abrigo para suas necessidades subentendidas.",
+      "De ambientes empresariais a eventos, nossos projetos são pensados para promover intensidade nas relações humanas.",
     ],
     processLink: "Conheça nosso processo",
     itaipavaAlt: "Experiência cenográfica Grupo Petrópolis criada pela Maoka",
@@ -61,10 +61,10 @@ const translations = {
     itaipavaDetails: "Detalhes do projeto",
     areasLabel: "Áreas de atuação da Maoka",
     degrees: "graus",
-    numbers: ["Criação de ponta a ponta", "Frentes de atuação", "Experiência integrada"],
+    numbers: ["Criação de ponta a ponta", "projetos desenvolvidos", "clientes atendidos"],
     marquee: ["ENTRETENIMENTO", "CORPORATIVO", "ARQUITETURA COMERCIAL"],
     projectsLabel: "Projetos em destaque",
-    projectsTitle: ["Espaços para", "lembrar", " e viver."],
+    projectsTitle: ["Projetos singulares para", "interações", " coletivas."],
     projectsCopy: "Uma seleção dos projetos que melhor traduzem a Maoka.",
     openProject: "Abrir projeto",
     viewProject: "Ver projeto",
@@ -78,24 +78,24 @@ const translations = {
     craftLabel: "O que fazemos",
     craftTitle: ["Onde estratégia,", "design e", "experiência", "se encontram."],
     services: [
-      ["Conceito & Estratégia", "Escuta, pesquisa e uma ideia central capaz de sustentar toda a experiência."],
-      ["Arquitetura & Cenografia", "Espaços autorais que traduzem identidade com estética, função e intenção."],
-      ["Produção & Execução", "Excelência técnica, gestão integrada e cuidado absoluto com cada detalhe."],
+      ["O que fazemos", "A Maoka desenvolve projetos arquitetônicos e cenográficos, criando experiências que despertam sensações e fortalecem conexões humanas."],
+      ["Arquitetura & Cenografia", "Atuando de ponta a ponta, a marca entrega soluções com design autoral, memorável e identitário, unindo criatividade, inovação e excelência técnica."],
+      ["Expertises", "Nossa expertise equilibra estética, funcionalidade e inovação, sempre com atenção à identidade de cada cliente para criar experiências que conectam pessoas, marcas e espaços."],
     ],
     ritualLabel: "Nosso ritual",
     ritualTitle: ["Da escuta", "ao", "extraordinário."],
     ritualCopy: "Um processo contínuo, próximo e transparente.",
     steps: [
-      ["Compreender", "Mergulhamos na marca, nas pessoas e no que ainda não foi dito.", "Imersão · Briefing"],
-      ["Idealizar", "Transformamos estratégia em conceito, narrativa, desenho e atmosfera.", "Conceito · Projeto"],
-      ["Materializar", "Coordenamos produção, fornecedores, montagem e cada acabamento.", "Produção · Gestão"],
-      ["Fazer viver", "Entregamos o espaço pronto para gerar presença, encontro e memória.", "Experiência · Entrega"],
+      ["Compreender", "Um mergulho que une escuta, pesquisa e concepção autoral.", "Imersão · Briefing"],
+      ["Idealizar", "Captar estratégias e construir narrativa, escopo e atmosfera.", "Conceito · Projeto"],
+      ["Materializar", "Acompanhar o projeto de ponta a ponta, garantindo o equilíbrio entre estética e funcionalidade.", "Produção · Gestão"],
+      ["Transformar", "Conceito se torna presença física e a experiência vira memória.", "Experiência · Entrega"],
     ],
     brandsLabel: "Marcas que já viveram experiências Maoka",
     brandsCopy: "Marcas que já viveram essa experiência",
-    closingQuestion: "Tem uma ideia em movimento?",
-    closingTitle: ["Vamos criar algo", "que ninguém", "esquece?"],
-    startProject: "Começar um projeto",
+    closingQuestion: "Inicie um orçamento.",
+    closingTitle: ["Vamos projetar a experiência", "que sua marca", "merece?"],
+    startProject: "Vamos conversar",
     footerStatement: "Projetos singulares para interações coletivas",
     conversation: "Conversa",
     base: "Base",
@@ -122,15 +122,15 @@ const translations = {
     entryLabel: "Maoka opening",
     entryTitle: ["Idea in", "motion"],
     symbolAlt: "Maoka symbol",
-    heroTitle: ["We shape what your", " brand wants people to feel."],
+    heroTitle: ["Ephemeral architecture for", " brands meant to be experienced."],
     heroSubtitle: "Scenography · Architecture · Experience",
     heroSymbols: "Maoka symbols in motion",
     carnivalAlt: "Carnaval dos Sonhos scenographic experience created by Maoka",
     manifestoLabel: "What moves us",
-    manifestoTitle: ["We don't build", "sets", "We design", "connections."],
+    manifestoTitle: ["We don't build", "sets.", "We build", "connections."],
     manifestoParagraphs: [
-      "Maoka was born from the desire to renew social connections through inventive architectural projects. We create spaces where brands find form, shelter and presence.",
-      "From concept to delivery, we balance strategy, design and technique to transform physical environments into living sensations.",
+      "Maoka was born from the idea of renewing social connections through inventive architectural projects. Our oka is a space where brands find room for needs that often go unspoken.",
+      "From corporate environments to events, our projects are designed to create more meaningful human connections.",
     ],
     processLink: "Discover our process",
     itaipavaAlt: "Grupo Petrópolis scenographic experience created by Maoka",
@@ -139,11 +139,11 @@ const translations = {
     itaipavaDetails: "Project details",
     areasLabel: "Maoka areas of expertise",
     degrees: "degrees",
-    numbers: ["End-to-end creation", "Areas of expertise", "Integrated experience"],
+    numbers: ["End-to-end creation", "projects developed", "clients served"],
     marquee: ["ENTERTAINMENT", "CORPORATE", "COMMERCIAL ARCHITECTURE"],
     projectsLabel: "Featured projects",
-    projectsTitle: ["Spaces to", "remember", " and live."],
-    projectsCopy: "A curated selection of the projects that best translate Maoka.",
+    projectsTitle: ["Singular projects for", "collective", " experiences."],
+    projectsCopy: "A selection of projects that best express what Maoka is about.",
     openProject: "Open project",
     viewProject: "View project",
     categories: {
@@ -156,24 +156,24 @@ const translations = {
     craftLabel: "What we do",
     craftTitle: ["Where strategy,", "design and", "experience", "meet."],
     services: [
-      ["Concept & Strategy", "Listening, research and one central idea strong enough to sustain the entire experience."],
-      ["Architecture & Scenography", "Original spaces that translate identity through aesthetics, function and intention."],
-      ["Production & Delivery", "Technical excellence, integrated management and absolute care for every detail."],
+      ["What we do", "Maoka develops architectural and scenographic projects, creating experiences that evoke emotion and strengthen human connections."],
+      ["Architecture & Scenography", "From concept to completion, Maoka delivers distinctive and memorable design solutions that combine creativity, innovation and technical excellence."],
+      ["Expertise", "Our expertise balances aesthetics, functionality and innovation, always respecting each client's identity to create experiences that connect people, brands and spaces."],
     ],
     ritualLabel: "Our ritual",
     ritualTitle: ["From listening", "to the", "extraordinary."],
     ritualCopy: "A continuous, close and transparent process.",
     steps: [
-      ["Understand", "We immerse ourselves in the brand, the people and what has not yet been said.", "Immersion · Briefing"],
-      ["Envision", "We turn strategy into concept, narrative, design and atmosphere.", "Concept · Design"],
-      ["Build", "We coordinate production, suppliers, installation and every finish.", "Production · Management"],
-      ["Bring to life", "We deliver a space ready to generate presence, connection and memory.", "Experience · Delivery"],
+      ["Understand", "A deep dive combining listening, research and original thinking.", "Immersion · Briefing"],
+      ["Envision", "Translating strategy into narrative, scope and atmosphere.", "Concept · Design"],
+      ["Materialize", "Guiding the project from start to finish, balancing aesthetics and functionality.", "Production · Management"],
+      ["Transform", "Concept becomes physical presence, and experience becomes memory.", "Experience · Delivery"],
     ],
     brandsLabel: "Brands that have experienced Maoka",
     brandsCopy: "Brands that have shared this experience",
-    closingQuestion: "Got an idea in motion?",
-    closingTitle: ["Let's create something", "no one", "forgets?"],
-    startProject: "Start a project",
+    closingQuestion: "Start a project.",
+    closingTitle: ["Let's design the experience", "your brand", "deserves."],
+    startProject: "Let's talk",
     footerStatement: "Singular projects for collective interactions",
     conversation: "Let's talk",
     base: "Base",
@@ -376,7 +376,7 @@ export default function Home() {
   const itaipavaStickyRef = useRef<HTMLDivElement>(null);
   const copy = translations[locale];
 
-  useHoverTitles();
+  useHoverTitles(locale);
   useTypewriterReveal(locale);
 
   useScrollJackCarousel(projectsSectionRef, projectsViewportRef, projectsTrackRef);
@@ -888,7 +888,7 @@ export default function Home() {
           <section className="hero" aria-labelledby="hero-title">
             <div className="hero-intro">
               <div className="hero-statement">
-                <h1 id="hero-title" className="hover-title typewriter">{copy.heroTitle[0]}<br className="mobile-only" aria-hidden="true" />{copy.heroTitle[1]}</h1>
+                <h1 id="hero-title" className="hover-title typewriter" key={locale}>{copy.heroTitle[0]}<br className="mobile-only" aria-hidden="true" />{copy.heroTitle[1]}</h1>
                 <p className="hover-title typewriter-words">{copy.heroSubtitle}</p>
               </div>
 
@@ -932,7 +932,7 @@ export default function Home() {
             <p className="typewriter">{copy.manifestoLabel}</p>
           </div>
           <div className="manifesto-grid">
-            <h2 className="display-copy hover-title typewriter">
+            <h2 className="display-copy hover-title typewriter" key={locale}>
               {copy.manifestoTitle[0]}<br />
               <em>{copy.manifestoTitle[1]}</em><br /> {copy.manifestoTitle[2]}<br />
               {copy.manifestoTitle[3]}
@@ -982,12 +982,12 @@ export default function Home() {
         </section>
 
         <div className="manifesto-numbers manifesto-numbers--rest" ref={manifestoNumbersRef}>
-          <div className="manifesto-number" tabIndex={0} aria-label={`03 — ${copy.numbers[1]}`}>
-            <strong data-count="3" data-pad="2" aria-hidden="true">03</strong>
+          <div className="manifesto-number" tabIndex={0} aria-label={`150+ — ${copy.numbers[1]}`}>
+            <strong data-count="150" data-suffix="+" aria-hidden="true">150+</strong>
             <span>{copy.numbers[1]}</span>
           </div>
-          <div className="manifesto-number" tabIndex={0} aria-label={`01 — ${copy.numbers[2]}`}>
-            <strong data-count="1" data-pad="2" aria-hidden="true">01</strong>
+          <div className="manifesto-number" tabIndex={0} aria-label={`20+ — ${copy.numbers[2]}`}>
+            <strong data-count="20" data-suffix="+" aria-hidden="true">20+</strong>
             <span>{copy.numbers[2]}</span>
           </div>
         </div>
@@ -999,7 +999,7 @@ export default function Home() {
                 <span>02</span>
                 <p className="hover-title typewriter">{copy.projectsLabel}</p>
               </div>
-              <h2 className="hover-title typewriter">{copy.projectsTitle[0]}<br /><span className="projects-title-line2"><em>{copy.projectsTitle[1]}</em>{copy.projectsTitle[2]}</span></h2>
+              <h2 className="hover-title typewriter" key={locale}>{copy.projectsTitle[0]}<br /><span className="projects-title-line2"><em>{copy.projectsTitle[1]}</em>{copy.projectsTitle[2]}</span></h2>
               <p className="typewriter-words">{copy.projectsCopy}</p>
             </div>
 
@@ -1084,7 +1084,7 @@ export default function Home() {
               <p className="hover-title typewriter">{copy.craftLabel}</p>
             </div>
             <div className="craft-title-wrap">
-              <h2 className="hover-title typewriter">{copy.craftTitle[0]}<br />{copy.craftTitle[1]} <br /><em>{copy.craftTitle[2]}</em><br />{copy.craftTitle[3]}</h2>
+              <h2 className="hover-title typewriter" key={locale}>{copy.craftTitle[0]}<br />{copy.craftTitle[1]} <br /><em>{copy.craftTitle[2]}</em><br />{copy.craftTitle[3]}</h2>
               <div className="craft-sign reveal" aria-hidden="true">
                 <div className="craft-sign-motion" data-parallax="92">
                   <img src={projectImage("Sign_3D.svg")} alt="" loading="lazy" />
@@ -1098,7 +1098,7 @@ export default function Home() {
                   <article className="reveal" key={`service-${index}`}>
                     <span>{String(index + 1).padStart(2, "0")}</span>
                     <div>
-                      <h3 className="hover-title typewriter">
+                      <h3 className="hover-title typewriter" key={locale}>
                         {afterAmp ? <>{beforeAmp}&<br />{afterAmp}</> : title}
                       </h3>
                       <p className="typewriter-words">{description}</p>
@@ -1116,7 +1116,7 @@ export default function Home() {
               <span>05</span>
               <p className="hover-title typewriter">{copy.ritualLabel}</p>
             </div>
-            <h2 className="hover-title typewriter">{copy.ritualTitle[0]} {copy.ritualTitle[1]}<br /><em>{copy.ritualTitle[2]}</em></h2>
+            <h2 className="hover-title typewriter" key={locale}>{copy.ritualTitle[0]} {copy.ritualTitle[1]}<br /><em>{copy.ritualTitle[2]}</em></h2>
             <p className="typewriter-words">{copy.ritualCopy}</p>
           </div>
           <div className="process-steps">
@@ -1149,7 +1149,7 @@ export default function Home() {
           <div className="closing-shade" />
           <div className="closing-content">
             <p className="hover-title typewriter">{copy.closingQuestion}</p>
-            <h2 className="hover-title typewriter">{copy.closingTitle[0]}<br />{copy.closingTitle[1]} <br /><em>{copy.closingTitle[2]}</em></h2>
+            <h2 className="hover-title typewriter" key={locale}>{copy.closingTitle[0]}<br />{copy.closingTitle[1]} <br /><em>{copy.closingTitle[2]}</em></h2>
             <a className="cta-orbit" href={whatsAppContacts[0].href} target="_blank" rel="noreferrer">
               <span>{copy.startProject}</span>
               <i aria-hidden="true">↗</i>
