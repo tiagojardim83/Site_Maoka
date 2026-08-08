@@ -77,7 +77,7 @@ export default function Footer({ locale }: { locale: Locale }) {
 
       <div className="footer-callout">
         <p>{copy.footerKicker}</p>
-        <a href="mailto:comercial@maokacenografia.com.br">
+        <a href="https://wa.me/5512982141215" target="_blank" rel="noreferrer">
           <strong>{copy.footerCta}</strong>
           <span aria-hidden="true"><ArrowDownIcon /></span>
         </a>
