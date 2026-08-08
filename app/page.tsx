@@ -64,7 +64,7 @@ const translations = {
     numbers: ["Criação de ponta a ponta", "projetos desenvolvidos", "clientes atendidos"],
     marquee: ["ENTRETENIMENTO", "CORPORATIVO", "ARQUITETURA COMERCIAL"],
     projectsLabel: "Projetos em destaque",
-    projectsTitle: ["Projetos singulares para", "interações", " coletivas."],
+    projectsTitle: ["Projetos singulares", "para interações", "coletivas."],
     projectsCopy: "Uma seleção dos projetos que melhor traduzem a Maoka.",
     openProject: "Abrir projeto",
     viewProject: "Ver projeto",
@@ -93,7 +93,7 @@ const translations = {
     ],
     brandsLabel: "Marcas que já viveram experiências Maoka",
     brandsCopy: "Marcas que já viveram essa experiência",
-    closingQuestion: "Posicionamento se torna presença.",
+    closingQuestion: "Posicionamento se torna presença",
     closingTitle: ["Vamos projetar a experiência", "que sua marca", "merece?"],
     startProject: "Vamos conversar",
     footerStatement: "Projetos singulares para interações coletivas",
@@ -142,7 +142,7 @@ const translations = {
     numbers: ["End-to-end creation", "projects developed", "clients served"],
     marquee: ["ENTERTAINMENT", "CORPORATE", "COMMERCIAL ARCHITECTURE"],
     projectsLabel: "Featured projects",
-    projectsTitle: ["Singular projects for", "collective", " experiences."],
+    projectsTitle: ["Singular projects", "for collective", "experiences."],
     projectsCopy: "A selection of projects that best express what Maoka is about.",
     openProject: "Open project",
     viewProject: "View project",
@@ -171,7 +171,7 @@ const translations = {
     ],
     brandsLabel: "Brands that have experienced Maoka",
     brandsCopy: "Brands that have shared this experience",
-    closingQuestion: "Positioning becomes presence.",
+    closingQuestion: "Positioning becomes presence",
     closingTitle: ["Let's design the experience", "your brand", "deserves."],
     startProject: "Let's talk",
     footerStatement: "Singular projects for collective interactions",
@@ -999,7 +999,7 @@ export default function Home() {
                 <span>02</span>
                 <p className="hover-title typewriter">{copy.projectsLabel}</p>
               </div>
-              <h2 className="hover-title typewriter" key={locale}>{copy.projectsTitle[0]}<br /><span className="projects-title-line2"><em>{copy.projectsTitle[1]}</em>{copy.projectsTitle[2]}</span></h2>
+              <h2 className="hover-title typewriter" key={locale}>{copy.projectsTitle[0]}<br />{copy.projectsTitle[1]}<br /><em>{copy.projectsTitle[2]}</em></h2>
               <p className="typewriter-words">{copy.projectsCopy}</p>
             </div>
 
